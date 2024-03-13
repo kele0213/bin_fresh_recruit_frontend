@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import loginPanel from './cpns/loginPanel.vue'
-import registerPanel from './cpns/registerPanel.vue'
-import findPassPanel from './cpns/findPassPanel.vue'
+import LoginPanel from './cpns/LoginPanel.vue'
+import RegisterPanel from './cpns/RegisterPanel.vue'
+import FindPassPanel from './cpns/FindPassPanel.vue'
 const activeName = ref('login')
 // 是否是找回密码界面
 const isFind = ref(false)
@@ -40,16 +40,16 @@ const noFind = () => {
               <div>
                 <el-tabs v-model="activeName" stretch>
                   <el-tab-pane label="登录" name="login"
-                    ><loginPanel @findPwd="find"
+                    ><LoginPanel @findPwd="find"
                   /></el-tab-pane>
-                  <el-tab-pane label="注册" name="register"><registerPanel /></el-tab-pane>
+                  <el-tab-pane label="注册" name="register"><RegisterPanel /></el-tab-pane>
                 </el-tabs>
               </div>
             </template>
             <!-- 找回界面 -->
             <template v-else>
               <div>
-                <findPassPanel @toLogin="noFind" />
+                <FindPassPanel @toLogin="noFind" />
               </div>
             </template>
           </div>
@@ -146,3 +146,4 @@ const noFind = () => {
   }
 }
 </style>
+./cpns/FindPassPanel.vue./cpns/LoginPanel.vue

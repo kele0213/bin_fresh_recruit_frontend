@@ -19,10 +19,13 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // 全局注册
 import { globalRegeist } from './global'
+import setupMenu from './global/setupMenu'
 
 const app = createApp(App)
 
 app.use(createPinia().use(piniaPluginPersistedstate))
+// 解决刷新以后路由丢失
+await setupMenu()
 app.use(router)
 app.use(globalRegeist)
 

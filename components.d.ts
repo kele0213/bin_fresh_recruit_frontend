@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Bottom: typeof import('./src/components/base/bottom/bottom.vue')['default']
+    Bottom: typeof import('./src/components/base/bottom/Bottom.vue')['default']
     Bread: typeof import('./src/components/base/nav-header/src/cpns/bread.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -41,10 +41,10 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     KlTable: typeof import('./src/components/base/kl-table/src/kl-table.vue')['default']
     NavHeader: typeof import('./src/components/base/nav-header/src/nav-header.vue')['default']
-    NavMenu: typeof import('./src/components/base/nav-menu/src/navMenu.vue')['default']
+    NavMenu: typeof import('./src/components/base/nav-menu/src/NavMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Table: typeof import('./src/components/SecondPackage/content-table/src/table.vue')['default']
+    Table: typeof import('./src/components/SecondPackage/content-table/src/Table.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     UserInfo: typeof import('./src/components/base/nav-header/src/cpns/userInfo.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Buttom from '@/components/base/bottom/bottom.vue'
+import Bottom from '@/components/base/bottom/Bottom.vue'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import Buttom from '@/components/base/bottom/bottom.vue'
     <RouterView />
   </div>
   <div class="bottom">
-    <Buttom></Buttom>
+    <Bottom></Bottom>
   </div>
 </template>
 

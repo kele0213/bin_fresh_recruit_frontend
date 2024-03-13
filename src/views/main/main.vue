@@ -24,7 +24,10 @@ const changeCollapse = (isFold: boolean) => {
         <el-header>
           <NavHeader @changeCollapse="changeCollapse" />
         </el-header>
-        <el-main><contentTable :tableData="tableData" :tableConfig="tableConfig" /></el-main>
+        <el-main>
+          <!-- <contentTable :tableData="tableData" :tableConfig="tableConfig" /> -->
+          <RouterView />
+        </el-main>
       </el-container>
     </el-container>
   </div>

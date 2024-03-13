@@ -35,6 +35,7 @@ const changeFold = () => {
   height: 100%;
   display: flex;
   align-items: center;
+  caret-color: rgba(0, 0, 0, 0);
   //   font-size: 30px;
   .left {
     cursor: pointer;

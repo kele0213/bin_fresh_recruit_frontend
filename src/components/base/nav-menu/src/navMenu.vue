@@ -1,5 +1,16 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/user/auth'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+
 const props = defineProps(['isCollapse'])
+const authStore = useAuthStore()
+const { menus } = storeToRefs(authStore)
+const router = useRouter()
+// 跳转地址
+const toUrl = (url: any) => {
+  router.push(url)
+}
 </script>
 
 <template>
@@ -13,22 +24,19 @@ const props = defineProps(['isCollapse'])
         active-text-color="#ffd04b"
         background-color="#00a6a7"
         class="el-menu-vertical-demo"
-        default-active="1"
+        default-active="0"
         text-color="#fff"
         :collapse="props.isCollapse"
         :collapse-transition="true"
       >
-        <el-menu-item index="1">
-          <el-icon><setting /></el-icon>
-          <span>应届生管理</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <el-icon><setting /></el-icon>
-          <span>发布咨询</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <el-icon><setting /></el-icon>
-          <span>啥也没有</span>
+        <el-menu-item
+          v-for="(item, index) in menus"
+          :index="index"
+          :key="item"
+          @click="toUrl(item.url)"
+        >
+          <el-icon><component :is="item.icon"></component></el-icon>
+          <span>{{ item.label }}</span>
         </el-menu-item>
       </el-menu>
     </div>

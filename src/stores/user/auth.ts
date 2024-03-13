@@ -2,10 +2,28 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { login, register, getCode as code, changPwd } from '@/service/user/auth'
 import { type Iregister, type Ilogin, type Icode, type Ichange } from '@/service/user/type'
+import { getMenu, getRoleRoutes } from '@/utils/mapMenus'
+import router from '@/router'
 
 export const useAuthStore = defineStore(
   'auth',
   () => {
+    // 普通的state
+    const menus = ref<Array<any>>([])
+    const role = ref<'school' | 'company'>()
+
+    // 注册路由
+    const registerRouter = async (role: 'school' | 'company') => {
+      const routes = await getRoleRoutes(role)
+      for (const route of routes) {
+        console.log(route, '111')
+
+        router.addRoute('main', route)
+      }
+      // 2. 获取菜单信息
+      menus.value = getMenu(role)
+    }
+
     // 注册账号
     const userRegister = async function (data: Iregister) {
       const res = await register(data)
@@ -29,6 +47,27 @@ export const useAuthStore = defineStore(
         // 登录成功逻辑
         tips = '登录成功'
         userInfo.value = res.data
+
+        if (data.role === 0) {
+          // 学校管理员
+          // 1. 注册路由
+          // 2. 加载菜单
+          role.value = 'school'
+          await registerRouter(role.value)
+
+          // 3. 跳转页面
+          router.push('/main')
+        } else if (data.role === 1) {
+          // 学生登录
+        } else if (data.role === 2) {
+          // 企业登录
+          // 1. 注册路由
+          // 2. 加载菜单
+          role.value = 'company'
+          await registerRouter(role.value)
+          // 3. 跳转页面
+          router.push('/main')
+        }
       } else {
         tips = res.msg
       }
@@ -60,11 +99,14 @@ export const useAuthStore = defineStore(
     return {
       // state
       userInfo,
+      menus, //菜单
+      role,
       // action
       userRegister,
       userLogin,
       getCode,
-      userChangePwd
+      userChangePwd,
+      registerRouter
     }
   },
   {

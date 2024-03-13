@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import NavMenu from '@/components/base/nav-menu'
 import NavHeader from '@/components/base/nav-header/src/nav-header.vue'
+// 测试表格，等会删
+import { tableData, tableConfig } from '../config'
+import contentTable from '@/components/SecondPackage/content-table'
+// *****************
 import { ref } from 'vue'
+// 侧边栏收缩功能
 const iscollapse = ref<boolean>(false)
 const changeCollapse = (isFold: boolean) => {
   iscollapse.value = isFold
 }
+// *****************
 </script>
 
 <template>
@@ -18,7 +24,7 @@ const changeCollapse = (isFold: boolean) => {
         <el-header>
           <NavHeader @changeCollapse="changeCollapse" />
         </el-header>
-        <el-main>Main</el-main>
+        <el-main><contentTable :tableData="tableData" :tableConfig="tableConfig" /></el-main>
       </el-container>
     </el-container>
   </div>

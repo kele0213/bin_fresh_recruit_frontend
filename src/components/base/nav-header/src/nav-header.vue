@@ -21,7 +21,7 @@ const changeFold = () => {
     </div>
     <div class="middle">
       <!-- 面包屑导航 -->
-      <Bread />
+      <!-- <Bread /> -->
     </div>
     <div class="right">
       <!-- 用户信息 -->

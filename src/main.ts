@@ -17,11 +17,14 @@ import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 持久化
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+// 全局注册
+import { globalRegeist } from './global'
 
 const app = createApp(App)
 
 app.use(createPinia().use(piniaPluginPersistedstate))
 app.use(router)
+app.use(globalRegeist)
 
 // 注册所有图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

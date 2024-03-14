@@ -9,7 +9,7 @@ import {} from 'vue'
       <div class="main-text">
         <h1>404！出错了 ~<br><br>
           您好像去了一个不存在的地方
-          ！ (灬ꈍ ꈍ灬)
+          ！ ദ്ദി˶ｰ̀֊ｰ́ )✧
         </h1>
       </div>
       <div class="ground">

@@ -3,6 +3,7 @@ export interface Iuser {
   id: string
   phone: string
   a_avatar: string
+  token: string
 }
 
 // 注册需要的信息

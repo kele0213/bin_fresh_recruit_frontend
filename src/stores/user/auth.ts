@@ -4,6 +4,7 @@ import { login, register, getCode as code, changPwd } from '@/service/user/auth'
 import { type Iregister, type Ilogin, type Icode, type Ichange } from '@/service/user/type'
 import { getMenu, getRoleRoutes } from '@/utils/mapMenus'
 import router from '@/router'
+import localCache from '@/utils/localCache'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -16,7 +17,7 @@ export const useAuthStore = defineStore(
     const registerRouter = async (role: 'school' | 'company') => {
       const routes = await getRoleRoutes(role)
       for (const route of routes) {
-        console.log(route, '111')
+        // console.log(route, '111')
 
         router.addRoute('main', route)
       }
@@ -46,7 +47,11 @@ export const useAuthStore = defineStore(
       if (res.data) {
         // 登录成功逻辑
         tips = '登录成功'
-        userInfo.value = res.data
+        const { id, phone, a_avatar, token } = res.data
+        // 保存用户信息
+        userInfo.value = { id, phone, a_avatar }
+        // 保存token
+        localCache.setCache('token', token)
 
         if (data.role === 0) {
           // 学校管理员

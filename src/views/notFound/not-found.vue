@@ -7,9 +7,9 @@ import {} from 'vue'
     <div class="content">
       <canvas class="snow" id="snow" width="1349" height="400"></canvas>
       <div class="main-text">
-        <h1>404！出错了 ~<br><br>
-          您好像去了一个不存在的地方
-          ！ ദ്ദി˶ｰ̀֊ｰ́ )✧
+        <h1>
+          404！出错了 ~<br /><br />
+          您好像去了一个不存在的地方 ！ ദ്ദി˶ｰ̀֊ｰ́ )✧
         </h1>
       </div>
       <div class="ground">
@@ -23,7 +23,8 @@ import {} from 'vue'
 </template>
 
 <style lang="scss" scoped>
-html, body {
+html,
+body {
   height: 100%;
   min-height: 450px;
   font-size: 32px;
@@ -76,7 +77,7 @@ html, body {
 .main-text-a a {
   font-size: 16px;
   text-decoration: none;
-  color: #0066CC;
+  color: #0066cc;
 }
 
 .main-text-a a:hover {
@@ -106,7 +107,8 @@ html, body {
   box-shadow: 0 0 10px 10px #f6f9fa;
 }
 
-.ground:before, .ground:after {
+.ground:before,
+.ground:after {
   content: '';
   display: block;
   width: 250px;
@@ -122,13 +124,45 @@ html, body {
 .ground:after {
   left: 50%;
   margin-left: -166.66667px;
-  box-shadow: -340px 260px 15px #8193b2, -620px 580px 15px #8193b2, -900px 900px 15px #b0bccf, -1155px 1245px 15px #b4bed1, -1515px 1485px 15px #8193b2, -1755px 1845px 15px #8a9bb8, -2050px 2150px 15px #91a1bc, -2425px 2375px 15px #bac4d5, -2695px 2705px 15px #a1aec6, -3020px 2980px 15px #8193b2, -3315px 3285px 15px #94a3be, -3555px 3645px 15px #9aa9c2, -3910px 3890px 15px #b0bccf, -4180px 4220px 15px #bac4d5, -4535px 4465px 15px #a7b4c9, -4840px 4760px 15px #94a3be;
+  box-shadow:
+    -340px 260px 15px #8193b2,
+    -620px 580px 15px #8193b2,
+    -900px 900px 15px #b0bccf,
+    -1155px 1245px 15px #b4bed1,
+    -1515px 1485px 15px #8193b2,
+    -1755px 1845px 15px #8a9bb8,
+    -2050px 2150px 15px #91a1bc,
+    -2425px 2375px 15px #bac4d5,
+    -2695px 2705px 15px #a1aec6,
+    -3020px 2980px 15px #8193b2,
+    -3315px 3285px 15px #94a3be,
+    -3555px 3645px 15px #9aa9c2,
+    -3910px 3890px 15px #b0bccf,
+    -4180px 4220px 15px #bac4d5,
+    -4535px 4465px 15px #a7b4c9,
+    -4840px 4760px 15px #94a3be;
 }
 
 .ground:before {
   right: 50%;
   margin-right: -166.66667px;
-  box-shadow: 325px -275px 15px #b4bed1, 620px -580px 15px #adb9cd, 925px -875px 15px #a1aec6, 1220px -1180px 15px #b7c1d3, 1545px -1455px 15px #7e90b0, 1795px -1805px 15px #b0bccf, 2080px -2120px 15px #b7c1d3, 2395px -2405px 15px #8e9eba, 2730px -2670px 15px #b7c1d3, 2995px -3005px 15px #9dabc4, 3285px -3315px 15px #a1aec6, 3620px -3580px 15px #8193b2, 3880px -3920px 15px #aab6cb, 4225px -4175px 15px #9dabc4, 4510px -4490px 15px #8e9eba, 4785px -4815px 15px #a7b4c9;
+  box-shadow:
+    325px -275px 15px #b4bed1,
+    620px -580px 15px #adb9cd,
+    925px -875px 15px #a1aec6,
+    1220px -1180px 15px #b7c1d3,
+    1545px -1455px 15px #7e90b0,
+    1795px -1805px 15px #b0bccf,
+    2080px -2120px 15px #b7c1d3,
+    2395px -2405px 15px #8e9eba,
+    2730px -2670px 15px #b7c1d3,
+    2995px -3005px 15px #9dabc4,
+    3285px -3315px 15px #a1aec6,
+    3620px -3580px 15px #8193b2,
+    3880px -3920px 15px #aab6cb,
+    4225px -4175px 15px #9dabc4,
+    4510px -4490px 15px #8e9eba,
+    4785px -4815px 15px #a7b4c9;
 }
 
 .mound {
@@ -170,7 +204,10 @@ html, body {
   border-radius: 100%;
   -webkit-transform: rotate(-15deg);
   transform: rotate(-15deg);
-  box-shadow: -56px 12px 0 1px #dd4040, -126px 6px 0 2px #dd4040, -196px 24px 0 3px #dd4040;
+  box-shadow:
+    -56px 12px 0 1px #dd4040,
+    -126px 6px 0 2px #dd4040,
+    -196px 24px 0 3px #dd4040;
 }
 
 .mound_text {
@@ -192,7 +229,8 @@ html, body {
   background: #dd4040;
 }
 
-.mound_spade:before, .mound_spade:after {
+.mound_spade:before,
+.mound_spade:after {
   content: '';
   display: block;
   position: absolute;

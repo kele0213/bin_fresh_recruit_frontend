@@ -22,8 +22,20 @@ defineProps({
   tableData: {
     type: Array,
     required: true
+  },
+  pageSize: {
+    type: Number,
+    default: 10
+  },
+  total: {
+    type: Number,
+    required: true
   }
 })
+const emit = defineEmits(['pageChange'])
+const pageChange = (value: number) => {
+  emit('pageChange', value)
+}
 </script>
 
 <template>
@@ -54,6 +66,13 @@ defineProps({
     </div>
     <div class="footer">
       <!-- 后面用来放分页器 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChange"
+      />
     </div>
   </div>
 </template>
@@ -68,5 +87,11 @@ defineProps({
   justify-content: space-between;
   background-color: #fff;
   padding: 0 30px;
+}
+.footer {
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

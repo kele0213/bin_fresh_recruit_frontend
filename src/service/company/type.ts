@@ -104,11 +104,44 @@ export interface DeleteJpbRequest {
 export interface FilrateRequest {
     user_id: string
     job_id: string
-
+    send_state: number
 }
 
 // 简历筛选响应
+export interface FilrateVo {
+    user_id: string
+    resume_id: string
+    user_name_link: string
+    resume_name: string
+    create_time: string
+    update_time: string
+}
 
 // 查看应届生投递记录请求参数
+export interface FreshSendListRequest {
+    current: number
+    page_size: number
+    send_status: number
+}
+
+// 投递记录信息
+export interface FreshSendInfo {
+    user_id: string
+    com_id: string
+    job_id: string
+    resume_id: string
+    user_name: string
+    job_name: string
+    user_name_link: string
+    resume_name: string
+    send_state: number
+    create_time: string
+}
 
 // 查看应届生投递记录响应
+export interface FreshSendListVo {
+    list: FreshSendInfo[]
+    total: number
+    current: number
+    page_size: number
+}

@@ -1,4 +1,5 @@
 import type { IFormConfig } from '@/components/base/form/type/type'
+
 const searchConfig: IFormConfig = {
   labelWidth: '100px',
   styleLayout: {

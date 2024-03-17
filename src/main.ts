@@ -32,9 +32,6 @@ app.use(globalRegeist)
 // 记得删除
 console.log('这里开始')
 
-
-
-
 // 注册所有图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

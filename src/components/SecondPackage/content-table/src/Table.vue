@@ -10,6 +10,18 @@ const props = defineProps({
   tableData: {
     type: Array,
     required: true
+  },
+  pageSize: {
+    type: Number,
+    default: 10
+  },
+  total: {
+    type: Number,
+    required: true
+  },
+  isEdit: {
+    type: Boolean,
+    default: true
   }
 })
 // slot处理
@@ -21,7 +33,7 @@ const allSlots = props.tableConfig.propList.filter((item) => {
   return true
 })
 // emits
-const emits = defineEmits(['edit', 'delete', 'add'])
+const emits = defineEmits(['edit', 'delete', 'add', 'pageChange'])
 // 新增按钮
 const addFn = () => {
   emits('add')
@@ -34,11 +46,20 @@ const editFn = (value: any) => {
 const deleteFn = (value: any) => {
   emits('delete', value)
 }
+const pageChange = (value: any) => {
+  emits('pageChange', value)
+}
 </script>
 
 <template>
   <div class="table">
-    <klTable :table-data="tableData" v-bind="tableConfig">
+    <klTable
+      :table-data="tableData"
+      v-bind="tableConfig"
+      @pageChange="pageChange"
+      :total="total"
+      :page-size="pageSize"
+    >
       <!-- 顶部按钮处理 -->
       <template #titleHandler>
         <div class="titleHandler">
@@ -55,7 +76,9 @@ const deleteFn = (value: any) => {
       </template>
       <!-- 按钮处理 -->
       <template #handler="scoped">
-        <el-button type="warning" @click="editFn(scoped.row)" icon="Edit">编辑</el-button>
+        <el-button type="warning" @click="editFn(scoped.row)" icon="Edit" v-if="isEdit"
+          >编辑</el-button
+        >
         <el-button type="danger" @click="deleteFn(scoped.row)" icon="Delete">删除</el-button>
       </template>
       <template v-for="item in allSlots" :key="item.field" #[item.slotName!]="scoped">

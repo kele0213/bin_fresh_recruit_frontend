@@ -42,7 +42,7 @@ const confirm = () => {
 
 <template>
   <div class="modal-form">
-    <el-dialog v-model="dialogVisible" title="编辑数据" width="600">
+    <el-dialog v-model="dialogVisible" :title="formConfig.title ?? '编辑数据'" width="600">
       <kl-form v-bind="formConfig" v-model="formData" />
       <template #footer>
         <div class="dialog-footer">

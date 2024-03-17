@@ -20,6 +20,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // 全局注册
 import { globalRegeist } from './global'
 import setupMenu from './global/setupMenu'
+import { listFresh } from './service/school/fresh'
 
 const app = createApp(App)
 
@@ -28,6 +29,11 @@ app.use(createPinia().use(piniaPluginPersistedstate))
 await setupMenu()
 app.use(router)
 app.use(globalRegeist)
+// 记得删除
+console.log('这里开始')
+
+
+
 
 // 注册所有图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

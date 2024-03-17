@@ -7,7 +7,8 @@ import type { Idata } from '../type'
 import type {
   AddFreshBatchRequest,
   AddFreshRequest,
-  AddFreshVo, DeleteFreshRequest,
+  AddFreshVo,
+  DeleteFreshRequest,
   GetFreshListRequest,
   GetFreshListVo,
   RateVo
@@ -48,7 +49,7 @@ export function listFresh(data: GetFreshListRequest) {
  */
 export function deleteFresh(data: DeleteFreshRequest) {
   return httpService.post<Idata<GetFreshListVo>>({
-    url: '/school/fresh/list',
+    url: '/school/fresh/delete',
     data
   })
 }
@@ -57,7 +58,7 @@ export function deleteFresh(data: DeleteFreshRequest) {
  * @description: 就业率相关数据查询
  */
 export function getRateData() {
-  return httpService.get<Idata<RateVo>>({
+  return httpService.get<Idata<RateVo[]>>({
     url: '/school/rate'
   })
 }

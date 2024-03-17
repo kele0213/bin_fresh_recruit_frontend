@@ -59,17 +59,9 @@ export interface GetFreshListVo {
   page_size: number
 }
 
-// 就业数据响应
 export interface RateVo {
-  school_id: string
-  fresh_total_num: number
-  fresh_send_have_num: number
-  fresh_send_looked_num: number
-  fresh_send_invited_num: number
-  fresh_send_no_pass_num: number
-  fresh_send_finish_num: number
-  fresh_send_success_num: number
-  employment_rate: number
+  label: string
+  num_data: string
 }
 
 // ======================资讯管理======================

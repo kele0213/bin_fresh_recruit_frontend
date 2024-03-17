@@ -30,6 +30,10 @@ defineProps({
   total: {
     type: Number,
     required: true
+  },
+  currentPage: {
+    type: Number,
+    default: 1
   }
 })
 const emit = defineEmits(['pageChange'])
@@ -72,6 +76,7 @@ const pageChange = (value: number) => {
         :total="total"
         :page-size="pageSize"
         @current-change="pageChange"
+        :current-page="currentPage"
       />
     </div>
   </div>

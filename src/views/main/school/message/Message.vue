@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import {tableConfig} from '@/views/main/school/message/config/tableConfig'
-import ModalForm from "@/components/SecondPackage/modal-form";
-import {useMessageStore} from "@/stores/main/school/message";
-import {storeToRefs} from "pinia";
-import modalConfig from "@/views/main/school/message/config/modalConfig";
-import {AddMessageRequest} from "@/service/school/type";
+import { tableConfig } from '@/views/main/school/message/config/tableConfig'
+import ModalForm from '@/components/SecondPackage/modal-form'
+import { useMessageStore } from '@/stores/main/school/message'
+import { storeToRefs } from 'pinia'
+import modalConfig from '@/views/main/school/message/config/modalConfig'
+import type { AddMessageRequest } from '@/service/school/type'
+import searchConfig from './config/searchConfig'
+import SearchForm from '@/components/SecondPackage/search-form'
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 
 const store = useMessageStore()
-const {getMessageList, changeCurrent, addMessageInfo:messageAdd} = store
-const {messageList, count,pageSize} = storeToRefs(store)
+const { getMessageList, changeCurrent, addMessageInfo: messageAdd } = store
+const { messageList, count, pageSize } = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -38,18 +40,23 @@ const addMessage = async (data: any) => {
   })
   await messageAdd(addData.value)
 }
+// 查询数据
+const searchMessage = async (data: any) => {
+  console.log(data)
+}
 </script>
 
 <template>
   <!-- 资讯管理 -->
   <div class="Message">
+    <search-form :form-config="searchConfig" @search="searchMessage"></search-form>
     <content-table
-        :table-data="messageList"
-        :table-config="tableConfig"
-        @page-change="getMessageByPage"
-        :total="count"
-        @add="showModal"
-        :page-size="pageSize"
+      :table-data="messageList"
+      :table-config="tableConfig"
+      @page-change="getMessageByPage"
+      :total="count"
+      @add="showModal"
+      :page-size="pageSize"
     />
     <!--  弹出框 添加数据-->
     <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addMessage"></modal-form>

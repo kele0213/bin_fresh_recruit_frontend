@@ -7,6 +7,7 @@ import {showMsg} from "@/utils/message";
 export const useMessageStore = defineStore('message', () => {
     const messageList = ref()
     const count = ref(100)
+    const pageSize = ref(100)
     const reqDate = ref<MessageListRequest>({
         current: 1,
         page_size: 10,
@@ -22,6 +23,7 @@ export const useMessageStore = defineStore('message', () => {
         if (res.code === 0) {
             messageList.value = res.data.list
             count.value = res.data.total
+            pageSize.value = res.data.page_size
         }
     }
     // 添加message数据
@@ -35,5 +37,5 @@ export const useMessageStore = defineStore('message', () => {
         }
     }
 
-    return {messageList,count,getMessageList,changeCurrent,addMessageInfo}
+    return {messageList,count,getMessageList,changeCurrent,addMessageInfo,pageSize}
 })

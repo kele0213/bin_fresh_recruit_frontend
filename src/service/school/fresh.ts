@@ -7,7 +7,7 @@ import type { Idata } from '../type'
 import type {
   AddFreshBatchRequest,
   AddFreshRequest,
-  AddFreshVo,
+  AddFreshVo, DeleteFreshRequest,
   GetFreshListRequest,
   GetFreshListVo,
   RateVo
@@ -46,7 +46,7 @@ export function listFresh(data: GetFreshListRequest) {
 /**
  * @description: 删除应届生
  */
-export function deleteFresh(data: GetFreshListRequest) {
+export function deleteFresh(data: DeleteFreshRequest) {
   return httpService.post<Idata<GetFreshListVo>>({
     url: '/school/fresh/list',
     data

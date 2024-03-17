@@ -13,7 +13,7 @@ const modalConfig: IFormConfig = {
       field: 'fresh_ids', //v-model绑定字段
       type: 'textarea',
       label: '学号列表',
-      placeholder: '请输入学号列表，多个学号以逗号分隔开来',
+      placeholder: '请输入学号列表，多个学号以逗号分隔开来，学号不能包含"-"',
       others: {
         rows: 5
       }

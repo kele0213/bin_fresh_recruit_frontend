@@ -12,7 +12,7 @@ const modalRef = ref<InstanceType<typeof ModalForm>>()
 
 const store = useMessageStore()
 const {getMessageList, changeCurrent, addMessageInfo:messageAdd} = store
-const {messageList, count} = storeToRefs(store)
+const {messageList, count,pageSize} = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -49,6 +49,7 @@ const addMessage = async (data: any) => {
         @page-change="getMessageByPage"
         :total="count"
         @add="showModal"
+        :page-size="pageSize"
     />
     <!--  弹出框 添加数据-->
     <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addMessage"></modal-form>

@@ -10,9 +10,10 @@ import { showMsg} from '@/utils/message'
 export const useFreshStore = defineStore('fresh', () => {
   const freshList = ref()
   const count = ref(100)
+  const pageSize = ref(100)
   const reqData = ref<GetFreshListRequest>({
     current: 1,
-    page_size: 10
+    page_size: 6
   })
   // 修改分页数据
   const changeCurrent = (current: number) => {
@@ -24,6 +25,7 @@ export const useFreshStore = defineStore('fresh', () => {
     if (res.code === 0) {
       freshList.value = res.data.list
       count.value = res.data.total
+      pageSize.value = res.data.page_size
     }
   }
   // 添加fresh数据
@@ -39,5 +41,5 @@ export const useFreshStore = defineStore('fresh', () => {
     }
   }
 
-  return { freshList, count, getFreshList, changeCurrent, addFresh }
+  return { freshList, count, getFreshList, changeCurrent, addFresh,pageSize }
 })

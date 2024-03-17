@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import { tableConfig } from '@/views/main/school/fresh/config/tableConfig'
-import { useFreshStore } from '@/stores/main/school/fresh'
-import { storeToRefs } from 'pinia'
+import {tableConfig} from '@/views/main/school/fresh/config/tableConfig'
+import {useFreshStore} from '@/stores/main/school/fresh'
+import {storeToRefs} from 'pinia'
 import modalConfig from './config/modalConfig'
 import ModalForm from '@/components/SecondPackage/modal-form'
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 
 const store = useFreshStore()
-const { getFreshList, changeCurrent, addFresh: storeAddFresh } = store
-const { freshList, count } = storeToRefs(store)
+const {getFreshList, changeCurrent, addFresh: storeAddFresh} = store
+const {freshList, count, pageSize} = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -44,12 +44,13 @@ const addFresh = async (data: any) => {
   <div class="fresh">
     <!-- <div class="data">就业数据</div> -->
     <content-table
-      :table-config="tableConfig"
-      :table-data="freshList"
-      :total="count"
-      :is-edit="false"
-      @page-change="getFreshByPage"
-      @add="showModal"
+        :table-config="tableConfig"
+        :table-data="freshList"
+        :total="count"
+        :is-edit="false"
+        @page-change="getFreshByPage"
+        @add="showModal"
+        :page-size="pageSize"
     >
       <template #userSex="scope">
         <el-button v-if="scope.row['user_sex'] === 0">男</el-button>

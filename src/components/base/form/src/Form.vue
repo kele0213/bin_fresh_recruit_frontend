@@ -34,6 +34,10 @@ const props = defineProps({
   modelValue: {
     type: Object,
     required: true
+  },
+  labelSize: {
+    type: String,
+    default: '14px'
   }
 })
 
@@ -57,7 +61,10 @@ const changeValue = (value: any, field: any) => {
             <template
               v-if="item.type === 'input' || item.type === 'password' || item.type === 'textarea'"
             >
-              <el-form-item :label="item.label" :rules="item.rules" :style="styleLayout">
+              <el-form-item :rules="item.rules" :style="styleLayout">
+                <template #label>
+                  <div class="label" :style="{ fontSize: labelSize }">{{ item.label }}</div>
+                </template>
                 <el-input
                   :placeholder="item.placeholder"
                   :type="item.type"
@@ -71,7 +78,10 @@ const changeValue = (value: any, field: any) => {
             </template>
             <!-- select -->
             <template v-if="item.type === 'select'">
-              <el-form-item :label="item.label" :rules="item.rules" :style="styleLayout">
+              <el-form-item :rules="item.rules" :style="styleLayout">
+                <template #label>
+                  <div class="label" :style="{ fontSize: labelSize }">{{ item.label }}</div>
+                </template>
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="item.others"
@@ -91,7 +101,10 @@ const changeValue = (value: any, field: any) => {
             </template>
             <!-- datepicker -->
             <template v-if="item.type === 'dataPicker'">
-              <el-form-item :label="item.label" :rules="item.rules" :style="styleLayout">
+              <el-form-item :rules="item.rules" :style="styleLayout">
+                <template #label>
+                  <div class="label" :style="{ fontSize: labelSize }">{{ item.label }}</div>
+                </template>
                 <el-date-picker
                   style="width: 100%"
                   v-bind="item.others"
@@ -113,5 +126,12 @@ const changeValue = (value: any, field: any) => {
 <style lang="scss" scoped>
 .el-form {
   padding-top: 5px;
+}
+.label {
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
+  text-justify: distribute-all-lines;
+  // text-justify: distribute;
 }
 </style>

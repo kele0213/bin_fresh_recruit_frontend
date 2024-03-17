@@ -21,5 +21,6 @@ export interface IFormConfig {
   labelWidth?: string
   styleLayout?: any
   itemLayout?: any
-  title?:string
+  title?: string
+  labelSize?: string
 }

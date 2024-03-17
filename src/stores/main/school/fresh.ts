@@ -2,13 +2,15 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type {
   GetFreshListRequest,
-  AddFreshBatchRequest
+  AddFreshBatchRequest,
+  DeleteFreshRequest
 } from '@/service/school/type'
-import { addFreshBatch, listFresh } from '@/service/school/fresh'
-import { showMsg} from '@/utils/message'
+import { addFreshBatch, deleteFresh, getRateData, listFresh } from '@/service/school/fresh'
+import { showMsg } from '@/utils/message'
 
 export const useFreshStore = defineStore('fresh', () => {
   const freshList = ref()
+  const freshRateData = ref()
   const count = ref(100)
   const pageSize = ref(100)
   const reqData = ref<GetFreshListRequest>({
@@ -33,7 +35,6 @@ export const useFreshStore = defineStore('fresh', () => {
     const res = await addFreshBatch(data)
     if (res.code === 0) {
       showMsg('添加成功', 'success')
-      // showNotice('成功', '添加成功', 'success')
       // 刷新页面
       await getFreshList()
     } else {
@@ -41,5 +42,35 @@ export const useFreshStore = defineStore('fresh', () => {
     }
   }
 
-  return { freshList, count, getFreshList, changeCurrent, addFresh,pageSize }
+  // 删除fresh数据
+  const deleteFreshData = async (data: DeleteFreshRequest) => {
+    const res = await deleteFresh(data)
+    if (res.code === 0) {
+      showMsg('删除成功', 'success')
+      await getFreshList()
+    } else {
+      showMsg('删除失败', 'error')
+    }
+  }
+
+  // 获取就业数据
+  const getFreshRateData = async () => {
+    const res = await getRateData()
+    if (res.code === 0) {
+      freshRateData.value = res.data
+    }
+  }
+
+  return {
+    freshList,
+    count,
+    pageSize,
+    freshRateData,
+    reqData,
+    getFreshList,
+    changeCurrent,
+    addFresh,
+    deleteFreshData,
+    getFreshRateData
+  }
 })

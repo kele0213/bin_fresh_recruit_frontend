@@ -22,6 +22,10 @@ const props = defineProps({
   isEdit: {
     type: Boolean,
     default: true
+  },
+  currentPage: {
+    type: Number,
+    default: 1
   }
 })
 // slot处理
@@ -33,7 +37,7 @@ const allSlots = props.tableConfig.propList.filter((item) => {
   return true
 })
 // emits
-const emits = defineEmits(['edit', 'delete', 'add', 'pageChange'])
+const emits = defineEmits(['edit', 'delete', 'add', 'pageChange', 'fresh'])
 // 新增按钮
 const addFn = () => {
   emits('add')
@@ -49,6 +53,10 @@ const deleteFn = (value: any) => {
 const pageChange = (value: any) => {
   emits('pageChange', value)
 }
+// 刷新按钮
+const pageFresh = () => {
+  emits('fresh')
+}
 </script>
 
 <template>
@@ -59,12 +67,13 @@ const pageChange = (value: any) => {
       @pageChange="pageChange"
       :total="total"
       :page-size="pageSize"
+      :current-page="currentPage"
     >
       <!-- 顶部按钮处理 -->
       <template #titleHandler>
         <div class="titleHandler">
           <el-button type="primary" @click="addFn()" size="large" icon="Plus">新增数据</el-button>
-          <el-button icon="Refresh" circle style="margin-left: 30px" />
+          <el-button icon="Refresh" circle style="margin-left: 30px" @click="pageFresh" />
         </div>
       </template>
       <!-- 时间处理 -->

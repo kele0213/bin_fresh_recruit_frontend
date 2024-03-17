@@ -1,5 +1,24 @@
 <script setup lang="ts">
 import {} from 'vue'
+import router from '@/router'
+import {useAuthStore} from "@/stores/user/auth";
+import {storeToRefs} from "pinia";
+
+const store = useAuthStore()
+const {outLoginReq} = store
+const {roleData} = storeToRefs(store)
+
+const forgetPassword = () => {
+  // 忘记密码
+  router.push('/login')
+}
+` `
+// 退出登录
+const out = async () => {
+  await outLoginReq({
+    role: roleData.value
+  })
+}
 </script>
 
 <template>
@@ -9,13 +28,13 @@ import {} from 'vue'
         <div class="avatar"></div>
         <div class="username">洪晓彬</div>
         <el-icon class="el-icon--right">
-          <arrow-down />
+          <arrow-down/>
         </el-icon>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item icon="User">重置密码</el-dropdown-item>
-          <el-dropdown-item icon="CloseBold">退出登录</el-dropdown-item>
+          <el-dropdown-item icon="User" @click="forgetPassword">重置密码</el-dropdown-item>
+          <el-dropdown-item icon="CloseBold" @click="out">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -26,6 +45,7 @@ import {} from 'vue'
 .userInfo {
   font-size: 16px;
 }
+
 .el-dropdown-link {
   .avatar {
     width: 40px;
@@ -34,6 +54,7 @@ import {} from 'vue'
     background-color: blue;
     margin-right: 10px;
   }
+
   cursor: pointer;
   color: var(--el-color-primary);
   display: flex;

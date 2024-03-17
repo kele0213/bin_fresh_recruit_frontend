@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
 import { tableConfig } from '@/views/main/school/fresh/config/tableConfig'
 import { useFreshStore } from '@/stores/main/school/fresh'
@@ -52,8 +52,8 @@ const addFresh = async (data: any) => {
       @add="showModal"
     >
       <template #userSex="scope">
-        <el-button v-if="scope.row['user_sex'] == 0">男</el-button>
-        <el-button v-if="scope.row['user_sex'] == 1">女</el-button>
+        <el-button v-if="scope.row['user_sex'] === 0">男</el-button>
+        <el-button v-if="scope.row['user_sex'] === 1">女</el-button>
       </template>
     </content-table>
     <!-- 弹出层/ 添加数据 -->

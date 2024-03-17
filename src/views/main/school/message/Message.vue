@@ -1,21 +1,57 @@
 <script setup lang="ts">
-import {} from 'vue'
+import {onMounted, ref} from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import { tableConfig, tableData } from '@/views/main/school/message/config/tableConfig'
-const test = (value: any) => {
-  console.log(value)
+import {tableConfig} from '@/views/main/school/message/config/tableConfig'
+import ModalForm from "@/components/SecondPackage/modal-form";
+import {useMessageStore} from "@/stores/main/school/message";
+import {storeToRefs} from "pinia";
+import modalConfig from "@/views/main/school/message/config/modalConfig";
+import {AddMessageRequest} from "@/service/school/type";
+
+const modalRef = ref<InstanceType<typeof ModalForm>>()
+
+const store = useMessageStore()
+const {getMessageList, changeCurrent, addMessageInfo:messageAdd} = store
+const {messageList, count} = storeToRefs(store)
+
+// 加载数据
+onMounted(async () => {
+  await getMessageList()
+})
+// 分页加载数据
+const getMessageByPage = async (page: number) => {
+  changeCurrent(page)
+  await getMessageList()
+}
+// 弹出添加框
+const showModal = () => {
+  modalRef.value!.getVisible()
+}
+// 添加数据
+const addMessage = async (data: any) => {
+  // 处理数据
+  const title = data.title
+  const message = data.message
+  const addData = ref<AddMessageRequest>({
+    title: title,
+    message: message
+  })
+  await messageAdd(addData.value)
 }
 </script>
 
 <template>
-  <!-- 咨询管理 -->
+  <!-- 资讯管理 -->
   <div class="Message">
     <content-table
-      :table-data="tableData"
-      :table-config="tableConfig"
-      @page-change="test"
-      :total="100"
+        :table-data="messageList"
+        :table-config="tableConfig"
+        @page-change="getMessageByPage"
+        :total="count"
+        @add="showModal"
     />
+    <!--  弹出框 添加数据-->
+    <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addMessage"></modal-form>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type PropType } from 'vue'
+import {ref, type PropType, watch} from 'vue'
 import type { IFormConfig } from '@/components/base/form/type/type'
 import KlForm from '@/components/base/form'
 
@@ -17,12 +17,20 @@ const props = defineProps({
 })
 
 // 初始化数据
+const formData = ref()
 const formItems = props.formConfig.formItems || []
 const baseFormData: any = {}
 for (const item of formItems) {
   baseFormData[item.field] = props.data[item.field] ?? ''
 }
-const formData = ref(baseFormData)
+formData.value = baseFormData
+
+watch(()=>props.data,(newValue)=>{
+  for (const item of formItems) {
+    formData.value[item.field] = newValue[item.field] ?? ''
+  }
+})
+
 
 // 可视化
 const dialogVisible = ref(false)
@@ -35,7 +43,7 @@ defineExpose({
 // 确定
 const emit = defineEmits(['confirm'])
 const confirm = () => {
-  emit('confirm', formData.value)
+  emit('confirm', {...props.data,...formData.value})
   dialogVisible.value = false
 }
 </script>

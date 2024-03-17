@@ -13,7 +13,7 @@ onMounted(async () => {
 <template>
   <div class="freshData">
     <template v-for="item in freshRateData" :key="item">
-      <el-card shadow="hover" style="width: 155px">
+      <el-card shadow="hover" style="width: 12%">
         <div class="title">{{ item.label }}</div>
         <div class="content">{{ item.num_data }}</div>
       </el-card>
@@ -37,7 +37,12 @@ onMounted(async () => {
   height: 100px;
   text-align: center;
   line-height: 100px;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
+  color: #00a6a7;
+}
+
+::v-deep .el-card__body {
+  padding: 15px;
 }
 </style>

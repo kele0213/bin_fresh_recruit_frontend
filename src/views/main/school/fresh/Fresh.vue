@@ -58,7 +58,6 @@ const deleteFresh = async (value: any) => {
   <!-- 应届生管理 -->
   <div class="fresh">
     <fresh-data />
-    <!-- <div class="data">就业数据</div> -->
     <content-table
       :table-config="tableConfig"
       :table-data="freshList"

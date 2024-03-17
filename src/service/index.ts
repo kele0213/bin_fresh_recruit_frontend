@@ -9,7 +9,7 @@ const httpService = new AxiosWrapper({
       // 配置token
       const token = localCache.getCache('token')
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+        config.headers.Authorization = `${token}`
       }
       return config
     }

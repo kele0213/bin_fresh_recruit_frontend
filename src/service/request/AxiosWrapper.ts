@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance } from 'axios'
 import type { Iconfig, Iinterceptors } from './type'
 import { ElLoading } from 'element-plus'
+import router from '@/router'
 
 const DEFAULT_LOADING = true
 
@@ -41,7 +42,9 @@ class AxiosWrapper {
       (res) => {
         const data = res.data
         this.loading?.close()
-
+        if (data.code === 40100) {
+          router.push('/login')
+        }
         return data
       },
       (err) => {

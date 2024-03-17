@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type {
-  GetFreshListVo,
   GetFreshListRequest,
   AddFreshBatchRequest
 } from '@/service/school/type'
 import { addFreshBatch, listFresh } from '@/service/school/fresh'
-import { useRouter } from 'vue-router'
-import { showBox, showMsg, showNotice } from '@/utils/message'
+import { showMsg} from '@/utils/message'
 
 export const useFreshStore = defineStore('fresh', () => {
   const freshList = ref()

@@ -14,13 +14,13 @@ dictData.value.forEach((item, index) => {
   })
 })
 const searchConfig: IFormConfig = {
-  labelWidth: '150px',
-  labelSize: '20px',
+  labelWidth: '120px',
+  labelSize: '18px',
   styleLayout: {
     padding: '10px 40px'
   },
   itemLayout: {
-    span: 24
+    span: 12
   },
   formItems: [
     {

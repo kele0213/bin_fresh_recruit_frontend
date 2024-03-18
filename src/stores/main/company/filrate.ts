@@ -11,13 +11,13 @@ export const useFilrateStore = defineStore('filrate', () => {
     const pageSize = ref(100)
     const reqData = ref<FreshSendListRequest>({
         current: 1,
-        page_size: 4,
+        page_size: 3,
         send_status: -1,
         job_name: "",
     })
     const reqDataAll = ref<FreshSendListAllRequest>({
         current: 1,
-        page_size: 4,
+        page_size: 3,
         send_status: -1
     })
     // 查询投递记录列表
@@ -68,6 +68,7 @@ export const useFilrateStore = defineStore('filrate', () => {
         sendList,
         count,
         pageSize,
+        reqData,
         getSendList,
         changeSearchData,
         changeCurrent,

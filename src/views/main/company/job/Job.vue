@@ -110,6 +110,7 @@ const searchJob = async (data: any) => {
         @add="showModal"
         @delete="deleteJobById"
         @edit="showUpdateModal"
+        :current-page="reqData.current"
     />
   </div>
   <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addJobOne"></modal-form>

@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import type {AddJobRequest, ListJobRequest} from "@/service/company/type";
-import {addJobInfo, listJobInfo, updateJobInfo} from "@/service/company/jobInfo";
+import type {AddJobRequest, DeleteJpbRequest, ListJobRequest, UpdateJobRequest} from "@/service/company/type";
+import {addJobInfo, deleteJobInfo, listJobInfo, updateJobInfo} from "@/service/company/jobInfo";
 import {showMsg} from "@/utils/message";
 
 export const useJobStore = defineStore('job', () => {
@@ -43,5 +43,25 @@ export const useJobStore = defineStore('job', () => {
             showMsg('添加失败', 'error')
         }
     }
-    return {jobList, reqData, count, pageSize, changeCurrent, changeData, getJobList,addJob}
+    // 删除岗位
+    const deleteJob = async (data: DeleteJpbRequest) => {
+        const res = await deleteJobInfo(data)
+        if (res.code === 0) {
+            showMsg('删除成功', "success")
+            await getJobList()
+        } else {
+            showMsg("删除失败", "error")
+        }
+    }
+    // 编辑岗位
+    const updateJob = async (data: UpdateJobRequest) => {
+        const res = await updateJobInfo(data)
+        if (res.code === 0) {
+            showMsg('修改成功', "success")
+            await getJobList()
+        } else {
+            showMsg("修改失败", "error")
+        }
+    }
+    return {jobList, reqData, count, pageSize, changeCurrent, changeData, getJobList, addJob, deleteJob,updateJob}
 })

@@ -18,7 +18,7 @@ for(const item of dictData.value){
 
 
 const modalConfig: IFormConfig = {
-    title:'添加岗位',
+    title:'修改岗位信息',
     labelWidth: '100px',
     styleLayout: {
         padding: '2px 20px'

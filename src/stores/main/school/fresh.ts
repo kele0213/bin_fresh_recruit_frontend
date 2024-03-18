@@ -23,6 +23,7 @@ export const useFreshStore = defineStore('fresh', () => {
   }
   // 获取fresh列表
   const getFreshList = async () => {
+    await getFreshRateData()
     const res = await listFresh(reqData.value)
     if (res.code === 0) {
       freshList.value = res.data.list
@@ -37,6 +38,7 @@ export const useFreshStore = defineStore('fresh', () => {
       showMsg('添加成功', 'success')
       // 刷新页面
       await getFreshList()
+      await getFreshRateData()
     } else {
       showMsg('添加失败', 'error')
     }
@@ -48,6 +50,7 @@ export const useFreshStore = defineStore('fresh', () => {
     if (res.code === 0) {
       showMsg('删除成功', 'success')
       await getFreshList()
+      await getFreshRateData()
     } else {
       showMsg('删除失败', 'error')
     }

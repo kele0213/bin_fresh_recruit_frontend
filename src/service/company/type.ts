@@ -118,8 +118,15 @@ export interface FilrateVo {
     update_time: string
 }
 
-// 查看应届生投递记录请求参数
+// 查看应届生投递记录请求参数（搜索）
 export interface FreshSendListRequest {
+    current: number
+    page_size: number
+    send_status: number
+    job_name: string
+}
+// 查看应届生投递记录请求参数
+export interface FreshSendListAllRequest {
     current: number
     page_size: number
     send_status: number

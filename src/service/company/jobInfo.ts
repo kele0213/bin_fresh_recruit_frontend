@@ -15,6 +15,7 @@ import type {
   ListJobRequestVo,
   UpdateJobRequest
 } from '@/service/company/type'
+import type {FreshSendListAllRequest} from "@/service/company/type";
 
 /**
  * @description: 新增岗位信息
@@ -67,9 +68,19 @@ export function filrateResume(data: FilrateRequest) {
 }
 
 /**
- * @description: 投递列表
+ * @description: 投递列表（搜索）
  */
 export function freshSendList(data: FreshSendListRequest) {
+  return httpService.post<Idata<FreshSendListVo>>({
+    url: '/com/job/send',
+    data
+  })
+}
+
+/**
+ * @description: 投递列表（所有）
+ */
+export function freshSendAllList(data: FreshSendListAllRequest) {
   return httpService.post<Idata<FreshSendListVo>>({
     url: '/com/job/send',
     data

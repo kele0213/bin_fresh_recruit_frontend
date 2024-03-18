@@ -28,6 +28,10 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  isAdd: {
+    type: Boolean,
+    default: true
+  },
   currentPage: {
     type: Number,
     default: 1
@@ -77,7 +81,7 @@ const pageFresh = () => {
       <!-- 顶部按钮处理 -->
       <template #titleHandler>
         <div class="titleHandler">
-          <el-button type="primary" @click="addFn()" size="large" icon="Plus">新增数据</el-button>
+          <el-button type="primary" @click="addFn()" size="large" icon="Plus" v-if="isAdd">新增数据</el-button>
           <el-button icon="Refresh" circle style="margin-left: 30px" @click="pageFresh"/>
         </div>
       </template>

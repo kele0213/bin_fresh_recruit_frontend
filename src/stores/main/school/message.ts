@@ -23,7 +23,7 @@ export const useMessageStore = defineStore('message', () => {
         reqData.value.current = current
     }
     //修改reqData
-    const changeReqData = (value: string) => {
+    const changeReqData = async (value: string) => {
         reqData.value.search_content = value
     }
     // 获取message列表

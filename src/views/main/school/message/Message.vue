@@ -32,7 +32,7 @@ onMounted(async () => {
 })
 // 分页加载数据
 const getMessageByPage = async (page: number) => {
-  changeCurrent(page)
+  await changeCurrent(page)
   await getMessageList()
 }
 // 弹出添加框
@@ -71,12 +71,12 @@ const updateMessage = async (data: any) => {
 
 // 查询数据
 const searchMessage = async (data: any) => {
-  changeReqData(data.search_content)
+  await changeReqData(data.search_content)
   await getMessageList()
 }
 // 刷新数据
 const pageFresh = async () => {
-  changeReqData('')
+  await changeReqData('')
   await getMessageList()
 }
 // 删除数据

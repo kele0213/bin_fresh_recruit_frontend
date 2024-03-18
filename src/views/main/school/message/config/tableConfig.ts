@@ -2,7 +2,6 @@ import type { ItableConfig } from '@/components/base/kl-table'
 
 export const tableConfig: ItableConfig = {
   isShowIndex: true,
-  isShowSelect: true,
   title: '资讯列表',
   propList: [
     { field: 'title', label: '标题', minWidth: '120', slotName: 'title' },

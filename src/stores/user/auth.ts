@@ -50,9 +50,9 @@ export const useAuthStore = defineStore(
                 // 登录成功逻辑
                 tips = '登录成功'
                 roleData.value = data.role
-                const {id, phone, a_avatar, token} = res.data
+                const {id, phone, a_avatar, token, user_name} = res.data
                 // 保存用户信息
-                userInfo.value = {id, phone, a_avatar}
+                userInfo.value = {id, phone, a_avatar, user_name}
                 // 保存token
                 localCache.setCache('token', token)
 
@@ -110,13 +110,15 @@ export const useAuthStore = defineStore(
             const res = await outLogin(data)
             if (res.code === 0) {
                 router.push('/login')
-            //    清理storage
+                //    清理storage
                 localCache.clearCache()
                 userInfo.value = {}
-            }else {
+            } else {
                 showMsg("退出登录失败", "error")
             }
         }
+
+
         return {
             // state
             userInfo,

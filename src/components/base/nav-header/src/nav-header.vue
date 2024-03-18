@@ -32,21 +32,16 @@ const changeFold = () => {
 
 <style lang="scss" scoped>
 .navHeader {
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   caret-color: rgba(0, 0, 0, 0);
+  justify-content: space-between;
   //   font-size: 30px;
   .left {
     cursor: pointer;
     margin-top: 3px;
-  }
-  .middle {
-    flex: 1;
-    margin-left: 10px;
-  }
-  .right {
-    width: 120px;
   }
 }
 </style>

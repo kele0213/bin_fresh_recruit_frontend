@@ -6,7 +6,7 @@ import {storeToRefs} from "pinia";
 
 const store = useAuthStore()
 const {outLoginReq} = store
-const {roleData} = storeToRefs(store)
+const {roleData,userInfo} = storeToRefs(store)
 
 const forgetPassword = () => {
   // 忘记密码
@@ -26,7 +26,7 @@ const out = async () => {
     <el-dropdown>
       <span class="el-dropdown-link">
         <div class="avatar"></div>
-        <div class="username">洪晓彬</div>
+        <div class="username">{{userInfo.user_name}}</div>
         <el-icon class="el-icon--right">
           <arrow-down/>
         </el-icon>
@@ -64,4 +64,5 @@ const out = async () => {
 .el-dropdown-link:focus {
   outline: none;
 }
+
 </style>

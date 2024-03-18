@@ -14,7 +14,7 @@ import SearchForm from "@/components/SecondPackage/search-form/src/search-form.v
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 const store = useFilrateStore()
 const {getSendList, updateSendStatus, changeSearchData, changeCurrent} = store
-const {sendList, count, pageSize} = storeToRefs(store)
+const {sendList, count, pageSize,reqData} = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -72,6 +72,7 @@ const pageSend = async () => {
         :is-delete="false"
         @edit="showUpdateModal"
         :is-add="false"
+        :current-page="reqData.current"
     >
       <template #sendState="scope">
         <span v-if="scope.row['send_state'] === 0" style="color: #00a6a7">已投递</span>

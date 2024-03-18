@@ -1,59 +1,69 @@
-import type { IFormConfig } from '@/components/base/form/type/type'
+import type {IFormConfig} from '@/components/base/form/type/type'
+
+import {useCommonStore} from "@/stores/common/common";
+import {storeToRefs} from 'pinia'
+
+const commonStore = useCommonStore()
+const { getdict } = commonStore
+const { dictData } = storeToRefs(commonStore)
+
+await getdict(1);
+const dicts = []
+for(const item of dictData.value){
+    dicts.push({
+        label:item,
+        value:item
+    })
+}
+
+
 const modalConfig: IFormConfig = {
-  labelWidth: '100px',
-  styleLayout: {
-    padding: '10px 20px'
-  },
-  itemLayout: {
-    span: 24
-  },
-  formItems: [
-    {
-      field: 'id', //v-model绑定字段
-      type: 'input',
-      label: 'ID',
-      placeholder: '请输入ID'
+    labelWidth: '100px',
+    styleLayout: {
+        padding: '2px 20px'
     },
-    {
-      field: 'text', //v-model绑定字段
-      type: 'textarea',
-      label: '文本',
-      placeholder: '请输入文本'
+    itemLayout: {
+        span: 24
     },
-    {
-      field: 'name',
-      type: 'input',
-      label: '用户名',
-      placeholder: '请输入用户名'
-    },
-    {
-      field: 'cellphone',
-      type: 'input',
-      label: '电话号码',
-      placeholder: '请输入电话号码'
-    },
-    {
-      field: 'enable',
-      type: 'select',
-      label: '状态',
-      placeholder: '请选择状态',
-      options: [
-        { label: '正常', value: '1' },
-        { label: '异常', value: '0' }
-      ]
-    },
-    {
-      field: 'createAt',
-      type: 'dataPicker',
-      label: '创建时间',
-      others: {
-        startPlaceholder: '开始日期',
-        endPlaceholder: '结束日期',
-        type: 'daterange'
-      }
-      // placeholder: '请输入用户名'
-    }
-  ]
+    formItems: [
+        {
+            field: 'job_name', //v-model绑定字段
+            type: 'input',
+            label: '岗位名称',
+            placeholder: '请输入岗位名称'
+        },
+        {
+            field: 'job_type',
+            type: 'select',
+            label: '岗位类别',
+            placeholder: '请选择岗位列表',
+            options: dicts
+        },
+        {
+            field: 'job_intro',
+            type: 'textarea',
+            label: '岗位介绍',
+            placeholder: '请输入岗位介绍',
+            others: {
+                rows: 6
+            }
+        },
+        {
+            field: 'job_require',
+            type: 'textarea',
+            label: '岗位职责',
+            placeholder: '请输入岗位职责',
+            others: {
+                rows: 6
+            }
+        },
+        {
+            field: 'job_pay',
+            type: 'input',
+            label: '岗位薪资',
+            placeholder: '请输入岗位薪资'
+        },
+    ]
 }
 
 export default modalConfig

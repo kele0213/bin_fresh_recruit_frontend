@@ -63,5 +63,5 @@ export const useJobStore = defineStore('job', () => {
             showMsg("修改失败", "error")
         }
     }
-    return {jobList, reqData, count, pageSize, changeCurrent, changeData, getJobList, addJob, deleteJob,updateJob}
+    return {jobList, reqData, count, pageSize, changeCurrent, changeData, getJobList, addJob, deleteJob, updateJob}
 })

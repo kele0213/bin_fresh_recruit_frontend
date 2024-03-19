@@ -118,6 +118,11 @@ export const useAuthStore = defineStore(
             }
         }
 
+        // 修改头像链接
+        const changeAvatarUrl = async (url: string) => {
+            userInfo.value['a_avatar'] = url
+        }
+
 
         return {
             // state
@@ -131,7 +136,8 @@ export const useAuthStore = defineStore(
             getCode,
             userChangePwd,
             registerRouter,
-            outLoginReq
+            outLoginReq,
+            changeAvatarUrl
         }
     },
     {

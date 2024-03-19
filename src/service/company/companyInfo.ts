@@ -3,7 +3,7 @@
  */
 import httpService from '..'
 import type { Idata } from '../type'
-import {
+import type {
   InfoCompanyRequest,
   InfoCompanyVo,
   UpdateCompanyRequest,
@@ -26,6 +26,6 @@ export function updateCompanyInfo(data: UpdateCompanyRequest) {
 export function getCompanyInfo(data: InfoCompanyRequest) {
   return httpService.get<Idata<InfoCompanyVo>>({
     url: '/com/info/one',
-    query: data
+    params: data
   })
 }

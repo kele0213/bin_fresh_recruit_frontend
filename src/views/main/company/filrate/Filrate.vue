@@ -56,6 +56,10 @@ const pageSend = async () => {
   })
   await getSendList()
 }
+// 打开链接
+const openLink = (url:string)=>{
+  window.open(url)
+}
 </script>
 
 <template>
@@ -83,7 +87,7 @@ const pageSend = async () => {
         <span v-if="scope.row['send_state'] === 5" style="color: green">应聘成功</span>
       </template>
       <template #userNameLink="scope">
-        <a :href="scope.row['user_name_link']">{{ scope.row['user_name_link'] }}</a>
+        <el-link type="success" @click="openLink(scope.row['user_name_link'])">点击下载简历</el-link>
       </template>
     </content-table>
     <modal-form :form-config="updateConfig" ref="modalRef" :data="updateData" @confirm="updateJobById"></modal-form>

@@ -4,7 +4,9 @@ import {} from 'vue'
 
 <template>
   <!-- 企业信息 -->
-  <div class="info">info</div>
+  <div class="info">
+  <!--  头像-->
+  </div>
 </template>
 
 <style lang="scss" scoped></style>

@@ -25,7 +25,7 @@ const out = async () => {
   <div class="userInfo">
     <el-dropdown>
       <span class="el-dropdown-link">
-        <div class="avatar"></div>
+        <div class="avatar"><el-avatar :size="40" :src="userInfo.a_avatar" fit="contain"></el-avatar></div>
         <div class="username">{{userInfo.user_name}}</div>
         <el-icon class="el-icon--right">
           <arrow-down/>
@@ -48,10 +48,6 @@ const out = async () => {
 
 .el-dropdown-link {
   .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: blue;
     margin-right: 10px;
   }
 

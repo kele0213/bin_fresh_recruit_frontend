@@ -4,6 +4,10 @@ import type {InfoCompanyRequest} from "@/service/company/type";
 import {getCompanyInfo, updateCompanyInfo} from "@/service/company/companyInfo";
 import type {UpdateCompanyRequest} from "@/service/company/type";
 import {showMsg} from "@/utils/message";
+import {useAuthStore} from "@/stores/user/auth";
+
+const store = useAuthStore()
+const {changeUserName} = store
 
 export const useInfoStore = defineStore('info', () => {
     const companyInfo = ref()
@@ -15,6 +19,7 @@ export const useInfoStore = defineStore('info', () => {
         const res = await getCompanyInfo(reqData.value)
         if (res.code === 0) {
             companyInfo.value = res.data
+            await changeUserName(res.data['com_name'])
         }
     }
     // 改变搜索
@@ -35,5 +40,5 @@ export const useInfoStore = defineStore('info', () => {
     const changeAvatar = async (url: string) => {
         companyInfo.value['a_avatar'] = url
     }
-    return {companyInfo, reqData, changeComId, getCompany, updateCom,changeAvatar}
+    return {companyInfo, reqData, changeComId, getCompany, updateCom, changeAvatar}
 })

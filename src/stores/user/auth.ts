@@ -123,6 +123,11 @@ export const useAuthStore = defineStore(
             userInfo.value['a_avatar'] = url
         }
 
+        // 修改用户名
+        const changeUserName = async (name: string) => {
+            userInfo.value['user_name'] = name
+        }
+
 
         return {
             // state
@@ -130,6 +135,7 @@ export const useAuthStore = defineStore(
             menus, //菜单
             role,
             roleData,
+            changeUserName,
             // action
             userRegister,
             userLogin,

@@ -4,13 +4,17 @@ let firstRoute: any = null
 
 export { firstRoute }
 
-export async function getRoleRoutes(role: 'school' | 'company') {
+export type roleType = 'school' | 'company' | 'fresh'
+
+export async function getRoleRoutes(role: roleType) {
   const routes: RouteRecordRaw[] = []
   let modules = null
   if (role === 'school') {
     modules = import.meta.glob('../router/main/school/**/*.ts')
   } else if (role === 'company') {
     modules = import.meta.glob('../router/main/company/**/*.ts')
+  } else if (role === 'fresh') {
+    modules = import.meta.glob('../router/fresh/**/*.ts')
   }
   // console.log(modules)
   for (const path in modules) {
@@ -20,7 +24,7 @@ export async function getRoleRoutes(role: 'school' | 'company') {
   return routes
 }
 
-export function getMenu(role: 'school' | 'company') {
+export function getMenu(role: roleType) {
   const menu = []
   if (role === 'school') {
     menu.push({ label: '应届生管理', url: '/main/school/fresh', icon: 'Management' })
@@ -31,6 +35,9 @@ export function getMenu(role: 'school' | 'company') {
     menu.push({ label: '在线咨询', url: '/main/company/consult', icon: 'ChatDotRound' })
     menu.push({ label: '企业信息', url: '/main/company/info', icon: 'InfoFilled' })
   }
-  firstRoute = menu[0].url
+  firstRoute = menu[0]?.url
+  if (role === 'fresh') {
+    firstRoute = '/fresh/main'
+  }
   return menu
 }

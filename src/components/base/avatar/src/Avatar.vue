@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import {defineProps} from "vue";
-import type {UploadRequestOptions} from "element-plus";
-import {useAuthStore} from "@/stores/user/auth";
-import {storeToRefs} from "pinia";
-import {useInfoStore} from "@/stores/main/company/info";
-import {useCommonStore} from "@/stores/common/common";
-import {showBox} from "@/utils/message";
+import { defineProps } from 'vue'
+import type { UploadRequestOptions } from 'element-plus'
+import { useAuthStore } from '@/stores/user/auth'
+import { storeToRefs } from 'pinia'
+import { useInfoStore } from '@/stores/main/company/info'
+import { useCommonStore } from '@/stores/common/common'
+import { showBox } from '@/utils/message'
 
 const store = useAuthStore()
-const {changeAvatarUrl} = store
-const {roleData, userInfo} = storeToRefs(store)
+const { changeAvatarUrl } = store
+const { roleData, userInfo } = storeToRefs(store)
 
 const comStore = useInfoStore()
-const {changeAvatar} = comStore
+const { changeAvatar } = comStore
 
 const commonStore = useCommonStore()
-const {upload} = commonStore
-const {uploadVo} = storeToRefs(commonStore)
-
+const { upload } = commonStore
+const { uploadVo } = storeToRefs(commonStore)
 
 // 上传头像
 const uploadFile = async (file) => {
@@ -26,37 +25,41 @@ const uploadFile = async (file) => {
   const fileType = file.type
   // 最大1MB
   if (fileSize / 1024 / 1204 > 1) {
-    showBox("上传失败", "图片最大仅支持1MB，请重新上传")
+    showBox('上传失败', '图片最大仅支持1MB，请重新上传')
     return
   } else if (!(fileType == 'image/png' || fileType == 'image/jpg' || fileType == 'image/jpeg')) {
-    showBox("上传失败", "图片仅支持JPG或PNG格式")
+    showBox('上传失败', '图片仅支持JPG或PNG格式')
     return
   }
-  const formData = new FormData();
-  formData.append("file", file.raw);
-  formData.append("role", roleData.value)
+  const formData = new FormData()
+  formData.append('file', file.raw)
+  formData.append('role', roleData.value)
   // 上传
   await upload(formData)
   // 重新赋值
   await changeAvatarUrl(uploadVo)
   await changeAvatar(uploadVo)
 }
-
 </script>
 
 <template>
   <div class="avatarMain">
     <el-upload
-        action
-        class="avatar-uploader"
-        :show-file-list="false"
-        :auto-upload="false"
-        :on-change="uploadFile"
+      action
+      class="avatar-uploader"
+      :show-file-list="false"
+      :auto-upload="false"
+      :on-change="uploadFile"
     >
       <div class="imgContain">
-        <img v-if="userInfo.a_avatar" :src="userInfo.a_avatar" class="img" title="点击上传头像，最大允许1MB"/>
+        <img
+          v-if="userInfo.a_avatar"
+          :src="userInfo.a_avatar"
+          class="img"
+          title="点击上传头像，最大允许1MB"
+        />
         <el-icon v-else class="avatar-uploader-icon">
-          <Plus/>
+          <Plus />
         </el-icon>
       </div>
     </el-upload>

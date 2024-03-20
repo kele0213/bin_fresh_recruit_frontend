@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref, type PropType, watch, defineProps} from 'vue'
-import type {IFormConfig} from '@/components/base/form/type/type'
+import { ref, type PropType, watch, defineProps } from 'vue'
+import type { IFormConfig } from '@/components/base/form/type/type'
 import KlForm from '@/components/base/form'
 
 const props = defineProps({
@@ -25,12 +25,14 @@ for (const item of formItems) {
 }
 formData.value = baseFormData
 
-watch(() => props.data, (newValue) => {
-  for (const item of formItems) {
-    formData.value[item.field] = newValue[item.field] ?? ''
+watch(
+  () => props.data,
+  (newValue) => {
+    for (const item of formItems) {
+      formData.value[item.field] = newValue[item.field] ?? ''
+    }
   }
-})
-
+)
 
 // 可视化
 const dialogVisible = ref(false)
@@ -43,7 +45,7 @@ defineExpose({
 // 确定
 const emit = defineEmits(['confirm'])
 const confirm = () => {
-  emit('confirm', {...props.data, ...formData.value})
+  emit('confirm', { ...props.data, ...formData.value })
   dialogVisible.value = false
 }
 </script>
@@ -51,7 +53,7 @@ const confirm = () => {
 <template>
   <div class="modal-form">
     <el-dialog v-model="dialogVisible" :title="formConfig.title ?? '编辑数据'" width="600">
-      <kl-form v-bind="formConfig" v-model="formData"/>
+      <kl-form v-bind="formConfig" v-model="formData" />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>

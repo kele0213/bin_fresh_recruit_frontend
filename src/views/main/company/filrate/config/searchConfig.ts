@@ -1,11 +1,11 @@
 import type { IFormConfig } from '@/components/base/form/type/type'
-import {useCommonStore} from "@/stores/common/common";
-import {storeToRefs} from "pinia";
+import { useCommonStore } from '@/stores/common/common'
+import { storeToRefs } from 'pinia'
 const commonStore = useCommonStore()
-const {getdict} = commonStore
-const {dictData} = storeToRefs(commonStore)
+const { getdict } = commonStore
+const { dictData } = storeToRefs(commonStore)
 
-await getdict(5);
+await getdict(5)
 const dicts = []
 dictData.value.forEach((item, index) => {
   dicts.push({

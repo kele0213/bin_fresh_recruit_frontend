@@ -15,7 +15,7 @@ import type {
   ListJobRequestVo,
   UpdateJobRequest
 } from '@/service/company/type'
-import type {FreshSendListAllRequest} from "@/service/company/type";
+import type { FreshSendListAllRequest } from '@/service/company/type'
 
 /**
  * @description: 新增岗位信息

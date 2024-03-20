@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {PropType} from 'vue'
+import type { PropType } from 'vue'
 import klTable from '@/components/base/kl-table/src/kl-table.vue'
-import type {ItableConfig} from '@/components/base/kl-table'
+import type { ItableConfig } from '@/components/base/kl-table'
 
 const props = defineProps({
   tableConfig: {
@@ -71,18 +71,20 @@ const pageFresh = () => {
 <template>
   <div class="table">
     <klTable
-        :table-data="tableData"
-        v-bind="tableConfig"
-        @pageChange="pageChange"
-        :total="total"
-        :page-size="pageSize"
-        :current-page="currentPage"
+      :table-data="tableData"
+      v-bind="tableConfig"
+      @pageChange="pageChange"
+      :total="total"
+      :page-size="pageSize"
+      :current-page="currentPage"
     >
       <!-- 顶部按钮处理 -->
       <template #titleHandler>
         <div class="titleHandler">
-          <el-button type="primary" @click="addFn()" size="large" icon="Plus" v-if="isAdd">新增数据</el-button>
-          <el-button icon="Refresh" circle style="margin-left: 30px" @click="pageFresh"/>
+          <el-button type="primary" @click="addFn()" size="large" icon="Plus" v-if="isAdd"
+            >新增数据</el-button
+          >
+          <el-button icon="Refresh" circle style="margin-left: 30px" @click="pageFresh" />
         </div>
       </template>
       <!-- 时间处理 -->
@@ -95,10 +97,11 @@ const pageFresh = () => {
       <!-- 按钮处理 -->
       <template #handler="scoped">
         <el-button type="warning" @click="editFn(scoped.row)" icon="Edit" v-if="isEdit"
-        >编辑
-        </el-button
+          >编辑
+        </el-button>
+        <el-button type="danger" @click="deleteFn(scoped.row)" icon="Delete" v-if="isDelete"
+          >删除</el-button
         >
-        <el-button type="danger" @click="deleteFn(scoped.row)" icon="Delete" v-if="isDelete">删除</el-button>
       </template>
       <template v-for="item in allSlots" :key="item.field" #[item.slotName!]="scoped">
         <slot :name="item.slotName" :row="scoped.row"></slot>

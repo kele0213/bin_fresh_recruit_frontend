@@ -5,6 +5,12 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/fresh',
+      name: 'fresh',
+      component: () => import('@/views/fresh/Fresh.vue')
+      // children: [fresh, message]
+    },
+    {
       path: '/',
       redirect: '/main'
     },
@@ -19,6 +25,7 @@ const router = createRouter({
       component: () => import('@/views/main/Main.vue')
       // children: [fresh, message]
     },
+
     {
       path: '/:pathmatch(.*)',
       name: 'not-found',
@@ -28,7 +35,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.path === '/main') {
+  if (to.path === '/main' || to.path === '/fresh') {
     return firstRoute
   }
 })

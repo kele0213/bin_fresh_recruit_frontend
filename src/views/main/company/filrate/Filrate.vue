@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {onMounted} from 'vue'
+import { onMounted } from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import {tableConfig} from "@/views/main/company/filrate/config/tableConfig";
-import updateConfig from "@/views/main/company/filrate/config/updateConfig";
-import searchConfig from "@/views/main/company/filrate/config/searchConfig";
+import { tableConfig } from '@/views/main/company/filrate/config/tableConfig'
+import updateConfig from '@/views/main/company/filrate/config/updateConfig'
+import searchConfig from '@/views/main/company/filrate/config/searchConfig'
 
-import {useFilrateStore} from "@/stores/main/company/filrate";
-import {storeToRefs} from "pinia";
-import {ref} from "vue";
-import ModalForm from "@/components/SecondPackage/modal-form";
-import SearchForm from "@/components/SecondPackage/search-form/src/search-form.vue";
+import { useFilrateStore } from '@/stores/main/company/filrate'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import ModalForm from '@/components/SecondPackage/modal-form'
+import SearchForm from '@/components/SecondPackage/search-form/src/search-form.vue'
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 const store = useFilrateStore()
-const {getSendList, updateSendStatus, changeSearchData, changeCurrent} = store
-const {sendList, count, pageSize,reqData} = storeToRefs(store)
+const { getSendList, updateSendStatus, changeSearchData, changeCurrent } = store
+const { sendList, count, pageSize, reqData } = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -24,14 +24,14 @@ onMounted(async () => {
 const updateData = ref()
 const showUpdateModal = (value: any) => {
   modalRef.value!.getVisible()
-  updateData.value = {...value}
+  updateData.value = { ...value }
 }
 // 更新状态
 const updateJobById = async (data: any) => {
   const updateReq = ref({
     user_id: data.user_id,
     job_id: data.job_id,
-    send_state: data.send_state,
+    send_state: data.send_state
   })
   await updateSendStatus(updateReq.value)
 }
@@ -52,7 +52,7 @@ const getJobListByPage = async (page: Number) => {
 const pageSend = async () => {
   await changeSearchData({
     send_status: -1,
-    job_name: ""
+    job_name: ''
   })
   await getSendList()
 }
@@ -63,16 +63,16 @@ const pageSend = async () => {
   <div class="filrate">
     <search-form :form-config="searchConfig" @search="searchSend"></search-form>
     <content-table
-        :table-config="tableConfig"
-        :table-data="sendList"
-        :total="count"
-        @page-change="getJobListByPage"
-        :page-size="pageSize"
-        @fresh="pageSend"
-        :is-delete="false"
-        @edit="showUpdateModal"
-        :is-add="false"
-        :current-page="reqData.current"
+      :table-config="tableConfig"
+      :table-data="sendList"
+      :total="count"
+      @page-change="getJobListByPage"
+      :page-size="pageSize"
+      @fresh="pageSend"
+      :is-delete="false"
+      @edit="showUpdateModal"
+      :is-add="false"
+      :current-page="reqData.current"
     >
       <template #sendState="scope">
         <span v-if="scope.row['send_state'] === 0" style="color: #00a6a7">已投递</span>
@@ -83,10 +83,17 @@ const pageSend = async () => {
         <span v-if="scope.row['send_state'] === 5" style="color: green">应聘成功</span>
       </template>
       <template #userNameLink="scope">
-        <el-link type="success" target="_blank" :href="scope.row['user_name_link']" >点击下载简历</el-link>
+        <el-link type="success" target="_blank" :href="scope.row['user_name_link']"
+          >点击下载简历</el-link
+        >
       </template>
     </content-table>
-    <modal-form :form-config="updateConfig" ref="modalRef" :data="updateData" @confirm="updateJobById"></modal-form>
+    <modal-form
+      :form-config="updateConfig"
+      ref="modalRef"
+      :data="updateData"
+      @confirm="updateJobById"
+    ></modal-form>
   </div>
 </template>
 

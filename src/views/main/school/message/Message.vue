@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import {tableConfig} from '@/views/main/school/message/config/tableConfig'
+import { tableConfig } from '@/views/main/school/message/config/tableConfig'
 import ModalForm from '@/components/SecondPackage/modal-form'
-import {useMessageStore} from '@/stores/main/school/message'
-import {storeToRefs} from 'pinia'
+import { useMessageStore } from '@/stores/main/school/message'
+import { storeToRefs } from 'pinia'
 import modalConfig from '@/views/main/school/message/config/modalConfig'
-import updateConfig from "@/views/main/school/message/config/updateConfig";
-import type {AddMessageRequest} from '@/service/school/type'
+import updateConfig from '@/views/main/school/message/config/updateConfig'
+import type { AddMessageRequest } from '@/service/school/type'
 import searchConfig from './config/searchConfig'
 import SearchForm from '@/components/SecondPackage/search-form'
 import {showBox, showMsg} from "@/utils/message";
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 const updateRef = ref<InstanceType<typeof ModalForm>>()
-
 
 const store = useMessageStore()
 const {
@@ -25,7 +24,7 @@ const {
   deleteMessageData,
   updateMessageData
 } = store
-const {messageList, count, pageSize, reqData} = storeToRefs(store)
+const { messageList, count, pageSize, reqData } = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -44,7 +43,7 @@ const showModal = () => {
 const updateData = ref()
 const showUpdateModal = (value: any) => {
   updateRef.value!.getVisible()
-  updateData.value = {...value}
+  updateData.value = { ...value }
 }
 // 添加数据
 const addMessage = async (data: any) => {
@@ -111,20 +110,25 @@ const deleteMessage = async (value: any) => {
   <div class="Message">
     <search-form :form-config="searchConfig" @search="searchMessage"></search-form>
     <content-table
-        :table-data="messageList"
-        :table-config="tableConfig"
-        @page-change="getMessageByPage"
-        :total="count"
-        @add="showModal"
-        :page-size="pageSize"
-        @fresh="pageFresh"
-        :current-page="reqData.current"
-        @delete="deleteMessage"
-        @edit="showUpdateModal"
+      :table-data="messageList"
+      :table-config="tableConfig"
+      @page-change="getMessageByPage"
+      :total="count"
+      @add="showModal"
+      :page-size="pageSize"
+      @fresh="pageFresh"
+      :current-page="reqData.current"
+      @delete="deleteMessage"
+      @edit="showUpdateModal"
     />
     <!--  弹出框 添加数据 编辑数据-->
     <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addMessage"></modal-form>
-    <modal-form :form-config="updateConfig" :data="updateData" ref="updateRef" @confirm="updateMessage"></modal-form>
+    <modal-form
+      :form-config="updateConfig"
+      :data="updateData"
+      ref="updateRef"
+      @confirm="updateMessage"
+    ></modal-form>
   </div>
 </template>
 

@@ -8,5 +8,8 @@ body,
 #app {
   height: 100%;
   width: 100%;
-  // caret-color: rgba(0, 0, 0, 0);
+}
+
+.no-caret {
+  caret-color: rgba(0, 0, 0, 0);
 }

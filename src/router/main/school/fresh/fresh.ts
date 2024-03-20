@@ -1,7 +1,7 @@
 const fresh = () => import('@/views/main/school/fresh/Fresh.vue')
 export default {
   path: '/main/school/fresh',
-  name: 'fresh',
+  name: 'freshStudent',
   component: fresh,
   children: []
 }

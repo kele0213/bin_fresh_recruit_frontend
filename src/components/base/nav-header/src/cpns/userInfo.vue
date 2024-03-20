@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import {} from 'vue'
 import router from '@/router'
-import {useAuthStore} from "@/stores/user/auth";
-import {storeToRefs} from "pinia";
+import { useAuthStore } from '@/stores/user/auth'
+import { storeToRefs } from 'pinia'
 
 const store = useAuthStore()
-const {outLoginReq} = store
-const {roleData, userInfo} = storeToRefs(store)
+const { outLoginReq } = store
+const { roleData, userInfo } = storeToRefs(store)
 
 const forgetPassword = () => {
   // 忘记密码
   router.push('/login')
 }
-` `
+;` `
 // 退出登录
 const out = async () => {
   await outLoginReq({
@@ -26,11 +26,11 @@ const out = async () => {
     <el-dropdown>
       <span class="el-dropdown-link">
         <div class="imgContain">
-           <img :src="userInfo.a_avatar" class="img" title="点击上传头像"/>
+          <img :src="userInfo?.a_avatar" class="img" title="点击上传头像" />
         </div>
-        <div class="username">{{ userInfo.user_name }}</div>
+        <div class="username">{{ userInfo?.user_name }}</div>
         <el-icon class="el-icon--right">
-          <arrow-down/>
+          <arrow-down />
         </el-icon>
       </span>
       <template #dropdown>
@@ -49,7 +49,6 @@ const out = async () => {
 }
 
 .el-dropdown-link {
-
   cursor: pointer;
   color: var(--el-color-primary);
   display: flex;
@@ -59,7 +58,7 @@ const out = async () => {
 .el-dropdown-link:focus {
   outline: none;
 }
-.imgContain{
+.imgContain {
   margin-right: 10px;
   display: flex;
   justify-content: center;
@@ -71,9 +70,8 @@ const out = async () => {
   color: #7e7e7e;
   overflow: hidden;
 }
-.img{
+.img {
   width: auto;
   height: 100%;
 }
-
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 打开链接
-const openLink = (url:string)=>{
+const openLink = (url: string) => {
   window.open(url)
 }
 </script>
@@ -8,11 +8,21 @@ const openLink = (url:string)=>{
 <template>
   <div class="btm">
     <div class="left">
-      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank">官网首页</el-link>
-      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank">关于我们</el-link>
-      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank">服务项目</el-link>
-      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank">客户案例</el-link>
-      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank">联系我们</el-link>
+      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank"
+        >官网首页</el-link
+      >
+      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank"
+        >关于我们</el-link
+      >
+      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank"
+        >服务项目</el-link
+      >
+      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank"
+        >客户案例</el-link
+      >
+      <el-link :underline="false" href="https://github.com/1binbin1/" target="_blank"
+        >联系我们</el-link
+      >
     </div>
     <div class="right">Copyright ©2024. 1binbin1毕业设计版权所有</div>
   </div>

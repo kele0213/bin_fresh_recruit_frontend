@@ -16,7 +16,7 @@ const toUrl = (url: any) => {
 <template>
   <div class="navMenu">
     <div class="header">
-      <img class="logo" src="@/assets/image/logo.jpg" />
+      <img class="logo" src="@/assets/image/logo.png" />
       <div class="title" :class="{ hidden: props.isCollapse }">校 招 通</div>
     </div>
     <div class="menu">

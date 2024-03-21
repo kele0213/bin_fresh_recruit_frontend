@@ -13,7 +13,7 @@
         <div class="right">8-10k</div>
       </div>
       <div class="center">
-        <p>岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位岗位</p>
+        <p>岗位岗位岗位岗岗位岗位岗</p>
       </div>
       <div class="bottom">
         <div class="bottom-left">
@@ -92,7 +92,7 @@
   border-radius: 10px;
   padding: 10px;
   width: 60%;
-  height: 90%;
+  min-height: 50px;
 }
 p{
   font-size: 16px;

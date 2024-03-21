@@ -13,15 +13,18 @@ const {outLoginReq} = store
 const {roleData, userInfo} = storeToRefs(store)
 
 const forgetPassword = () => {
-      // 忘记密码
-      router.push('/login')
-    }
-;` `
+  // 忘记密码
+  router.push('/login')
+}
 // 退出登录
 const out = async () => {
   await outLoginReq({
     role: roleData.value
   })
+}
+// 回到主页
+const toHome = () => {
+  router.push("/fresh/main")
 }
 </script>
 
@@ -35,7 +38,7 @@ const out = async () => {
         @select="handleSelect"
         :router="true"
     >
-      <div class="logo">
+      <div class="logo" @click="toHome">
         <img src="@/assets/image/logo.png"/>
         <div class="name">校招通</div>
       </div>
@@ -57,9 +60,10 @@ const out = async () => {
 </template>
 
 <style lang="scss" scoped>
-.header{
+.header {
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
+
 .el-menu {
   display: flex;
   // justify-content: center;
@@ -69,6 +73,7 @@ const out = async () => {
 }
 
 .logo {
+  cursor: pointer;
   height: 68px;
   width: 120px;
   display: flex;
@@ -99,6 +104,15 @@ img {
 
 .span, :deep(.el-menu--horizontal > .el-menu-item, .el-menu--horizontal > .el-sub-menu .el-sub-menu__title ) {
   font-size: 18px;
+}
+
+:deep(.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover){
+  background-color: rgb(0, 133, 134);
+  color: #fff;
+}
+
+:deep(.el-menu--horizontal>.el-menu-item.is-active){
+  color:#fff !important;
 }
 
 .flex-grow {

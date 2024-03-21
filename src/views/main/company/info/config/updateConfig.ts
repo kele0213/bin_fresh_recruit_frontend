@@ -25,6 +25,7 @@ for (const item of dictData.value) {
   })
 }
 
+
 const modalConfig: IFormConfig = {
   title: '修改企业信息',
   labelWidth: '100px',

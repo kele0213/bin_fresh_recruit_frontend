@@ -77,6 +77,7 @@ export interface JobPurposeInfo {
 
 // 添加岗位意向
 export interface AddJobPurposeRequest {
+    num: number
     city: string
     job_type: string
     job_pay: string
@@ -140,24 +141,24 @@ export interface FreshSendStatusPage {
     list: FreshSendStatusListVo[]
 }
 
-export interface GetJobListRequest{
-    search_content: string
-    job_type: string
-    com_type: string
-    com_num: string
-    com_address: string
+export interface GetJobListRequest {
+    search_content?: string
+    job_type?: string
+    com_type?: string
+    com_num?: string
+    com_address?: string
     page_size: number
     current: number
 }
 
-export interface GetJobListVo{
+export interface GetJobListVo {
     list: GetJobInfoOneVo[]
     total: number
     current: number
     page_size: number
 }
 
-export interface GetRecommendListRequest{
-    limit:number
-    is_recommend:number
+export interface GetRecommendListRequest {
+    limit: number
+    is_recommend: number
 }

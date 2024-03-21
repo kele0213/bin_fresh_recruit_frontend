@@ -42,7 +42,7 @@ export function getJobListBySearchHttp(data: GetJobListRequest) {
 
 // 推荐岗位列表
 export function getJobListByHttp(data: GetRecommendListRequest) {
-    return httpService.get<Idata<GetJobListVo>>({
+    return httpService.get<Idata<GetJobInfoOneVo[]>>({
         url: '/fresh/job/recommend',
         params: data
     })

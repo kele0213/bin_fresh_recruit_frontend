@@ -64,4 +64,11 @@ const input = ref()
 :deep(.el-input-group--prepend .el-input-group__prepend .el-select .el-select__wrapper) {
   background-color: #fff;
 }
+:deep(.el-select__placeholder){
+  font-size: 16px;
+  font-weight: normal;
+}
+:deep(.el-input-group--append>.el-input__wrapper){
+  font-size: 16px;
+}
 </style>

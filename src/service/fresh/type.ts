@@ -16,6 +16,9 @@ export interface GetJobInfoOneVo {
     job_require: string
     job_pay: string
     create_time: string
+    a_avatar: string
+    com_name: string
+    com_address: string
 }
 
 // 修改个人信息

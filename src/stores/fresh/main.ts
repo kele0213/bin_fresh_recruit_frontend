@@ -1,14 +1,21 @@
 // 主页
 import {defineStore} from 'pinia'
 import {ref} from 'vue'
-import {GetRecommendListRequest} from "@/service/fresh/type";
+import type {GetRecommendListRequest} from "@/service/fresh/type";
+import {getJobListByHttp} from "@/service/fresh/request";
 
 export const useMainStore = defineStore('freshMain', () => {
     const recommendResult = ref()
     const reqData = ref<GetRecommendListRequest>({
-        limit: 10,
-        is_recommend: 1 // 0-否 1-是
+        limit: Math.floor(Math.random() * (24 - 18 + 1)) + 18,
+        is_recommend: 0 // 0-否 1-是
     })
     // 推荐的岗位
-    return {recommendResult}
+    const getRecommendList = async () => {
+        const res = await getJobListByHttp(reqData.value);
+        if (res.code === 0) {
+            recommendResult.value = res.data
+        }
+    }
+    return {recommendResult,getRecommendList}
 })

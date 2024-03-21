@@ -1,28 +1,48 @@
 <script setup lang="ts">
+import {storeToRefs} from "pinia";
+import {useMainStore} from "@/stores/fresh/main";
+import {defineEmits, onMounted} from "vue";
 
+const mainStore = useMainStore()
+const {getRecommendList} = mainStore
+const {recommendResult} = storeToRefs(mainStore)
+
+onMounted(async () => {
+  await getRecommendList()
+})
+
+const emit = defineEmits(["getJobInfo","getComInfo"])
+const clickFn = (data: any) => {
+  emit("getJobInfo", data)
+}
+const getFn = (data:any) => {
+  emit("getComInfo", data)
+}
 </script>
 
 <template>
   <div class="jobContent">
-    <div class="card" v-for="item in 12" :key="item">
-      <div class="top">
+    <div class="card" v-for="item in recommendResult" :key="item">
+      <div class="top" @click="clickFn(item)">
         <div class="left">
-          <div class="name">Java开发工程师</div>
-          <el-icon class="chat"><ChatDotSquare/></el-icon>
+          <div class="name">{{ item.job_name }}</div>
+          <el-icon class="chat">
+            <ChatDotSquare/>
+          </el-icon>
         </div>
-        <div class="right">8-10k</div>
+        <div class="right">{{ item.job_pay }}</div>
       </div>
-      <div class="center">
-        <p>岗位岗位岗位岗岗位岗位岗</p>
+      <div class="center" @click="clickFn(item)">
+        <p>{{ item.job_require }}</p>
       </div>
-      <div class="bottom">
+      <div class="bottom"  @click="getFn(item.com_id)">
         <div class="bottom-left">
           <div class="avatar">
-            <img src="https://1binbin1.oss-cn-guangzhou.aliyuncs.com/1binbin1/public_photo/slideshow.png" alt="">
+            <img :src="item.a_avatar" alt="暂无图片">
           </div>
-          <div class="comName">XXXXXXXXXX公司</div>
+          <div class="comName">{{ item.com_name }}</div>
         </div>
-        <div class="bottom-right">广东·天河区广东·天河区广东·天河区</div>
+        <div class="bottom-right">{{ item.com_address }}</div>
       </div>
     </div>
   </div>
@@ -52,7 +72,7 @@
 }
 
 // 内容区
-.card{
+.card {
   cursor: pointer;
   background-color: #fff;
   display: flex;
@@ -62,31 +82,37 @@
   height: auto;
   border-radius: 12px;
 }
-.card:hover{
+
+.card:hover {
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);;
 }
+
 // 顶部
-.top{
+.top {
   display: flex;
   justify-content: space-between;
   margin: 12px 12px 0 15px;
 }
-.top .right{
+
+.top .right {
   color: red;
   font-size: 18px;
 }
-.top .left{
+
+.top .left {
   display: flex;
   justify-content: center;
   font-size: 20px;
 }
-.chat{
+
+.chat {
   font-size: 25px;
   margin-left: 8px;
   cursor: pointer;
 }
+
 // 中部
-.center{
+.center {
   margin: 12px 15px;
   background-color: rgb(248, 252, 251);
   border-radius: 10px;
@@ -94,7 +120,8 @@
   width: 60%;
   min-height: 50px;
 }
-p{
+
+p {
   font-size: 16px;
   -webkit-box-orient: vertical;
   display: -webkit-box;
@@ -104,8 +131,9 @@ p{
   text-overflow: ellipsis;
   line-height: 24px;
 }
+
 // 底部
-.bottom{
+.bottom {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -113,32 +141,37 @@ p{
   background-color: rgb(248, 252, 251);
   border-radius: 0 0 12px 12px;
 }
-.bottom .bottom-left,.comName,{
+
+.bottom .bottom-left, .comName, {
   display: flex;
   justify-content: center;
   align-content: center;
 }
-.avatar{
+
+.avatar {
   margin: 5px 5px 5px 15px;
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  border: 1px solid #6e6e6e;
+  border: 1px solid #eaeaea;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-content: center;
 }
-.avatar img{
+
+.avatar img {
   width: 100%;
 }
-.comName,.bottom-right{
+
+.comName, .bottom-right {
   font-size: 14px;
   height: 50px;
   line-height: 52px;
   text-align: center;
 }
-.bottom-right{
+
+.bottom-right {
   margin-right: 12px;
   width: 140px;
   overflow: hidden;

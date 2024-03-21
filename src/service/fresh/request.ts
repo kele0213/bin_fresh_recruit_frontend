@@ -16,7 +16,7 @@ import type {
 import httpService from '..'
 import type {Idata} from '../type'
 import type {GetFreshUserInfoRequest, ResumeInfo} from "@/service/fresh/type";
-import {
+import type {
     FreshSendStatusPage,
     GetJobListRequest,
     GetJobListVo,

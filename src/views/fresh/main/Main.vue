@@ -12,7 +12,6 @@ const {searchContent} = storeToRefs(jobStore)
 
 const commonStore = useCommonStore()
 const {getdict} = commonStore
-const {dictData} = storeToRefs(commonStore)
 
 const fn = (content, jobType) => {
   saveSearchContent({
@@ -40,6 +39,14 @@ const clickJobType = (data: any) => {
   console.log(searchContent)
 }
 
+// 跳转岗位详情
+const getJobInfo = (data)=>{
+
+}
+// 跳转企业详情
+const getComInfo = (data)=>{
+
+}
 </script>
 
 <template>
@@ -67,7 +74,7 @@ const clickJobType = (data: any) => {
       <div class="recommend">推荐岗位</div>
       <div class="line"></div>
     </div>
-    <JobCard class="jobCard"/>
+    <JobCard class="jobCard" @getJobInfo="getJobInfo" @getComInfo="getComInfo"/>
   </div>
 </template>
 
@@ -171,6 +178,6 @@ const clickJobType = (data: any) => {
   width: 100%;
   height: 4px;
   background-color: #00a6a7;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 </style>

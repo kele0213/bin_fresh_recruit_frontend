@@ -5,19 +5,30 @@ import Bottom from '@/components/base/bottom/Bottom.vue'
 
 <template>
   <div class="app">
-    <RouterView />
-  </div>
-  <div class="bottom">
-    <Bottom></Bottom>
+    <div class="view">
+      <RouterView />
+    </div>
+    <div class="bottom">
+      <Bottom></Bottom>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .app {
-  height: 95%;
+  display: flex;
+  flex-direction: column;
+  //min-height: 100%;
+  height: 100%;
+  .view {
+    flex:1
+  }
 }
 .bottom {
-  height: 5%;
+  //height: 3%;
   width: 100%;
+  min-height: 35px;
+  //position: relative;
+  bottom: 0;
 }
 </style>

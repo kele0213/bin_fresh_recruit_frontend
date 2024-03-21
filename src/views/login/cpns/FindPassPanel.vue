@@ -43,6 +43,8 @@ const getCode = async () => {
         btndisabled.value = false
       }
     }, 1000)
+  }else {
+    tips.value = '发送验证码失败，请联系管理员'
   }
 }
 // 2. 获取找回密码逻辑

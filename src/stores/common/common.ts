@@ -10,6 +10,7 @@ export const useCommonStore = defineStore('common', () => {
     if (res.code === 0) {
       dictData.value = res.data
     }
+    return res.data
   }
 
   // 上传头像

@@ -3,7 +3,9 @@ import {} from 'vue'
 </script>
 
 <template>
-  <div class="search">search</div>
+  <div class="search">
+    高级搜索
+  </div>
 </template>
 
 <style lang="scss" scoped></style>

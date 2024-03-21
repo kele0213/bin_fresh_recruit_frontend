@@ -31,7 +31,7 @@ const openLink = (url: string) => {
 <style lang="scss" scoped>
 .btm {
   background-color: #fff;
-  box-shadow: 0 0 5px 5px rgb(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px 2px rgb(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;

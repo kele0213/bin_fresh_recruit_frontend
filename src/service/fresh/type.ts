@@ -145,11 +145,11 @@ export interface FreshSendStatusPage {
 }
 
 export interface GetJobListRequest {
-    search_content?: string
-    job_type?: string
-    com_type?: string
-    com_num?: string
-    com_address?: string
+    search_content: string
+    job_type: string
+    com_type: string
+    com_num: string
+    com_address: string
     page_size: number
     current: number
 }

@@ -1,28 +1,48 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, onMounted} from "vue";
+import {defineEmits, defineProps, onMounted} from "vue";
 
-const mainStore = useMainStore()
-const {getRecommendList} = mainStore
-const {recommendResult} = storeToRefs(mainStore)
-
-onMounted(async () => {
-  await getRecommendList()
+defineProps({
+  jobList: {
+    type:[],
+  },
+  pageSize: {
+    type: Number,
+    default: 10
+  },
+  total: {
+    type: Number,
+    required: true
+  },
+  currentPage: {
+    type: Number,
+    default: 1
+  },
+  isPage:{
+    type:Boolean,
+    default:false
+  }
 })
 
-const emit = defineEmits(["getJobInfo","getComInfo"])
+
+
+const emit = defineEmits(["getJobInfo", "getComInfo","pageChange"])
 const clickFn = (data: any) => {
   emit("getJobInfo", data)
 }
-const getFn = (data:any) => {
+const getFn = (data: any) => {
   emit("getComInfo", data)
 }
+const pageChange = (value: number) => {
+  emit('pageChange', value)
+}
+
 </script>
 
 <template>
   <div class="jobContent">
-    <div class="card" v-for="item in recommendResult" :key="item">
+    <div class="card" v-for="item in jobList" :key="item">
       <div class="top" @click="clickFn(item)">
         <div class="left">
           <div class="name">{{ item.job_name }}</div>
@@ -35,7 +55,7 @@ const getFn = (data:any) => {
       <div class="center" @click="clickFn(item)">
         <p>{{ item.job_require }}</p>
       </div>
-      <div class="bottom"  @click="getFn(item.com_id)">
+      <div class="bottom" @click="getFn(item.com_id)">
         <div class="bottom-left">
           <div class="avatar">
             <img :src="item.a_avatar" alt="暂无图片">
@@ -45,6 +65,18 @@ const getFn = (data:any) => {
         <div class="bottom-right">{{ item.com_address }}</div>
       </div>
     </div>
+  </div>
+  <div class="footer">
+    <!-- 后面用来放分页器 -->
+    <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChange"
+        :current-page="currentPage"
+        v-if="isPage"
+    />
   </div>
 </template>
 

@@ -5,20 +5,31 @@ import {useCommonStore} from "@/stores/common/common";
 import {storeToRefs} from "pinia";
 import {ref} from 'vue'
 import {useJobStore} from "@/stores/fresh/job";
+import {useMainStore} from "@/stores/fresh/main";
+import {onMounted} from "vue";
 
 const jobStore = useJobStore()
-const {saveSearchContent} = jobStore
+const {saveSearchContent,searchJob} = jobStore
 const {searchContent} = storeToRefs(jobStore)
+
+const mainStore = useMainStore()
+const {getRecommendList} = mainStore
+const {recommendResult} = storeToRefs(mainStore)
 
 const commonStore = useCommonStore()
 const {getdict} = commonStore
 
-const fn = (content, jobType) => {
-  saveSearchContent({
+onMounted(async () => {
+  await getRecommendList()
+})
+
+
+const fn = async (content, jobType) => {
+  await saveSearchContent({
     search_content: content,
     job_type: jobType
   })
-  console.log(searchContent)
+  await searchJob()
 }
 
 const getDictFn = async (num: number, array) => {
@@ -36,7 +47,6 @@ const clickJobType = (data: any) => {
   saveSearchContent({
     job_type: data
   })
-  console.log(searchContent)
 }
 
 // 跳转岗位详情
@@ -74,7 +84,7 @@ const getComInfo = (data)=>{
       <div class="recommend">推荐岗位</div>
       <div class="line"></div>
     </div>
-    <JobCard class="jobCard" @getJobInfo="getJobInfo" @getComInfo="getComInfo"/>
+    <JobCard class="jobCard" @getJobInfo="getJobInfo" @getComInfo="getComInfo" :jobList="recommendResult"/>
   </div>
 </template>
 

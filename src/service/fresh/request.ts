@@ -26,9 +26,9 @@ import type {
 
 // 查询岗位信息-单个
 export function getJobInfoOneHttp(data: GetJobInfoOneRequest) {
-    return httpService.post<Idata<GetJobInfoOneVo>>({
+    return httpService.get<Idata<GetJobInfoOneVo>>({
         url: '/com/job/one',
-        data
+        params: data
     })
 }
 

@@ -3,7 +3,11 @@ import {defineStore} from 'pinia'
 import {ref} from 'vue'
 import type {GetJobListRequest} from "@/service/fresh/type";
 import router from "@/router";
-import {getJobListBySearchHttp} from "@/service/fresh/request";
+import {getJobInfoOneHttp, getJobListBySearchHttp} from "@/service/fresh/request";
+import type {GetJobInfoOneRequest} from "@/service/fresh/type";
+import localCache from "@/utils/localCache";
+import type {InfoCompanyRequest} from "@/service/company/type";
+import {getCompanyInfo} from "@/service/company/companyInfo";
 
 export const useJobStore = defineStore('freshJob', () => {
     // 岗位搜索
@@ -13,7 +17,7 @@ export const useJobStore = defineStore('freshJob', () => {
     const searchContent = ref<GetJobListRequest>({
         com_address: "", com_num: "", com_type: "", job_type: "", search_content: "",
         current: 1,
-        page_size: 12
+        page_size: 24
     })
 
     // 搜索岗位
@@ -22,7 +26,7 @@ export const useJobStore = defineStore('freshJob', () => {
         if (res.code === 0) {
             jobSearchResult.value = res.data.list
             count.value = res.data.total
-            pageSize.value=res.data.page_size
+            pageSize.value = res.data.page_size
         }
     }
 
@@ -47,5 +51,53 @@ export const useJobStore = defineStore('freshJob', () => {
     const changeCurrent = (current: number) => {
         searchContent.value.current = current
     }
-    return {searchContent, jobSearchResult,count,pageSize, searchJob, saveSearchContent, saveSearch,changeCurrent}
+
+    // 岗位信息
+    const jobInfoResult = ref()
+
+    const changeJobId = (data: string) => {
+        localCache.setCache("job_id", data)
+    }
+    const jobInfo = async () => {
+        const request = ref<GetJobInfoOneRequest>({
+            job_id: localCache.getCache("job_id")
+        })
+        const res = await getJobInfoOneHttp(request.value);
+        if (res.code === 0) {
+            jobInfoResult.value = res.data
+        }
+    }
+
+
+    const companyInfo = ref()
+    const getCompany = async () => {
+        const request = ref<InfoCompanyRequest>({
+            com_id: localCache.getCache("com_id")
+        })
+        const res = await getCompanyInfo(request.value)
+        if (res.code === 0) {
+            companyInfo.value = res.data
+        }
+    }
+    // 改变搜索
+    const changeComId = (data: any) => {
+        localCache.setCache("com_id", data)
+    }
+
+    return {
+        searchContent,
+        jobSearchResult,
+        count,
+        pageSize,
+        jobInfoResult,
+        companyInfo,
+        searchJob,
+        saveSearchContent,
+        saveSearch,
+        changeCurrent,
+        changeJobId,
+        jobInfo,
+        changeComId,
+        getCompany
+    }
 })

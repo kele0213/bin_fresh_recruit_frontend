@@ -2,10 +2,17 @@
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
 import {defineEmits, defineProps, onMounted} from "vue";
+import router from "@/router";
+import {useJobStore} from "@/stores/fresh/job";
+import {useInfoStore} from "@/stores/main/company/info";
+
+const jobStore = useJobStore()
+const {saveSearchContent, saveSearch, searchJob, changeCurrent, changeJobId, jobInfo, changeComId} = jobStore
+const {count, pageSize, jobInfoResult} = storeToRefs(jobStore)
 
 defineProps({
   jobList: {
-    type:[],
+    type: [],
   },
   pageSize: {
     type: Number,
@@ -19,20 +26,21 @@ defineProps({
     type: Number,
     default: 1
   },
-  isPage:{
-    type:Boolean,
-    default:false
+  isPage: {
+    type: Boolean,
+    default: false
   }
 })
 
 
-
-const emit = defineEmits(["getJobInfo", "getComInfo","pageChange"])
+const emit = defineEmits(["pageChange"])
 const clickFn = (data: any) => {
-  emit("getJobInfo", data)
+  router.push("/fresh/jobInfo")
+  changeJobId(data.job_id)
+  changeComId(data.com_id)
 }
 const getFn = (data: any) => {
-  emit("getComInfo", data)
+  router.push("/fresh/companyJob")
 }
 const pageChange = (value: number) => {
   emit('pageChange', value)

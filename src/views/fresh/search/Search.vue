@@ -4,10 +4,11 @@ import ComplexSearch from '@/components/SecondPackage/fresh/complex-search/src/c
 import {useJobStore} from "@/stores/fresh/job";
 import JobCard from "@/components/fresh/job-card/src/JobCard.vue";
 import {storeToRefs} from "pinia";
+import router from "@/router";
 
 const jobStore = useJobStore()
-const {saveSearchContent, saveSearch, searchJob, changeCurrent} = jobStore
-const {searchContent, jobSearchResult, count, pageSize} = storeToRefs(jobStore)
+const {saveSearchContent, saveSearch, searchJob, changeCurrent,changeJobId,jobInfo} = jobStore
+const {searchContent, jobSearchResult, count, pageSize,jobInfoResult} = storeToRefs(jobStore)
 
 onMounted(async () => {
   await searchJob()
@@ -16,14 +17,7 @@ onMounted(async () => {
 const searchJobList = async () => {
   await searchJob()
 }
-// 跳转岗位详情
-const getJobInfo = (data) => {
 
-}
-// 跳转企业详情
-const getComInfo = (data) => {
-
-}
 // 分页加载数据
 const getJobListByPage = async (page: Number) => {
   changeCurrent(page)
@@ -36,8 +30,6 @@ const getJobListByPage = async (page: Number) => {
     <ComplexSearch @search="searchJobList"></ComplexSearch>
     <JobCard
         class="jobCard"
-        @getJobInfo="getJobInfo"
-        @getComInfo="getComInfo"
         :jobList="jobSearchResult"
         :total="count"
         :page-size="pageSize"

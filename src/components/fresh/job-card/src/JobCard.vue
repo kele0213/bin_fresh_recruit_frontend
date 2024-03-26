@@ -1,28 +1,56 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, onMounted} from "vue";
+import {defineEmits, defineProps, onMounted} from "vue";
+import router from "@/router";
+import {useJobStore} from "@/stores/fresh/job";
+import {useInfoStore} from "@/stores/main/company/info";
 
-const mainStore = useMainStore()
-const {getRecommendList} = mainStore
-const {recommendResult} = storeToRefs(mainStore)
+const jobStore = useJobStore()
+const {saveSearchContent, saveSearch, searchJob, changeCurrent, changeJobId, jobInfo, changeComId} = jobStore
+const {count, pageSize, jobInfoResult} = storeToRefs(jobStore)
 
-onMounted(async () => {
-  await getRecommendList()
+defineProps({
+  jobList: {
+    type: [],
+  },
+  pageSize: {
+    type: Number,
+    default: 10
+  },
+  total: {
+    type: Number,
+    required: true
+  },
+  currentPage: {
+    type: Number,
+    default: 1
+  },
+  isPage: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const emit = defineEmits(["getJobInfo","getComInfo"])
+
+const emit = defineEmits(["pageChange"])
 const clickFn = (data: any) => {
-  emit("getJobInfo", data)
+  router.push("/fresh/jobInfo")
+  changeJobId(data.job_id)
+  changeComId(data.com_id)
 }
-const getFn = (data:any) => {
-  emit("getComInfo", data)
+const getFn = (data: any) => {
+  router.push("/fresh/companyJob")
 }
+const pageChange = (value: number) => {
+  emit('pageChange', value)
+}
+
 </script>
 
 <template>
   <div class="jobContent">
-    <div class="card" v-for="item in recommendResult" :key="item">
+    <div class="card" v-for="item in jobList" :key="item">
       <div class="top" @click="clickFn(item)">
         <div class="left">
           <div class="name">{{ item.job_name }}</div>
@@ -35,7 +63,7 @@ const getFn = (data:any) => {
       <div class="center" @click="clickFn(item)">
         <p>{{ item.job_require }}</p>
       </div>
-      <div class="bottom"  @click="getFn(item.com_id)">
+      <div class="bottom" @click="getFn(item.com_id)">
         <div class="bottom-left">
           <div class="avatar">
             <img :src="item.a_avatar" alt="暂无图片">
@@ -45,6 +73,18 @@ const getFn = (data:any) => {
         <div class="bottom-right">{{ item.com_address }}</div>
       </div>
     </div>
+  </div>
+  <div class="footer">
+    <!-- 后面用来放分页器 -->
+    <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChange"
+        :current-page="currentPage"
+        v-if="isPage"
+    />
   </div>
 </template>
 

@@ -33,7 +33,7 @@ const input = ref()
         class="input-with-select"
     >
       <template #prepend>
-        <el-select v-model="value" placeholder="岗位类别" style="width: 160px;height: 100%">
+        <el-select v-model="value" placeholder="岗位类别" style="width: 160px;height: 100%" clearable>
             <el-option v-for="item in dictData" :key="item" :label="item" :value="item"/>
         </el-select>
       </template>

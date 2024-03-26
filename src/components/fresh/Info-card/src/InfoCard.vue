@@ -28,6 +28,10 @@ defineProps({
   comType: {
     type: String,
     default: "暂未提供公司类型"
+  },
+  jobType: {
+    type: String,
+    default: "暂无岗位类别"
   }
 })
 
@@ -45,11 +49,15 @@ const clickFn = (data: any) => {
       <span class="right" v-if="isJob">{{ pay }}</span>
     </div>
     <div class="center">
-      <el-icon v-if="isJob">
+      <el-icon v-if="isJob" style="margin-right: 5px">
         <Location/>
       </el-icon>
       <span v-if="isJob">{{ address }}</span>
-      <span v-if="!isJob">{{ comNum + '·' + comType }}</span>
+      <el-icon v-if="isJob" style="margin-left: 20px;margin-right:5px">
+        <Tickets/>
+      </el-icon>
+      <span v-if="isJob">{{ jobType }}</span>
+      <span v-if="!isJob">{{ comNum + ' · ' + comType }}</span>
     </div>
     <div class="bottom">
       <span class="left">

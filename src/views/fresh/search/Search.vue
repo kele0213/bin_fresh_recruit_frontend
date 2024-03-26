@@ -4,8 +4,6 @@ import ComplexSearch from '@/components/SecondPackage/fresh/complex-search/src/c
 import {useJobStore} from "@/stores/fresh/job";
 import JobCard from "@/components/fresh/job-card/src/JobCard.vue";
 import {storeToRefs} from "pinia";
-import router from "@/router";
-
 const jobStore = useJobStore()
 const {saveSearchContent, saveSearch, searchJob, changeCurrent,changeJobId,jobInfo} = jobStore
 const {searchContent, jobSearchResult, count, pageSize,jobInfoResult} = storeToRefs(jobStore)

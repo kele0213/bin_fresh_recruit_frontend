@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, defineProps, onMounted} from "vue";
+import {defineEmits, defineProps, onMounted, ref} from "vue";
+import {useResumeStore} from "@/stores/fresh/resume";
+
+const resumeStore = useResumeStore()
+const {uploadResume} = resumeStore
 
 defineProps({
   // 是否为岗位详情
@@ -39,7 +43,10 @@ const emit = defineEmits(["getJobInfo"])
 const clickFn = (data: any) => {
   emit("getJobInfo", data)
 }
-
+// 上传简历
+const uploadResumeInfo = async (file) => {
+  await uploadResume(file)
+}
 </script>
 
 <template>
@@ -65,8 +72,15 @@ const clickFn = (data: any) => {
         <el-button style="margin-left: 20px" v-if="isJob">立即投递</el-button>
       </span>
       <span class="right">
+        <el-upload
+            action
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="uploadResumeInfo"
+        >
         <el-icon><Document/></el-icon>
         <span style="margin-left: 6px">新增简历附件</span>
+        </el-upload>
       </span>
     </div>
   </div>

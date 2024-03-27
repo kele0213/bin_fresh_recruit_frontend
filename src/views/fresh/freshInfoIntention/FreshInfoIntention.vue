@@ -3,10 +3,11 @@ import {} from 'vue'
 import FreshInfo from "@/components/fresh/fresh-info";
 import ResumeList from "@/components/fresh/resume-list";
 import router from "@/router";
-const openFirst = ()=>{
+
+const openFirst = () => {
   router.push('/fresh/freshInfoResult')
 }
-const openSecond = ()=>{
+const openSecond = () => {
   router.push('/fresh/freshInfoIntention')
 }
 </script>
@@ -22,6 +23,9 @@ const openSecond = ()=>{
           <div class="bottom-top">
             <div class="top-left" @click="openFirst">投递进度</div>
             <div class="top-right" @click="openSecond">意向岗位</div>
+          </div>
+          <div class="contain">
+
           </div>
         </div>
       </div>
@@ -51,11 +55,13 @@ const openSecond = ()=>{
 .result-left {
   width: 70%;
 }
-.result-right{
+
+.result-right {
   width: 29%;
   height: 100%;
 }
-.result-left-bottom{
+
+.result-left-bottom {
   width: 100%;
   min-height: 380px;
   margin-top: 15px;
@@ -63,31 +69,35 @@ const openSecond = ()=>{
   border-radius: 8px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
-.bottom-top{
+
+.bottom-top {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 60px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  height: 55px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.top-left,.top-right{
+
+.top-left, .top-right {
   width: 50%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   letter-spacing: 6px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bolder;
 }
-.top-left{
-  border-radius: 8px 0 0 0 ;
+
+.top-left {
+  border-radius: 8px 0 0 0;
 }
-.top-right{
+
+.top-right {
   cursor: pointer;
   background-color: #00a6a7;
   color: #fff !important;
-  border-radius: 0 8px 0 0 ;
+  border-radius: 0 8px 0 0;
 }
 </style>

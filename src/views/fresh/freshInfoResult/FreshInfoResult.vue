@@ -3,6 +3,7 @@ import {} from 'vue'
 import FreshInfo from "@/components/fresh/fresh-info";
 import ResumeList from "@/components/fresh/resume-list";
 import router from "@/router";
+import ResumeState from "@/components/fresh/resume-state";
 const openFirst = ()=>{
   router.push('/fresh/freshInfoResult')
 }
@@ -22,6 +23,9 @@ const openSecond = ()=>{
           <div class="bottom-top">
             <div class="top-left" @click="openFirst">投递进度</div>
             <div class="top-right" @click="openSecond">意向岗位</div>
+          </div>
+          <div class="contain" style="width: 100%">
+            <ResumeState></ResumeState>
           </div>
         </div>
       </div>
@@ -68,7 +72,7 @@ const openSecond = ()=>{
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  height: 55px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .top-left,.top-right{
@@ -78,7 +82,7 @@ const openSecond = ()=>{
   justify-content: center;
   align-items: center;
   letter-spacing: 6px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bolder;
 }
 .top-left{

@@ -131,7 +131,7 @@ const deleteResume = async (data: string) => {
 .line {
   height: 1px;
   width: 100%;
-  background-color: #2c3e50;
+  background-color: rgba(0,0,0,0.1);
   margin-top: 20px;
 }
 

@@ -71,6 +71,7 @@ declare module 'vue' {
     NavHeader: typeof import('./src/components/base/nav-header/src/nav-header.vue')['default']
     NavMenu: typeof import('./src/components/base/nav-menu/src/NavMenu.vue')['default']
     ResumeList: typeof import('./src/components/fresh/resume-list/src/resume-list.vue')['default']
+    ResumeState: typeof import('./src/components/fresh/resume-state/src/resume-state.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/fresh/search/src/Search.vue')['default']

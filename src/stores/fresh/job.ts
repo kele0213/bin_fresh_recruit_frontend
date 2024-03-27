@@ -50,7 +50,7 @@ export const useJobStore = defineStore('freshJob', () => {
     }
 
     // 修改分页数据
-    const changeCurrent = (current: number) => {
+    const changeCurrent = async (current: number) => {
         searchContent.value.current = current
     }
 

@@ -60,7 +60,7 @@ export function updateUserInfoHttp(data: UpdateUserInfoRequest) {
 // 查询个人信息
 export function getUserInfoHttp(data: GetFreshUserInfoRequest) {
     return httpService.get<Idata<FreshUserInfo>>({
-        utl: '/fresh/info/one',
+        url: '/fresh/info/one',
         params: data
     })
 }

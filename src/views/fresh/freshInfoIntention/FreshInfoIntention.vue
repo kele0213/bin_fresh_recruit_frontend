@@ -3,6 +3,7 @@ import {} from 'vue'
 import FreshInfo from "@/components/fresh/fresh-info";
 import ResumeList from "@/components/fresh/resume-list";
 import router from "@/router";
+import JobPurpose from "@/components/fresh/job-purpose/src/job-purpose.vue";
 
 const openFirst = () => {
   router.push('/fresh/freshInfoResult')
@@ -25,7 +26,7 @@ const openSecond = () => {
             <div class="top-right" @click="openSecond">意向岗位</div>
           </div>
           <div class="contain">
-
+            <JobPurpose></JobPurpose>
           </div>
         </div>
       </div>
@@ -91,11 +92,11 @@ const openSecond = () => {
 }
 
 .top-left {
+  cursor: pointer;
   border-radius: 8px 0 0 0;
 }
 
 .top-right {
-  cursor: pointer;
   background-color: #00a6a7;
   color: #fff !important;
   border-radius: 0 8px 0 0;

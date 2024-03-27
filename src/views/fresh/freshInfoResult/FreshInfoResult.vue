@@ -86,12 +86,12 @@ const openSecond = ()=>{
   font-weight: bolder;
 }
 .top-left{
-  cursor: pointer;
   background-color: #00a6a7;
   color: #fff !important;
   border-radius: 8px 0 0 0 ;
 }
 .top-right{
+  cursor: pointer;
   border-radius: 0 8px 0 0 ;
 }
 </style>

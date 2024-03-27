@@ -66,6 +66,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     InfoCard: typeof import('./src/components/fresh/Info-card/src/InfoCard.vue')['default']
     JobCard: typeof import('./src/components/fresh/job-card/src/JobCard.vue')['default']
+    JobPurpose: typeof import('./src/components/fresh/job-purpose/src/job-purpose.vue')['default']
     KlTable: typeof import('./src/components/base/kl-table/src/kl-table.vue')['default']
     ModalForm: typeof import('./src/components/SecondPackage/modal-form/src/modal-form.vue')['default']
     NavHeader: typeof import('./src/components/base/nav-header/src/nav-header.vue')['default']

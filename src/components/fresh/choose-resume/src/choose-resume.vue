@@ -5,8 +5,8 @@ import {storeToRefs} from "pinia";
 import router from '@/router'
 
 const resumeStore = useResumeStore()
-const {changeVisible, getResumeList} = resumeStore
-const {visible, resumeList} = storeToRefs(resumeStore)
+const {changeVisible, getResumeList, getResumeInfo} = resumeStore
+const {visible, resumeList, resumeInfo} = storeToRefs(resumeStore)
 
 onMounted(async () => {
   await getResumeList()
@@ -19,7 +19,7 @@ const innerDialog = ref(false)
 
 const emit = defineEmits(["confirm"])
 const closeBoxChild = () => {
-  emit("confirm")
+  emit("confirm", resumeData)
   changeVisible(false)
   innerDialog.value = false
 }
@@ -31,6 +31,11 @@ const closeBox = () => {
 // 前往附件管理
 const gotoResume = () => {
   router.push('/fresh/freshInfoIntention')
+}
+
+const openInner = async () => {
+  innerDialog.value = true;
+  await getResumeInfo(resumeData.value)
 }
 </script>
 
@@ -53,11 +58,11 @@ const gotoResume = () => {
       </div>
       <div class="out-button">
         <button @click="closeBox">取消</button>
-        <button @click="innerDialog = true" style="margin-left: 20px">确认投递</button>
+        <button @click="openInner" style="margin-left: 20px">确认投递</button>
       </div>
       <el-dialog v-model="innerDialog" append-to-body width="400" title="是否确认投递">
         <div class="inner-dialog">
-          <div class="div">选择的简历是：{{ resumeData }}</div>
+          <div class="div">选择的简历是：{{ resumeInfo?.resume_name }}</div>
           <div class="inner-button">
             <button @click="innerDialog = false">取消</button>
             <button @click="closeBoxChild" style="margin-left: 20px">确认</button>
@@ -83,9 +88,11 @@ const gotoResume = () => {
   width: 100%;
   font-size: 18px;
 }
-:deep(.el-radio.el-radio--large){
+
+:deep(.el-radio.el-radio--large) {
   width: 100%;
 }
+
 .group {
   margin-top: 10px;
 }

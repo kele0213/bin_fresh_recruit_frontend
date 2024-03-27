@@ -4,11 +4,20 @@ import {useMainStore} from "@/stores/fresh/main";
 import {defineEmits, defineProps, onMounted, ref} from "vue";
 import {useResumeStore} from "@/stores/fresh/resume";
 import ChooseResume from "@/components/fresh/choose-resume";
+import {showBox} from "@/utils/message";
+import {useJobStore} from "@/stores/fresh/job";
+import {useSendStore} from "@/stores/fresh/send";
 
 const resumeStore = useResumeStore()
-const {uploadResume,changeVisible} = resumeStore
+const {uploadResume, changeVisible} = resumeStore
 const {visible} = storeToRefs(resumeStore)
 const resumeModal = ref<InstanceType<typeof ChooseResume>>()
+
+const jobStore = useJobStore()
+const {companyInfo,jobInfoResult} = storeToRefs(jobStore)
+
+const sendStore = useSendStore()
+const {sendResume} = sendStore
 defineProps({
   // 是否为岗位详情
   isJob: {
@@ -51,8 +60,21 @@ const uploadResumeInfo = async (file) => {
 }
 
 // 投递弹窗
-const showResumeModal = ()=>{
+const showResumeModal = () => {
   changeVisible(true)
+}
+// 确认投递
+const confirmSend = async (data:any) => {
+  const resume_id = data.value
+  if (resume_id === 1){
+    showBox("投递失败","请选择一个简历")
+    return
+  }
+  await sendResume({
+    com_id: companyInfo.value.com_id,
+    job_id: jobInfoResult.value.job_id,
+    resume_id: resume_id
+  })
 }
 
 </script>
@@ -79,7 +101,7 @@ const showResumeModal = ()=>{
         <el-button>立即沟通</el-button>
         <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal">立即投递</el-button>
       </span>
-      <ChooseResume ></ChooseResume>
+      <ChooseResume @confirm="confirmSend"></ChooseResume>
       <span class="right">
         <el-upload
             action

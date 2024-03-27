@@ -1,12 +1,12 @@
 // 简历
 import {defineStore} from 'pinia'
 import {showBox, showMsg} from "@/utils/message";
-import {addResumeHttp} from "@/service/fresh/request";
+import {addResumeHttp, getResumeListHttp} from "@/service/fresh/request";
 import {ref} from "vue";
 
 export const useResumeStore = defineStore('freshResume', () => {
-    const visible = ref(false)
-    const changeVisible = (data:Boolean) => {
+    const visible = ref(true)
+    const changeVisible = (data: Boolean) => {
         visible.value = data
     }
     // 上传简历附件
@@ -38,5 +38,14 @@ export const useResumeStore = defineStore('freshResume', () => {
             showMsg("上传失败，请重试", "error")
         }
     }
-    return {uploadResume, visible, changeVisible}
+
+    // 简历附件列表
+    const resumeList = ref()
+    const getResumeList = async () => {
+        const res = await getResumeListHttp()
+        if (res.code === 0) {
+            resumeList.value = res.data
+        }
+    }
+    return {uploadResume, visible, resumeList, getResumeList, changeVisible}
 })

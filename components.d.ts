@@ -10,6 +10,7 @@ declare module 'vue' {
     Avatar: typeof import('./src/components/base/avatar/src/Avatar.vue')['default']
     Bottom: typeof import('./src/components/base/bottom/Bottom.vue')['default']
     Bread: typeof import('./src/components/base/nav-header/src/cpns/bread.vue')['default']
+    ChooseResume: typeof import('./src/components/fresh/choose-resume/src/choose-resume.vue')['default']
     ComInfo: typeof import('./src/components/fresh/com-info/src/ComInfo.vue')['default']
     ComplexSearch: typeof import('./src/components/SecondPackage/fresh/complex-search/src/complex-search.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']

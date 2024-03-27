@@ -3,10 +3,12 @@ import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
 import {defineEmits, defineProps, onMounted, ref} from "vue";
 import {useResumeStore} from "@/stores/fresh/resume";
+import ChooseResume from "@/components/fresh/choose-resume";
 
 const resumeStore = useResumeStore()
-const {uploadResume} = resumeStore
-
+const {uploadResume,changeVisible} = resumeStore
+const {visible} = storeToRefs(resumeStore)
+const resumeModal = ref<InstanceType<typeof ChooseResume>>()
 defineProps({
   // 是否为岗位详情
   isJob: {
@@ -47,6 +49,12 @@ const clickFn = (data: any) => {
 const uploadResumeInfo = async (file) => {
   await uploadResume(file)
 }
+
+// 投递弹窗
+const showResumeModal = ()=>{
+  changeVisible(true)
+}
+
 </script>
 
 <template>
@@ -69,8 +77,9 @@ const uploadResumeInfo = async (file) => {
     <div class="bottom">
       <span class="left">
         <el-button>立即沟通</el-button>
-        <el-button style="margin-left: 20px" v-if="isJob">立即投递</el-button>
+        <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal">立即投递</el-button>
       </span>
+      <ChooseResume ></ChooseResume>
       <span class="right">
         <el-upload
             action
@@ -169,4 +178,5 @@ const uploadResumeInfo = async (file) => {
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
+
 </style>

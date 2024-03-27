@@ -2,8 +2,13 @@
 import {defineStore} from 'pinia'
 import {showBox, showMsg} from "@/utils/message";
 import {addResumeHttp} from "@/service/fresh/request";
+import {ref} from "vue";
 
 export const useResumeStore = defineStore('freshResume', () => {
+    const visible = ref(false)
+    const changeVisible = (data:Boolean) => {
+        visible.value = data
+    }
     // 上传简历附件
     const uploadResume = async (file: any) => {
         // 检查
@@ -26,12 +31,12 @@ export const useResumeStore = defineStore('freshResume', () => {
         formData.append('service_type', '0')
         const res = await addResumeHttp(formData)
         if (res.code === 0) {
-            showMsg("上传成功","success")
+            showMsg("上传成功", "success")
         } else if (res.code === 4022) {
-            showBox("上传失败","附件简历数量最大仅支持5份")
+            showBox("上传失败", "附件简历数量最大仅支持5份")
         } else {
             showMsg("上传失败，请重试", "error")
         }
     }
-    return {uploadResume}
+    return {uploadResume, visible, changeVisible}
 })

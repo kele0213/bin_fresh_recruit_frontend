@@ -109,7 +109,7 @@ const confirmSend = async (data:any) => {
             :auto-upload="false"
             :on-change="uploadResumeInfo"
         >
-        <el-icon><Document/></el-icon>
+       <el-icon><DocumentAdd /></el-icon>
         <span style="margin-left: 6px">新增简历附件</span>
         </el-upload>
       </span>

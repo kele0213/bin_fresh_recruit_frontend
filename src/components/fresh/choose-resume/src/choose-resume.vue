@@ -37,6 +37,9 @@ const openInner = async () => {
   innerDialog.value = true;
   await getResumeInfo(resumeData.value)
 }
+const openResume = (data:string) => {
+  window.open(data,"_blank")
+}
 </script>
 
 <template>
@@ -52,7 +55,7 @@ const openInner = async () => {
         <el-radio-group v-model="resumeData" class="group" text-color="#00a6a7" size="large" fill="#00a6a7">
           <el-radio :value="item.resume_id" v-for="item in resumeList" :key="item">
             <div class="name">{{ item.resume_name }}</div>
-            <a>点击查看</a>
+            <a @click="openResume(item.user_name_link)">点击查看</a>
           </el-radio>
         </el-radio-group>
       </div>

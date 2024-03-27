@@ -1,7 +1,7 @@
 // 简历
 import {defineStore} from 'pinia'
 import {showBox, showMsg} from "@/utils/message";
-import {addResumeHttp, getResumeInfoHttp, getResumeListHttp} from "@/service/fresh/request";
+import {addResumeHttp, deleteResumeHttp, getResumeInfoHttp, getResumeListHttp} from "@/service/fresh/request";
 import {ref} from "vue";
 
 export const useResumeStore = defineStore('freshResume', () => {
@@ -49,15 +49,26 @@ export const useResumeStore = defineStore('freshResume', () => {
     }
     // 简历信息
     const resumeInfo = ref()
-    const getResumeInfo = async (data:string) => {
+    const getResumeInfo = async (data: string) => {
         const res = await getResumeInfoHttp({
-            resume_id:data
+            resume_id: data
         })
         if (res.code === 0) {
             resumeInfo.value = res.data
         }
     }
+    // 删除简历
+    const deleteResumeInfo = async (data: string) => {
+        const res = await deleteResumeHttp({
+            resume_id: data
+        })
+        if (res.code === 0) {
+            showMsg("简历删除成功", "success")
+        } else {
+            showMsg("简历删除失败，请重试", "error")
+        }
+    }
 
 
-    return {uploadResume, visible, resumeList, getResumeList, changeVisible,getResumeInfo,resumeInfo}
+    return {uploadResume, visible, resumeList, getResumeList, changeVisible,deleteResumeInfo, getResumeInfo, resumeInfo}
 })

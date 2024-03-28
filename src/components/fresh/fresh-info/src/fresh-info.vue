@@ -1,24 +1,22 @@
 <script setup lang="ts">
-
-import {defineEmits, defineProps, onMounted, ref} from "vue";
-import Avatar from "@/components/base/avatar";
-import {useAuthStore} from "@/stores/user/auth";
-import {storeToRefs} from "pinia";
-import {useMainStore} from "@/stores/fresh/main";
-import ModalForm from "@/components/SecondPackage/modal-form/src/modal-form.vue";
+import { defineEmits, defineProps, onMounted, ref } from 'vue'
+import Avatar from '@/components/base/avatar'
+import { useAuthStore } from '@/stores/user/auth'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/stores/fresh/main'
+import ModalForm from '@/components/SecondPackage/modal-form/src/modal-form.vue'
 import updateConfig from '@/components/fresh/fresh-info/src/updateConfig'
 
 const updateRef = ref<InstanceType<typeof ModalForm>>()
 
 const authStore = useAuthStore()
-const {userInfo} = storeToRefs(authStore)
+const { userInfo } = storeToRefs(authStore)
 
 const mainStore = useMainStore()
-const {getFreshInfo, updateFreshInfo} = mainStore
-const {freshOneInfo} = storeToRefs(mainStore)
-const emit = defineEmits([""])
-const clickFn = (data: any) => {
-}
+const { getFreshInfo, updateFreshInfo } = mainStore
+const { freshOneInfo } = storeToRefs(mainStore)
+const emit = defineEmits([''])
+const clickFn = (data: any) => {}
 
 onMounted(async () => {
   await getFreshInfo(userInfo.value.id)
@@ -32,7 +30,7 @@ const update = async (data: any) => {
     user_school: data['user_school'],
     user_major: data['user_major'],
     user_year: data['user_year'],
-    user_education: data['user_education'],
+    user_education: data['user_education']
   })
   await getFreshInfo(data['user_id'])
 }
@@ -47,14 +45,16 @@ const showModal = () => {
   <div class="content">
     <div class="edit">
       <el-icon>
-        <Edit/>
+        <Edit />
       </el-icon>
       <span style="margin-left: 5px" @click="showModal">编辑个人信息</span>
     </div>
     <div class="top">
-      <Avatar class="avatar"/>
+      <Avatar class="avatar" />
       <div class="info">
-        <span class="name">{{ freshOneInfo?.user_name === undefined ? '暂无昵称' : freshOneInfo?.user_name }}</span>
+        <span class="name">{{
+          freshOneInfo?.user_name === undefined ? '暂无昵称' : freshOneInfo?.user_name
+        }}</span>
         <div class="tag">
           <el-tag class="sex">{{ freshOneInfo?.user_sex }}</el-tag>
           <el-tag class="year" style="margin-left: 10px">
@@ -68,15 +68,30 @@ const showModal = () => {
     </div>
     <div class="bottom">
       <el-descriptions size="large" column="3" border>
-        <el-descriptions-item label="账号">{{ freshOneInfo?.user_id ?? '暂无账号' }}</el-descriptions-item>
-        <el-descriptions-item label="手机号">{{ freshOneInfo?.user_phone ?? '暂无手机号' }}</el-descriptions-item>
-        <el-descriptions-item label="学校">{{ freshOneInfo?.user_school ?? '暂无学校' }}</el-descriptions-item>
-        <el-descriptions-item label="邮箱">{{ freshOneInfo?.user_email ?? '暂无邮箱' }}</el-descriptions-item>
-        <el-descriptions-item label="专业">{{ freshOneInfo?.user_major ?? '暂无专业' }}</el-descriptions-item>
+        <el-descriptions-item label="账号">{{
+          freshOneInfo?.user_id ?? '暂无账号'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="手机号">{{
+          freshOneInfo?.user_phone ?? '暂无手机号'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="学校">{{
+          freshOneInfo?.user_school ?? '暂无学校'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="邮箱">{{
+          freshOneInfo?.user_email ?? '暂无邮箱'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="专业">{{
+          freshOneInfo?.user_major ?? '暂无专业'
+        }}</el-descriptions-item>
       </el-descriptions>
     </div>
   </div>
-  <modal-form :form-config="updateConfig" ref="updateRef" :data="freshOneInfo" @confirm="update"></modal-form>
+  <modal-form
+    :form-config="updateConfig"
+    ref="updateRef"
+    :data="freshOneInfo"
+    @confirm="update"
+  ></modal-form>
 </template>
 
 <style lang="scss" scoped>
@@ -133,7 +148,9 @@ const showModal = () => {
   padding-right: 20px;
 }
 
-:deep(.el-descriptions--large .el-descriptions__body .el-descriptions__table .el-descriptions__cell) {
+:deep(
+    .el-descriptions--large .el-descriptions__body .el-descriptions__table .el-descriptions__cell
+  ) {
   font-size: 16px;
 }
 </style>

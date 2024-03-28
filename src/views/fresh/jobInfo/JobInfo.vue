@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {onMounted} from 'vue'
-import InfoCard from "@/components/fresh/Info-card";
-import ComInfo from "@/components/fresh/com-info";
-import {useJobStore} from "@/stores/fresh/job";
-import {storeToRefs} from "pinia";
-import {useInfoStore} from "@/stores/main/company/info";
+import { onMounted } from 'vue'
+import InfoCard from '@/components/fresh/Info-card'
+import ComInfo from '@/components/fresh/com-info'
+import { useJobStore } from '@/stores/fresh/job'
+import { storeToRefs } from 'pinia'
+import { useInfoStore } from '@/stores/main/company/info'
 
 const jobStore = useJobStore()
 const {
@@ -17,24 +17,23 @@ const {
   getCompany,
   changeComId
 } = jobStore
-const {searchContent, jobSearchResult, count, pageSize, jobInfoResult, companyInfo} = storeToRefs(jobStore)
+const { searchContent, jobSearchResult, count, pageSize, jobInfoResult, companyInfo } =
+  storeToRefs(jobStore)
 
 onMounted(async () => {
   await jobInfo()
   await getCompany()
 })
-
 </script>
-
 
 <template>
   <div class="jobinfo">
     <InfoCard
-        :isJob="true"
-        :title="jobInfoResult?.job_name"
-        :pay="jobInfoResult?.job_pay"
-        :address="jobInfoResult?.com_address"
-        :jobType="jobInfoResult?.job_type"
+      :isJob="true"
+      :title="jobInfoResult?.job_name"
+      :pay="jobInfoResult?.job_pay"
+      :address="jobInfoResult?.com_address"
+      :jobType="jobInfoResult?.job_type"
     ></InfoCard>
     <div class="content">
       <div class="box">
@@ -44,15 +43,15 @@ onMounted(async () => {
         <p>{{ jobInfoResult?.job_require }}</p>
       </div>
       <ComInfo
-          class="comInfo"
-          :avatar="companyInfo?.a_avatar"
-          :comName="companyInfo?.com_name"
-          :comInfo="companyInfo?.com_intro"
-          :comAddress="companyInfo?.com_address"
-          :comType="companyInfo?.com_type"
-          :comTime="companyInfo?.com_set_time"
-          :comNum="companyInfo?.com_num"
-          :comId="companyInfo?.com_id"
+        class="comInfo"
+        :avatar="companyInfo?.a_avatar"
+        :comName="companyInfo?.com_name"
+        :comInfo="companyInfo?.com_intro"
+        :comAddress="companyInfo?.com_address"
+        :comType="companyInfo?.com_type"
+        :comTime="companyInfo?.com_set_time"
+        :comNum="companyInfo?.com_num"
+        :comId="companyInfo?.com_id"
       ></ComInfo>
     </div>
   </div>

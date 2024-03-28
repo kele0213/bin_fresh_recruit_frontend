@@ -43,7 +43,7 @@ const getCode = async () => {
         btndisabled.value = false
       }
     }, 1000)
-  }else {
+  } else {
     tips.value = '发送验证码失败，请联系管理员'
   }
 }

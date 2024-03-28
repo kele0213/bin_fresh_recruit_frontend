@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {defineEmits, defineExpose, defineProps, onMounted, ref} from "vue";
-import {useResumeStore} from "@/stores/fresh/resume";
-import {storeToRefs} from "pinia";
+import { defineEmits, defineExpose, defineProps, onMounted, ref } from 'vue'
+import { useResumeStore } from '@/stores/fresh/resume'
+import { storeToRefs } from 'pinia'
 import router from '@/router'
 
 const resumeStore = useResumeStore()
-const {changeVisible, getResumeList, getResumeInfo} = resumeStore
-const {visible, resumeList, resumeInfo} = storeToRefs(resumeStore)
+const { changeVisible, getResumeList, getResumeInfo } = resumeStore
+const { visible, resumeList, resumeInfo } = storeToRefs(resumeStore)
 
 onMounted(async () => {
   await getResumeList()
@@ -18,9 +18,9 @@ const resumeData = ref()
 resumeData.value = resumeList.value?.length > 0 ? resumeList.value[0]?.resume_id : 1
 const innerDialog = ref(false)
 
-const emit = defineEmits(["confirm"])
+const emit = defineEmits(['confirm'])
 const closeBoxChild = () => {
-  emit("confirm", resumeData)
+  emit('confirm', resumeData)
   changeVisible(false)
   innerDialog.value = false
 }
@@ -35,11 +35,11 @@ const gotoResume = () => {
 }
 
 const openInner = async () => {
-  innerDialog.value = true;
+  innerDialog.value = true
   await getResumeInfo(resumeData.value)
 }
-const openResume = (data:string) => {
-  window.open(data,"_blank")
+const openResume = (data: string) => {
+  window.open(data, '_blank')
 }
 </script>
 
@@ -49,11 +49,17 @@ const openResume = (data:string) => {
       <div class="modal-top" @click="gotoResume">
         <span class="model-top-right">前往管理简历附件</span>
         <el-icon>
-          <ArrowRight/>
+          <ArrowRight />
         </el-icon>
       </div>
       <div class="resume-list">
-        <el-radio-group v-model="resumeData" class="group" text-color="#00a6a7" size="large" fill="#00a6a7">
+        <el-radio-group
+          v-model="resumeData"
+          class="group"
+          text-color="#00a6a7"
+          size="large"
+          fill="#00a6a7"
+        >
           <el-radio :value="item.resume_id" v-for="item in resumeList" :key="item">
             <div class="name">{{ item.resume_name }}</div>
             <a @click="openResume(item.user_name_link)">点击查看</a>
@@ -118,7 +124,8 @@ const openResume = (data:string) => {
   flex-direction: column;
 }
 
-.inner-button, .out-button {
+.inner-button,
+.out-button {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -130,7 +137,8 @@ const openResume = (data:string) => {
   font-size: 16px;
 }
 
-.out-button button, .inner-button button {
+.out-button button,
+.inner-button button {
   width: 100px;
   height: 35px;
   background-color: #fff;
@@ -141,7 +149,8 @@ const openResume = (data:string) => {
   border-radius: 8px;
 }
 
-.out-button button:hover, .inner-button button:hover {
+.out-button button:hover,
+.inner-button button:hover {
   background-color: #00a6a7;
   color: #fff;
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);

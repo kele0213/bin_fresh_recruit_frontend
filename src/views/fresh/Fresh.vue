@@ -23,7 +23,6 @@ import Header from '@/components/base/header'
 }
 .zhanwei {
   height: 60px;
-
 }
 .header {
   height: 60px;
@@ -32,7 +31,7 @@ import Header from '@/components/base/header'
   top: 0;
   z-index: 999;
 }
-.container{
+.container {
   height: calc(100% - 60px);
   background-color: rgb(239, 253, 255);
   overflow: scroll;

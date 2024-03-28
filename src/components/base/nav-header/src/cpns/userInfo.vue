@@ -26,7 +26,7 @@ const out = async () => {
     <el-dropdown>
       <span class="el-dropdown-link">
         <div class="imgContain">
-          <img :src="userInfo?.a_avatar" class="img"/>
+          <img :src="userInfo?.a_avatar" class="img" />
         </div>
         <div class="username">{{ userInfo?.user_name }}</div>
         <el-icon class="el-icon--right">

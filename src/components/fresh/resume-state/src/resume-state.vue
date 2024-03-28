@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useResumeStore} from "@/stores/fresh/resume";
-import {useSendStore} from "@/stores/fresh/send";
-import {onMounted} from "vue";
-import {formatUTC} from '@/utils/formatTime'
-import router from "@/router";
-import {useJobStore} from "@/stores/fresh/job";
+import { storeToRefs } from 'pinia'
+import { useResumeStore } from '@/stores/fresh/resume'
+import { useSendStore } from '@/stores/fresh/send'
+import { onMounted } from 'vue'
+import { formatUTC } from '@/utils/formatTime'
+import router from '@/router'
+import { useJobStore } from '@/stores/fresh/job'
 
 const sendStore = useSendStore()
-const {getStateList, changeCurrent} = sendStore
-const {stateListPage, total, pageSize, current} = storeToRefs(sendStore)
+const { getStateList, changeCurrent } = sendStore
+const { stateListPage, total, pageSize, current } = storeToRefs(sendStore)
 const jobStore = useJobStore()
-const {changeJobId} = jobStore
+const { changeJobId } = jobStore
 onMounted(async () => {
   await getStateList()
 })
@@ -28,7 +28,7 @@ const pageChange = async (data: number) => {
   await getStateList()
 }
 const gotoJobInfo = (data: string) => {
-  router.push("/fresh/jobInfo")
+  router.push('/fresh/jobInfo')
   changeJobId(data)
 }
 </script>
@@ -38,13 +38,17 @@ const gotoJobInfo = (data: string) => {
       <div class="state-list" v-for="item in stateListPage" :key="item">
         <div class="info">
           <div class="info-left" @click="gotoJobInfo(item.job_id)">
-            <div class="avatar"><img :src="item.a_avatar" alt="无图片"></div>
+            <div class="avatar"><img :src="item.a_avatar" alt="无图片" /></div>
             <div class="job-info">
               <span style="font-size: 16px">{{ item.job_name }}</span>
-              <span style="font-size: 12px;margin-top: 2px;width: 200px">{{ item.com_name }}</span>
+              <span style="font-size: 12px; margin-top: 2px; width: 200px">{{
+                item.com_name
+              }}</span>
             </div>
           </div>
-          <div class="info-center" style="color: #000;width: 160px">{{ formatUTC(item.create_time) }}</div>
+          <div class="info-center" style="color: #000; width: 160px">
+            {{ formatUTC(item.create_time) }}
+          </div>
           <div class="info-center" style="width: 70px">{{ dictMap.get(item.send_state) }}</div>
           <div class="info-right">
             <el-button>立即沟通</el-button>
@@ -55,12 +59,12 @@ const gotoJobInfo = (data: string) => {
     </div>
     <div class="state-bottom">
       <el-pagination
-          background
-          layout="prev,pager,next"
-          :total="total"
-          :page-size="pageSize"
-          @current-change="pageChange"
-          :current-page="current"
+        background
+        layout="prev,pager,next"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChange"
+        :current-page="current"
       ></el-pagination>
     </div>
   </div>

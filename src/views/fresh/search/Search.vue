@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {onMounted} from 'vue'
+import { onMounted } from 'vue'
 import ComplexSearch from '@/components/SecondPackage/fresh/complex-search/src/complex-search.vue'
-import {useJobStore} from "@/stores/fresh/job";
-import JobCard from "@/components/fresh/job-card/src/JobCard.vue";
-import {storeToRefs} from "pinia";
+import { useJobStore } from '@/stores/fresh/job'
+import JobCard from '@/components/fresh/job-card/src/JobCard.vue'
+import { storeToRefs } from 'pinia'
 
 const jobStore = useJobStore()
-const {saveSearchContent, saveSearch, searchJob, changeCurrent, changeJobId, jobInfo} = jobStore
-const {searchContent, jobSearchResult, count, pageSize, jobInfoResult} = storeToRefs(jobStore)
+const { saveSearchContent, saveSearch, searchJob, changeCurrent, changeJobId, jobInfo } = jobStore
+const { searchContent, jobSearchResult, count, pageSize, jobInfoResult } = storeToRefs(jobStore)
 
 onMounted(async () => {
   await searchJob()
@@ -28,13 +28,13 @@ const getJobListByPage = async (page: Number) => {
   <div class="search">
     <ComplexSearch @search="searchJobList"></ComplexSearch>
     <JobCard
-        class="jobCard"
-        :jobList="jobSearchResult"
-        :total="count"
-        :page-size="pageSize"
-        @page-change="getJobListByPage"
-        :current-page="searchContent.current"
-        :is-page="true"
+      class="jobCard"
+      :jobList="jobSearchResult"
+      :total="count"
+      :page-size="pageSize"
+      @page-change="getJobListByPage"
+      :current-page="searchContent.current"
+      :is-page="true"
     />
   </div>
 </template>

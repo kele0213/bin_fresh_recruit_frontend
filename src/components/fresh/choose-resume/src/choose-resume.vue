@@ -14,7 +14,8 @@ onMounted(async () => {
 
 defineProps({})
 // 选择简历
-const resumeData = ref(resumeList.value?.length > 0 ? resumeList.value[0].resume_id : 1)
+const resumeData = ref()
+resumeData.value = resumeList.value?.length > 0 ? resumeList.value[0]?.resume_id : 1
 const innerDialog = ref(false)
 
 const emit = defineEmits(["confirm"])

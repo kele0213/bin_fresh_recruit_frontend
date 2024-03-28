@@ -23,6 +23,8 @@ import type {
     GetRecommendListRequest,
     ResumeSendInfo
 } from "@/service/fresh/type";
+import type {GetMessageByFreshRequest} from "@/service/fresh/type";
+import type {GetMessageByFreshVo} from "@/service/fresh/type";
 
 // 查询岗位信息-单个
 export function getJobInfoOneHttp(data: GetJobInfoOneRequest) {
@@ -153,6 +155,14 @@ export function freshSendResumeHttp(data: FreshResumeSendRequest) {
 export function getFreshSendStatusListHttp(data: FreshSendStatusListRequest) {
     return httpService.get<Idata<FreshSendStatusPage>>({
         url: '/fresh/resume/send/state',
+        params: data
+    })
+}
+
+// 应届生获取资讯列表
+export function getMessageListByFreshHttp(data: GetMessageByFreshRequest){
+    return httpService.get<Idata<GetMessageByFreshVo>>({
+        url: '/fresh/message/get',
         params: data
     })
 }

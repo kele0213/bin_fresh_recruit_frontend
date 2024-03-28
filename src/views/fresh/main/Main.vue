@@ -124,7 +124,8 @@ const getComInfo = (data)=>{
 
 .img .carouselImg {
   width: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   border-radius: 10px;
 }
 

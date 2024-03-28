@@ -10,7 +10,7 @@ export const useMainStore = defineStore('freshMain', () => {
     const recommendResult = ref()
     const reqData = ref<GetRecommendListRequest>({
         limit: Math.floor(Math.random() * (24 - 18 + 1)) + 18,
-        is_recommend: 0 // 0-否 1-是
+        is_recommend: 1 // 0-否 1-是
     })
     // 推荐的岗位
     const getRecommendList = async () => {

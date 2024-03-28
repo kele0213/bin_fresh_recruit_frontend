@@ -22,6 +22,7 @@ const openResume = (data: string) => {
 // 上传简历
 const uploadResumeInfo = async (file) => {
   await uploadResume(file)
+  await getResumeList()
 }
 // 删除简历
 const deleteResume = async (data: string) => {

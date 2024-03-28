@@ -106,6 +106,7 @@ export interface FilrateRequest {
   user_id: string
   job_id: string
   send_state: number
+  resume_id:string
 }
 
 // 简历筛选响应

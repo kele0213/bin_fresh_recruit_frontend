@@ -37,6 +37,7 @@ export const useResumeStore = defineStore('freshResume', () => {
     const res = await addResumeHttp(formData)
     if (res.code === 0) {
       showMsg('上传成功', 'success')
+      await getResumeList()
     } else if (res.code === 4022) {
       showBox('上传失败', '附件简历数量最大仅支持5份')
     } else {

@@ -20,14 +20,17 @@ const { uploadVo } = storeToRefs(commonStore)
 
 // 上传头像
 const uploadFile = async (file) => {
+  const typeArry = ['.png', '.jpg']
   // 上传前检查
   const fileSize = file.size
-  const fileType = file.type
+  const fileName = file.name
+  const type = fileName.substring(fileName.lastIndexOf('.'))
+  const isFile = typeArry.indexOf(type) > -1
   // 最大1MB
   if (fileSize / 1024 / 1204 > 1) {
     showBox('上传失败', '图片最大仅支持1MB，请重新上传')
     return
-  } else if (!(fileType == 'image/png' || fileType == 'image/jpg' || fileType == 'image/jpeg')) {
+  } else if (!isFile) {
     showBox('上传失败', '图片仅支持JPG或PNG格式')
     return
   }

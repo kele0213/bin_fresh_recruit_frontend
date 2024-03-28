@@ -8,6 +8,8 @@ import type {GetJobInfoOneRequest} from "@/service/fresh/type";
 import localCache from "@/utils/localCache";
 import type {InfoCompanyRequest} from "@/service/company/type";
 import {getCompanyInfo} from "@/service/company/companyInfo";
+import type {ListJobRequest} from "@/service/company/type";
+import {listJobInfo} from "@/service/company/jobInfo";
 
 export const useJobStore = defineStore('freshJob', () => {
     // 岗位搜索
@@ -48,7 +50,7 @@ export const useJobStore = defineStore('freshJob', () => {
     }
 
     // 修改分页数据
-    const changeCurrent = (current: number) => {
+    const changeCurrent = async (current: number) => {
         searchContent.value.current = current
     }
 
@@ -68,7 +70,6 @@ export const useJobStore = defineStore('freshJob', () => {
         }
     }
 
-
     const companyInfo = ref()
     const getCompany = async () => {
         const request = ref<InfoCompanyRequest>({
@@ -83,6 +84,30 @@ export const useJobStore = defineStore('freshJob', () => {
     const changeComId = (data: any) => {
         localCache.setCache("com_id", data)
     }
+    // 企业所有岗位
+    const jobList = ref()
+    const countJob = ref(100)
+    const pageSizeJob = ref(100)
+    const reqData = ref<ListJobRequest>({
+        com_id: '',
+        current: 1,
+        page_size: 15,
+        search_content: ''
+    })
+    // 修改分页数据
+    const changeCurrentJob = (current: number) => {
+        reqData.value.current = current
+    }
+    //  获取job列表
+    const getJobList = async () => {
+        reqData.value.com_id = localCache.getCache("com_id")
+        const res = await listJobInfo(reqData.value)
+        if (res.code === 0) {
+            jobList.value = res.data.list
+            countJob.value = res.data.total
+            pageSizeJob.value = res.data.page_size
+        }
+    }
 
     return {
         searchContent,
@@ -91,6 +116,12 @@ export const useJobStore = defineStore('freshJob', () => {
         pageSize,
         jobInfoResult,
         companyInfo,
+        countJob,
+        pageSizeJob,
+        jobList,
+        reqData,
+        changeCurrentJob,
+        getJobList,
         searchJob,
         saveSearchContent,
         saveSearch,

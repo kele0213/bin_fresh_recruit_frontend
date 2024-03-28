@@ -40,6 +40,7 @@ const clickFn = (data: any) => {
   changeComId(data.com_id)
 }
 const getFn = (data: any) => {
+  changeComId(data)
   router.push("/fresh/companyJob")
 }
 const pageChange = (value: number) => {

@@ -2,6 +2,15 @@
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
 import {defineEmits, defineProps, onMounted} from "vue";
+import router from "@/router";
+import {useJobStore} from "@/stores/fresh/job";
+
+const jobStore = useJobStore()
+const {
+  changeCurrent,
+  changeComId
+} = jobStore
+const {count, pageSize} = storeToRefs(jobStore)
 
 defineProps({
   avatar: {
@@ -30,12 +39,20 @@ defineProps({
   comNum: {
     type: String,
     default: '暂无公司规模'
+  },
+  comId: {
+    type: String
   }
 })
 
 const emit = defineEmits(["getJobInfo"])
 const clickFn = (data: any) => {
   emit("getJobInfo", data)
+}
+
+const getComAllJob = (data:string) => {
+  changeComId(data)
+  router.push("/fresh/companyJob")
 }
 
 </script>
@@ -77,7 +94,7 @@ const clickFn = (data: any) => {
       <span>{{ comTime }}</span>
     </div>
     <div class="bottom">
-      <el-button>查看全部岗位</el-button>
+      <el-button @click="getComAllJob(comId)">查看全部岗位</el-button>
     </div>
   </div>
 </template>

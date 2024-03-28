@@ -34,6 +34,7 @@ onMounted(async () => {
         :title="jobInfoResult?.job_name"
         :pay="jobInfoResult?.job_pay"
         :address="jobInfoResult?.com_address"
+        :jobType="jobInfoResult?.job_type"
     ></InfoCard>
     <div class="content">
       <div class="box">
@@ -51,6 +52,7 @@ onMounted(async () => {
           :comType="companyInfo?.com_type"
           :comTime="companyInfo?.com_set_time"
           :comNum="companyInfo?.com_num"
+          :comId="companyInfo?.com_id"
       ></ComInfo>
     </div>
   </div>

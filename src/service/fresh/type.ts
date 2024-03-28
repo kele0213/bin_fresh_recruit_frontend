@@ -165,3 +165,22 @@ export interface GetRecommendListRequest {
     limit: number
     is_recommend: number
 }
+
+export interface GetMessageByFreshRequest {
+    current: number
+    page_size: number
+}
+
+export interface MessageVo {
+    id: number
+    school_id: string
+    title: string
+    intro_content: string
+    create_time: string
+}
+export interface GetMessageByFreshVo {
+    list: MessageVo[]
+    total: number
+    current: number
+    page_size: number
+}

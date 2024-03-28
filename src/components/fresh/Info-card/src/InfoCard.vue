@@ -1,8 +1,23 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, defineProps, onMounted} from "vue";
+import {defineEmits, defineProps, onMounted, ref} from "vue";
+import {useResumeStore} from "@/stores/fresh/resume";
+import ChooseResume from "@/components/fresh/choose-resume";
+import {showBox} from "@/utils/message";
+import {useJobStore} from "@/stores/fresh/job";
+import {useSendStore} from "@/stores/fresh/send";
 
+const resumeStore = useResumeStore()
+const {uploadResume, changeVisible} = resumeStore
+const {visible} = storeToRefs(resumeStore)
+const resumeModal = ref<InstanceType<typeof ChooseResume>>()
+
+const jobStore = useJobStore()
+const {companyInfo,jobInfoResult} = storeToRefs(jobStore)
+
+const sendStore = useSendStore()
+const {sendResume} = sendStore
 defineProps({
   // 是否为岗位详情
   isJob: {
@@ -28,12 +43,38 @@ defineProps({
   comType: {
     type: String,
     default: "暂未提供公司类型"
+  },
+  jobType: {
+    type: String,
+    default: "暂无岗位类别"
   }
 })
 
 const emit = defineEmits(["getJobInfo"])
 const clickFn = (data: any) => {
   emit("getJobInfo", data)
+}
+// 上传简历
+const uploadResumeInfo = async (file) => {
+  await uploadResume(file)
+}
+
+// 投递弹窗
+const showResumeModal = () => {
+  changeVisible(true)
+}
+// 确认投递
+const confirmSend = async (data:any) => {
+  const resume_id = data.value
+  if (resume_id === 1){
+    showBox("投递失败","请选择一个简历")
+    return
+  }
+  await sendResume({
+    com_id: companyInfo.value.com_id,
+    job_id: jobInfoResult.value.job_id,
+    resume_id: resume_id
+  })
 }
 
 </script>
@@ -45,20 +86,32 @@ const clickFn = (data: any) => {
       <span class="right" v-if="isJob">{{ pay }}</span>
     </div>
     <div class="center">
-      <el-icon v-if="isJob">
+      <el-icon v-if="isJob" style="margin-right: 5px">
         <Location/>
       </el-icon>
       <span v-if="isJob">{{ address }}</span>
-      <span v-if="!isJob">{{ comNum + '·' + comType }}</span>
+      <el-icon v-if="isJob" style="margin-left: 20px;margin-right:5px">
+        <Tickets/>
+      </el-icon>
+      <span v-if="isJob">{{ jobType }}</span>
+      <span v-if="!isJob">{{ comNum + ' · ' + comType }}</span>
     </div>
     <div class="bottom">
       <span class="left">
         <el-button>立即沟通</el-button>
-        <el-button style="margin-left: 20px" v-if="isJob">立即投递</el-button>
+        <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal">立即投递</el-button>
       </span>
+      <ChooseResume @confirm="confirmSend"></ChooseResume>
       <span class="right">
-        <el-icon><Document/></el-icon>
+        <el-upload
+            action
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="uploadResumeInfo"
+        >
+       <el-icon><DocumentAdd /></el-icon>
         <span style="margin-left: 6px">新增简历附件</span>
+        </el-upload>
       </span>
     </div>
   </div>
@@ -147,4 +200,5 @@ const clickFn = (data: any) => {
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
+
 </style>

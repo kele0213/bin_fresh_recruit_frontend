@@ -55,8 +55,6 @@ onMounted(async () => {
   )
 })
 
-console.log(companyInfo?.a_avatar)
-
 const size = ref('default')
 const iconStyle = computed(() => {
   const marginMap = {

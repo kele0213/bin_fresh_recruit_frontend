@@ -10,7 +10,6 @@ import { onMounted } from 'vue'
 
 const jobStore = useJobStore()
 const { saveSearchContent, searchJob } = jobStore
-const { searchContent } = storeToRefs(jobStore)
 
 const mainStore = useMainStore()
 const { getRecommendList } = mainStore
@@ -47,11 +46,6 @@ const clickJobType = (data: any) => {
     job_type: data
   })
 }
-
-// 跳转岗位详情
-const getJobInfo = (data) => {}
-// 跳转企业详情
-const getComInfo = (data) => {}
 </script>
 
 <template>

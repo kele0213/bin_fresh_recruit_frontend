@@ -37,6 +37,7 @@ const input = ref()
           placeholder="岗位类别"
           style="width: 160px; height: 100%"
           clearable
+          @change="searchFn"
         >
           <el-option v-for="item in dictData" :key="item" :label="item" :value="item" />
         </el-select>

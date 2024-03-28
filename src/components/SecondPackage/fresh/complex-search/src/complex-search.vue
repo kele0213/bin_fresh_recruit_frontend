@@ -20,16 +20,6 @@ const commonStore = useCommonStore()
 const { getdict } = commonStore
 const { dictData } = storeToRefs(commonStore)
 
-const fn = () => {
-  saveSearch({
-    search_content: input.value ?? '',
-    job_type: value.value ?? '',
-    com_type: comType.value ?? '',
-    com_num: comNum.value ?? '',
-    com_address: comCity.value ?? ''
-  })
-}
-
 const getDictFn = async (num: number, array) => {
   const res = await getdict(num)
   array.value = res
@@ -78,14 +68,14 @@ const searchFn = () => {
         placeholder="请输入搜索内容"
         clearable
         class="input-with-select"
-        @change="fn"
+        @change="searchFn"
       >
         <template #prepend>
           <el-select
             v-model="value"
             placeholder="岗位类别"
             style="width: 160px; height: 100%"
-            @change="fn"
+            @change="searchFn"
             clearable
           >
             <el-option v-for="item in dictsType" :key="item" :label="item" :value="item" />
@@ -115,7 +105,7 @@ const searchFn = () => {
         v-model="comCity"
         placeholder="请选择公司城市"
         style="width: 200px; margin-right: 25px"
-        @change="fn"
+        @change="searchFn"
         :clearable="true"
         :model-value="comCity"
       >
@@ -126,7 +116,7 @@ const searchFn = () => {
         v-model="comType"
         placeholder="请选择公司类别"
         style="width: 200px; margin-right: 25px"
-        @change="fn"
+        @change="searchFn"
         :clearable="true"
         :model-value="comType"
       >
@@ -137,7 +127,7 @@ const searchFn = () => {
         v-model="comNum"
         placeholder="请选择公司规模"
         style="width: 200px; margin-right: 25px"
-        @change="fn"
+        @change="searchFn"
         :clearable="true"
         :model-value="comNum"
       >

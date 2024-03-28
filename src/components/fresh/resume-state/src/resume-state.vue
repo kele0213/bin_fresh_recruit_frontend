@@ -6,12 +6,14 @@ import { onMounted } from 'vue'
 import { formatUTC } from '@/utils/formatTime'
 import router from '@/router'
 import { useJobStore } from '@/stores/fresh/job'
+import { showMsg } from '@/utils/message'
 
 const sendStore = useSendStore()
 const { getStateList, changeCurrent } = sendStore
 const { stateListPage, total, pageSize, current } = storeToRefs(sendStore)
 const jobStore = useJobStore()
-const { changeJobId } = jobStore
+const { changeJobId, changeComId } = jobStore
+const { jobInfoResult } = storeToRefs(jobStore)
 onMounted(async () => {
   await getStateList()
 })
@@ -27,9 +29,10 @@ const pageChange = async (data: number) => {
   await changeCurrent(data)
   await getStateList()
 }
-const gotoJobInfo = (data: string) => {
+const gotoJobInfo = (data: any) => {
   router.push('/fresh/jobInfo')
-  changeJobId(data)
+  changeJobId(data.job_id)
+  changeComId(data.com_id)
 }
 </script>
 <template>
@@ -37,7 +40,7 @@ const gotoJobInfo = (data: string) => {
     <div class="state-top">
       <div class="state-list" v-for="item in stateListPage" :key="item">
         <div class="info">
-          <div class="info-left" @click="gotoJobInfo(item.job_id)">
+          <div class="info-left" @click="gotoJobInfo(item)">
             <div class="avatar"><img :src="item.a_avatar" alt="无图片" /></div>
             <div class="job-info">
               <span style="font-size: 16px">{{ item.job_name }}</span>
@@ -49,7 +52,30 @@ const gotoJobInfo = (data: string) => {
           <div class="info-center" style="color: #000; width: 160px">
             {{ formatUTC(item.create_time) }}
           </div>
-          <div class="info-center" style="width: 70px">{{ dictMap.get(item.send_state) }}</div>
+          <div class="info-center" style="width: 70px" v-if="item.send_state < 3">
+            {{ dictMap.get(item.send_state) }}
+          </div>
+          <div
+            class="info-center"
+            style="width: 70px; color: rgb(48, 152, 30)"
+            v-if="item.send_state === 5"
+          >
+            {{ dictMap.get(item.send_state) }}
+          </div>
+          <div
+            class="info-center"
+            style="width: 70px; color: rgb(254, 87, 103)"
+            v-if="item.send_state === 3"
+          >
+            {{ dictMap.get(item.send_state) }}
+          </div>
+          <div
+            class="info-center"
+            style="width: 70px; color: rgb(254, 87, 103)"
+            v-if="item.send_state === 4"
+          >
+            {{ dictMap.get(item.send_state) }}
+          </div>
           <div class="info-right">
             <el-button>立即沟通</el-button>
           </div>
@@ -158,7 +184,6 @@ const gotoJobInfo = (data: string) => {
 }
 
 .info-center {
-  color: rgba(254, 87, 103);
   display: flex;
   justify-content: center;
   align-items: center;

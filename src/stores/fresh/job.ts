@@ -10,6 +10,7 @@ import type { InfoCompanyRequest } from '@/service/company/type'
 import { getCompanyInfo } from '@/service/company/companyInfo'
 import type { ListJobRequest } from '@/service/company/type'
 import { listJobInfo } from '@/service/company/jobInfo'
+import { showMsg } from '@/utils/message'
 
 export const useJobStore = defineStore('freshJob', () => {
   // 岗位搜索

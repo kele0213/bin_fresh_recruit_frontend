@@ -32,7 +32,7 @@ const updateJobById = async (data: any) => {
     user_id: data.user_id,
     job_id: data.job_id,
     send_state: data.send_state,
-    resume_id:data.resume_id
+    resume_id: data.resume_id
   })
   await updateSendStatus(updateReq.value)
 }

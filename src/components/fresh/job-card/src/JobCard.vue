@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, defineProps, onMounted} from "vue";
-import router from "@/router";
-import {useJobStore} from "@/stores/fresh/job";
-import {useInfoStore} from "@/stores/main/company/info";
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/stores/fresh/main'
+import { defineEmits, defineProps, onMounted } from 'vue'
+import router from '@/router'
+import { useJobStore } from '@/stores/fresh/job'
+import { useInfoStore } from '@/stores/main/company/info'
 
 const jobStore = useJobStore()
-const {saveSearchContent, saveSearch, searchJob, changeCurrent, changeJobId, jobInfo, changeComId} = jobStore
-const {count, pageSize, jobInfoResult} = storeToRefs(jobStore)
+const {
+  saveSearchContent,
+  saveSearch,
+  searchJob,
+  changeCurrent,
+  changeJobId,
+  jobInfo,
+  changeComId
+} = jobStore
+const { count, pageSize, jobInfoResult } = storeToRefs(jobStore)
 
 defineProps({
   jobList: {
-    type: [],
+    type: []
   },
   pageSize: {
     type: Number,
@@ -32,21 +40,19 @@ defineProps({
   }
 })
 
-
-const emit = defineEmits(["pageChange"])
+const emit = defineEmits(['pageChange'])
 const clickFn = (data: any) => {
-  router.push("/fresh/jobInfo")
+  router.push('/fresh/jobInfo')
   changeJobId(data.job_id)
   changeComId(data.com_id)
 }
 const getFn = (data: any) => {
   changeComId(data)
-  router.push("/fresh/companyJob")
+  router.push('/fresh/companyJob')
 }
 const pageChange = (value: number) => {
   emit('pageChange', value)
 }
-
 </script>
 
 <template>
@@ -56,7 +62,7 @@ const pageChange = (value: number) => {
         <div class="left">
           <div class="name">{{ item.job_name }}</div>
           <el-icon class="chat">
-            <ChatDotSquare/>
+            <ChatDotSquare />
           </el-icon>
         </div>
         <div class="right">{{ item.job_pay }}</div>
@@ -67,7 +73,7 @@ const pageChange = (value: number) => {
       <div class="bottom" @click="getFn(item.com_id)">
         <div class="bottom-left">
           <div class="avatar">
-            <img :src="item.a_avatar" alt="暂无图片">
+            <img :src="item.a_avatar" alt="暂无图片" />
           </div>
           <div class="comName">{{ item.com_name }}</div>
         </div>
@@ -78,13 +84,13 @@ const pageChange = (value: number) => {
   <div class="footer">
     <!-- 后面用来放分页器 -->
     <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        :page-size="pageSize"
-        @current-change="pageChange"
-        :current-page="currentPage"
-        v-if="isPage"
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :page-size="pageSize"
+      @current-change="pageChange"
+      :current-page="currentPage"
+      v-if="isPage"
     />
   </div>
 </template>
@@ -125,7 +131,7 @@ const pageChange = (value: number) => {
 }
 
 .card:hover {
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
 }
 
 // 顶部
@@ -183,7 +189,8 @@ p {
   border-radius: 0 0 12px 12px;
 }
 
-.bottom .bottom-left, .comName, {
+.bottom .bottom-left,
+.comName {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -203,9 +210,12 @@ p {
 
 .avatar img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.comName, .bottom-right {
+.comName,
+.bottom-right {
   font-size: 14px;
   height: 50px;
   line-height: 52px;

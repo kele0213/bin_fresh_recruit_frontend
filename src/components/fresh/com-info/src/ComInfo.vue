@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, defineProps, onMounted} from "vue";
-import router from "@/router";
-import {useJobStore} from "@/stores/fresh/job";
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/stores/fresh/main'
+import { defineEmits, defineProps, onMounted } from 'vue'
+import router from '@/router'
+import { useJobStore } from '@/stores/fresh/job'
 
 const jobStore = useJobStore()
-const {
-  changeCurrent,
-  changeComId
-} = jobStore
-const {count, pageSize} = storeToRefs(jobStore)
+const { changeCurrent, changeComId } = jobStore
+const { count, pageSize } = storeToRefs(jobStore)
 
 defineProps({
   avatar: {
-    type: String,
+    type: String
   },
   comName: {
     type: String,
@@ -45,16 +42,15 @@ defineProps({
   }
 })
 
-const emit = defineEmits(["getJobInfo"])
+const emit = defineEmits(['getJobInfo'])
 const clickFn = (data: any) => {
-  emit("getJobInfo", data)
+  emit('getJobInfo', data)
 }
 
-const getComAllJob = (data:string) => {
+const getComAllJob = (data: string) => {
   changeComId(data)
-  router.push("/fresh/companyJob")
+  router.push('/fresh/companyJob')
 }
-
 </script>
 
 <template>
@@ -62,7 +58,7 @@ const getComAllJob = (data:string) => {
     <span class="title">公司基本情况</span>
     <div class="comImg">
       <div class="avatar">
-        <img :src="avatar" alt="暂无图片" style="width: 100%">
+        <img :src="avatar" alt="暂无图片" style="width: 100%" />
       </div>
       <div class="comName">{{ comName }}</div>
     </div>
@@ -71,25 +67,25 @@ const getComAllJob = (data:string) => {
     </div>
     <div class="info">
       <el-icon>
-        <Location/>
+        <Location />
       </el-icon>
       <span>{{ comAddress }}</span>
     </div>
     <div class="info">
       <el-icon>
-        <Tickets/>
+        <Tickets />
       </el-icon>
       <span>{{ comType }}</span>
     </div>
     <div class="info">
       <el-icon>
-        <PriceTag/>
+        <PriceTag />
       </el-icon>
       <span>{{ comNum }}</span>
     </div>
     <div class="info">
       <el-icon>
-        <Clock/>
+        <Clock />
       </el-icon>
       <span>{{ comTime }}</span>
     </div>

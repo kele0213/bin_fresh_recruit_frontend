@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {} from 'vue'
-import FreshInfo from "@/components/fresh/fresh-info";
-import ResumeList from "@/components/fresh/resume-list";
-import router from "@/router";
-import ResumeState from "@/components/fresh/resume-state";
-const openFirst = ()=>{
+import FreshInfo from '@/components/fresh/fresh-info'
+import ResumeList from '@/components/fresh/resume-list'
+import router from '@/router'
+import ResumeState from '@/components/fresh/resume-state'
+const openFirst = () => {
   router.push('/fresh/freshInfoResult')
 }
-const openSecond = ()=>{
+const openSecond = () => {
   router.push('/fresh/freshInfoIntention')
 }
 </script>
@@ -55,11 +55,11 @@ const openSecond = ()=>{
 .result-left {
   width: 70%;
 }
-.result-right{
+.result-right {
   width: 29%;
   height: 100%;
 }
-.result-left-bottom{
+.result-left-bottom {
   width: 100%;
   min-height: 380px;
   margin-top: 15px;
@@ -67,15 +67,16 @@ const openSecond = ()=>{
   border-radius: 8px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
-.bottom-top{
+.bottom-top {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 55px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.top-left,.top-right{
+.top-left,
+.top-right {
   width: 50%;
   height: 100%;
   display: flex;
@@ -85,13 +86,13 @@ const openSecond = ()=>{
   font-size: 22px;
   font-weight: bolder;
 }
-.top-left{
+.top-left {
   background-color: #00a6a7;
   color: #fff !important;
-  border-radius: 8px 0 0 0 ;
+  border-radius: 8px 0 0 0;
 }
-.top-right{
+.top-right {
   cursor: pointer;
-  border-radius: 0 8px 0 0 ;
+  border-radius: 0 8px 0 0;
 }
 </style>

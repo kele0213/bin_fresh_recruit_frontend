@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import {useMessageStore} from "@/stores/fresh/message";
-import {storeToRefs} from "pinia";
+import { ref, onMounted } from 'vue'
+import { useMessageStore } from '@/stores/fresh/message'
+import { storeToRefs } from 'pinia'
 import { formatUTC } from '@/utils/formatTime'
 
 const messageStore = useMessageStore()
-const {getMessageList, changeCurrent} = messageStore
-const {total, pageSize, current,messageList} = storeToRefs(messageStore)
+const { getMessageList, changeCurrent } = messageStore
+const { total, pageSize, current, messageList } = storeToRefs(messageStore)
 
 onMounted(async () => {
   await getMessageList()
 })
 const activeName = ref()
-activeName.value = messageList.value?.length > 0 ? messageList.value[0]?.id :1
-const changePage = async (data:number)=>{
+activeName.value = messageList.value?.length > 0 ? messageList.value[0]?.id : 1
+const changePage = async (data: number) => {
   await changeCurrent(data)
   await getMessageList()
 }
@@ -27,24 +27,27 @@ const changePage = async (data:number)=>{
     <div class="out-contain">
       <div class="message-bottom">
         <el-collapse v-model="activeName" accordion>
-          <el-collapse-item :title="item?.title" :name="item?.id" v-for="item in messageList" :key="item">
-            <div class="time">
-              发布时间：{{formatUTC(item?.create_time)}}
-            </div>
+          <el-collapse-item
+            :title="item?.title"
+            :name="item?.id"
+            v-for="item in messageList"
+            :key="item"
+          >
+            <div class="time">发布时间：{{ formatUTC(item?.create_time) }}</div>
             <div class="contain">
-              {{item?.intro_content}}
+              {{ item?.intro_content }}
             </div>
           </el-collapse-item>
         </el-collapse>
       </div>
       <div class="page">
         <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="total"
-            :page-size="pageSize"
-            @current-change="changePage"
-            :current-page="current"
+          background
+          layout="prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          @current-change="changePage"
+          :current-page="current"
         />
       </div>
     </div>

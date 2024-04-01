@@ -46,12 +46,16 @@ const emit = defineEmits(['update:modelValue'])
 const changeValue = (value: any, field: any) => {
   emit('update:modelValue', { ...props.modelValue, [field]: value })
 }
+const disable = (data: Date) => {
+  var now = new Date()
+  return data > now
+}
 </script>
 
 <template>
   <div class="kl-form">
     <div class="header">
-      <slot name="header"> </slot>
+      <slot name="header"></slot>
     </div>
     <el-form :label-width="labelWidth">
       <el-row>
@@ -110,6 +114,7 @@ const changeValue = (value: any, field: any) => {
                   v-bind="item.others"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="changeValue($event, item.field)"
+                  :disabled-date="disable"
                 ></el-date-picker>
               </el-form-item>
             </template>
@@ -118,7 +123,7 @@ const changeValue = (value: any, field: any) => {
       </el-row>
     </el-form>
     <div class="footer">
-      <slot name="footer"> </slot>
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
@@ -127,6 +132,7 @@ const changeValue = (value: any, field: any) => {
 .el-form {
   padding-top: 5px;
 }
+
 .label {
   width: 100%;
   text-align: justify;

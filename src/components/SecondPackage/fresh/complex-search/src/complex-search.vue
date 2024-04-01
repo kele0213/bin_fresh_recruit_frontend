@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import Search from "@/components/fresh/search/src/Search.vue";
-import JobCard from "@/components/fresh/job-card/src/JobCard.vue";
-import {useCommonStore} from "@/stores/common/common";
-import {storeToRefs} from "pinia";
-import {ref} from 'vue'
-import {useJobStore} from "@/stores/fresh/job";
-import {defineEmits} from "vue/dist/vue";
+import Search from '@/components/fresh/search/src/Search.vue'
+import JobCard from '@/components/fresh/job-card/src/JobCard.vue'
+import { useCommonStore } from '@/stores/common/common'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { useJobStore } from '@/stores/fresh/job'
+import { defineEmits } from 'vue/dist/vue'
 
 const jobStore = useJobStore()
-const {saveSearchContent, saveSearch} = jobStore
-const {searchContent} = storeToRefs(jobStore)
+const { saveSearchContent, saveSearch } = jobStore
+const { searchContent } = storeToRefs(jobStore)
 const comType = ref()
 const comNum = ref()
 const comCity = ref()
@@ -17,18 +17,8 @@ const value = ref(searchContent.value.job_type)
 const input = ref(searchContent.value.search_content)
 
 const commonStore = useCommonStore()
-const {getdict} = commonStore
-const {dictData} = storeToRefs(commonStore)
-
-const fn = () => {
-  saveSearch({
-    search_content: input.value ?? "",
-    job_type: value.value ?? "",
-    com_type: comType.value ?? "",
-    com_num: comNum.value ?? "",
-    com_address: comCity.value ?? ""
-  })
-}
+const { getdict } = commonStore
+const { dictData } = storeToRefs(commonStore)
 
 const getDictFn = async (num: number, array) => {
   const res = await getdict(num)
@@ -54,20 +44,18 @@ const dictFn = async () => {
 }
 dictFn()
 
-const emit = defineEmits(["search"])
+const emit = defineEmits(['search'])
 
 const searchFn = () => {
   saveSearch({
-    search_content: input.value ?? "",
-    job_type: value.value ?? "",
-    com_type: comType.value ?? "",
-    com_num: comNum.value ?? "",
-    com_address: comCity.value ?? ""
+    search_content: input.value ?? '',
+    job_type: value.value ?? '',
+    com_type: comType.value ?? '',
+    com_num: comNum.value ?? '',
+    com_address: comCity.value ?? ''
   })
-  emit("search")
+  emit('search')
 }
-
-
 </script>
 
 <template>
@@ -75,73 +63,75 @@ const searchFn = () => {
     <!-- 简单搜索框-->
     <div class="searchContent">
       <el-input
-          v-model="input"
-          style="width: 100%;height: 100%"
-          placeholder="请输入搜索内容"
-          clearable
-          class="input-with-select"
-          @change="fn"
+        v-model="input"
+        style="width: 100%; height: 100%"
+        placeholder="请输入搜索内容"
+        clearable
+        class="input-with-select"
+        @change="searchFn"
       >
         <template #prepend>
-          <el-select v-model="value" placeholder="岗位类别" style="width: 160px;height: 100%" @change="fn" clearable>
-            <el-option v-for="item in dictsType" :key="item" :label="item" :value="item"/>
+          <el-select
+            v-model="value"
+            placeholder="岗位类别"
+            style="width: 160px; height: 100%"
+            @change="searchFn"
+            clearable
+          >
+            <el-option v-for="item in dictsType" :key="item" :label="item" :value="item" />
           </el-select>
         </template>
         <template #append>
-          <el-button icon="Search" class="searchButton"
-                     style="background-color: #00a6a7;height: 100%;border-radius: 0;width: 80px;color: #fff;font-size: 20px;font-weight: bold"
-                     @click="searchFn"/>
+          <el-button
+            icon="Search"
+            class="searchButton"
+            style="
+              background-color: #00a6a7;
+              height: 100%;
+              border-radius: 0;
+              width: 80px;
+              color: #fff;
+              font-size: 20px;
+              font-weight: bold;
+            "
+            @click="searchFn"
+          />
         </template>
       </el-input>
     </div>
     <div class="select">
       <div class="one">公司城市</div>
       <el-select
-          v-model="comCity"
-          placeholder="请选择公司城市"
-          style="width: 200px;  margin-right: 25px;"
-          @change="fn"
-          :clearable="true"
-          :model-value="comCity"
+        v-model="comCity"
+        placeholder="请选择公司城市"
+        style="width: 200px; margin-right: 25px"
+        @change="searchFn"
+        :clearable="true"
+        :model-value="comCity"
       >
-        <el-option
-            v-for="item in dictsCity"
-            :key="item"
-            :label="item"
-            :value="item"
-        />
+        <el-option v-for="item in dictsCity" :key="item" :label="item" :value="item" />
       </el-select>
       <div class="one">公司类别</div>
       <el-select
-          v-model="comType"
-          placeholder="请选择公司类别"
-          style="width: 200px;  margin-right: 25px;"
-          @change="fn"
-          :clearable="true"
-          :model-value="comType"
+        v-model="comType"
+        placeholder="请选择公司类别"
+        style="width: 200px; margin-right: 25px"
+        @change="searchFn"
+        :clearable="true"
+        :model-value="comType"
       >
-        <el-option
-            v-for="item in comTypes"
-            :key="item"
-            :label="item"
-            :value="item"
-        />
+        <el-option v-for="item in comTypes" :key="item" :label="item" :value="item" />
       </el-select>
       <div class="one">公司规模</div>
       <el-select
-          v-model="comNum"
-          placeholder="请选择公司规模"
-          style="width: 200px;  margin-right: 25px;"
-          @change="fn"
-          :clearable="true"
-          :model-value="comNum"
+        v-model="comNum"
+        placeholder="请选择公司规模"
+        style="width: 200px; margin-right: 25px"
+        @change="searchFn"
+        :clearable="true"
+        :model-value="comNum"
       >
-        <el-option
-            v-for="item in comNums"
-            :key="item"
-            :label="item"
-            :value="item"
-        />
+        <el-option v-for="item in comNums" :key="item" :label="item" :value="item" />
       </el-select>
     </div>
   </div>
@@ -236,7 +226,7 @@ const searchFn = () => {
   font-weight: normal;
 }
 
-:deep(.el-input-group--append>.el-input__wrapper) {
+:deep(.el-input-group--append > .el-input__wrapper) {
   font-size: 16px;
 }
 </style>

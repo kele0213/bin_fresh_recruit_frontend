@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {} from 'vue'
-import FreshInfo from "@/components/fresh/fresh-info";
-import ResumeList from "@/components/fresh/resume-list";
-import router from "@/router";
-import JobPurpose from "@/components/fresh/job-purpose/src/job-purpose.vue";
+import FreshInfo from '@/components/fresh/fresh-info'
+import ResumeList from '@/components/fresh/resume-list'
+import router from '@/router'
+import JobPurpose from '@/components/fresh/job-purpose/src/job-purpose.vue'
 
 const openFirst = () => {
   router.push('/fresh/freshInfoResult')
@@ -80,7 +80,8 @@ const openSecond = () => {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.top-left, .top-right {
+.top-left,
+.top-right {
   width: 50%;
   height: 100%;
   display: flex;

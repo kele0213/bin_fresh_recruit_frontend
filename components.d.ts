@@ -12,6 +12,7 @@ declare module 'vue' {
     Bread: typeof import('./src/components/base/nav-header/src/cpns/bread.vue')['default']
     ChatContent: typeof import('./src/components/chat/chat-content/src/chat-content.vue')['default']
     ChatUserList: typeof import('./src/components/chat/chat-user-list/src/chat-user-list.vue')['default']
+    ChatWindow: typeof import('./src/components/SecondPackage/chat-window/src/chat-window.vue')['default']
     ChooseResume: typeof import('./src/components/fresh/choose-resume/src/choose-resume.vue')['default']
     ComInfo: typeof import('./src/components/fresh/com-info/src/ComInfo.vue')['default']
     ComplexSearch: typeof import('./src/components/SecondPackage/fresh/complex-search/src/complex-search.vue')['default']

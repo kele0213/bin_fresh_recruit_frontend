@@ -36,5 +36,8 @@ import Header from '@/components/base/header'
   background-color: rgb(239, 253, 255);
   overflow: scroll;
   border-bottom: 1px solid #b5b5b5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 </style>

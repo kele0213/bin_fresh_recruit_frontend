@@ -7,30 +7,30 @@ import {storeToRefs} from "pinia";
 import {useAuthStore} from "@/stores/user/auth";
 
 const chatStore = useChatStore()
-const {comSend, getLatelyFreshList, changFreshId,getChatList} = chatStore
-const {freshInfo, chatList, latelyFresh} = storeToRefs(chatStore)
+const {freshSend, getLatelyComList, changeComId,getChatList} = chatStore
+const {comInfo, chatList, latelyCom} = storeToRefs(chatStore)
 
 const authStore = useAuthStore()
 const {userInfo} = storeToRefs(authStore)
 
 onMounted(async () => {
-  await getLatelyFreshList()
+  await getLatelyComList()
 })
 
 const changeStyle = (data: any) => {
-  changFreshId(data.user_id)
+  changeComId(data.com_id)
   const actives = document.getElementsByClassName('active');
   for (let i = 0; i < actives.length; i++) {
     actives[i].classList.remove('active')
   }
-  const element = document.getElementById(data.user_id);
+  const element = document.getElementById(data.com_id);
   element.classList?.add('active');
 }
 
 // 发起聊天
 const startChat = async (data: string, inputContent: string) => {
-  await comSend({
-    user_id: data,
+  await freshSend({
+    com_id: data,
     content: inputContent
   })
 }
@@ -40,23 +40,24 @@ const startChat = async (data: string, inputContent: string) => {
   <!-- 在线咨询 -->
   <div class="consult">
     <!--侧边聊天对象-->
-    <ChatUserList class="user-list" :userType="2" :latelyInfo="latelyFresh" @changeStyle="changeStyle"></ChatUserList>
+    <ChatUserList class="user-list" :userType="1" :latelyInfo="latelyCom" @changeStyle="changeStyle"></ChatUserList>
     <!--  聊天框-->
-    <ChatContent class="chat-content" @startChat="startChat" :userType="2" :chatList="chatList"
-                 :userInfo="freshInfo"></ChatContent>
+    <ChatContent class="chat-content" @startChat="startChat" :userType="1" :chatList="chatList"
+                 :userInfo="comInfo"></ChatContent>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .consult {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 95%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   background-color: #fff;
   border-radius: 8px;
+  margin-top: 20px;
 }
 
 .user-list {

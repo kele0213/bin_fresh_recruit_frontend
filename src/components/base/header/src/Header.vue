@@ -43,6 +43,7 @@ const toHome = () => {
       </div>
       <el-menu-item index="/fresh/search">岗位筛选</el-menu-item>
       <el-menu-item index="/fresh/jobMessage">就业资讯</el-menu-item>
+      <el-menu-item index="/fresh/chat">在线沟通</el-menu-item>
       <div class="flex-grow"></div>
       <el-menu-item index="/login">企业登录</el-menu-item>
       <el-sub-menu>

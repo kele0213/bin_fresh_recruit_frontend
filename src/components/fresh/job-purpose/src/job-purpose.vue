@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {onMounted} from 'vue'
-import {usePurposeStore} from "@/stores/fresh/purpose";
-import {storeToRefs} from "pinia";
-import {ref} from "vue";
-import ModalForm from "@/components/SecondPackage/modal-form";
+import { onMounted } from 'vue'
+import { usePurposeStore } from '@/stores/fresh/purpose'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import ModalForm from '@/components/SecondPackage/modal-form'
 
 const purposeStore = usePurposeStore()
-const {getPurposeList, addPurpose, deletePurpose} = purposeStore
-const {purposeList} = storeToRefs(purposeStore)
+const { getPurposeList, addPurpose, deletePurpose } = purposeStore
+const { purposeList } = storeToRefs(purposeStore)
 const modalRef = ref<InstanceType<typeof ModalForm>>()
-import addConfig from "@/components/fresh/job-purpose/src/addConfig";
-import {showMsg} from "@/utils/message";
+import addConfig from '@/components/fresh/job-purpose/src/addConfig'
+import { showMsg } from '@/utils/message'
 onMounted(async () => {
   await getPurposeList()
 })
@@ -27,25 +27,25 @@ const showModal = () => {
 const addPurposeOne = async (data: any) => {
   let start = data.job_pay_start
   let end = data.job_pay_end
-  if (start == '' && end == ''){
-    showMsg('添加失败，意向薪资为空',"error")
+  if (start == '' && end == '') {
+    showMsg('添加失败，意向薪资为空', 'error')
     return
   }
-  if (start ===''){
+  if (start === '') {
     start = end
   }
-  if (end ===''){
+  if (end === '') {
     end = start
   }
-  if (data.city == '' || data.job_type == ''){
-    showMsg('添加失败，意向城市或意向岗位类别为空',"error")
+  if (data.city == '' || data.job_type == '') {
+    showMsg('添加失败，意向城市或意向岗位类别为空', 'error')
     return
   }
   await addPurpose({
     num: 4,
     city: data.city,
     job_type: data.job_type,
-    job_pay: start +'-'+ end
+    job_pay: start + '-' + end
   })
 }
 </script>
@@ -54,7 +54,7 @@ const addPurposeOne = async (data: any) => {
   <div class="contain">
     <div class="top" @click="showModal">
       <el-icon>
-        <CirclePlus/>
+        <CirclePlus />
       </el-icon>
       <span style="margin-left: 4px">新增岗位意向</span>
     </div>
@@ -69,7 +69,7 @@ const addPurposeOne = async (data: any) => {
         </div>
         <div class="card-bottom">
           <el-icon>
-            <Delete/>
+            <Delete />
           </el-icon>
           <span style="margin-left: 4px" @click="deleteInfo(item?.id)">删除</span>
         </div>

@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import {useAuthStore} from "@/stores/user/auth";
-import {storeToRefs} from "pinia";
-import router from "@/router";
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/user/auth'
+import { storeToRefs } from 'pinia'
+import router from '@/router'
 
 const activeIndex = ref<number>(0)
-const handleSelect = () => {
-}
+const handleSelect = () => {}
 
 const store = useAuthStore()
-const {outLoginReq} = store
-const {roleData, userInfo} = storeToRefs(store)
+const { outLoginReq } = store
+const { roleData, userInfo } = storeToRefs(store)
 
 const forgetPassword = () => {
   // 忘记密码
@@ -24,36 +23,39 @@ const out = async () => {
 }
 // 回到主页
 const toHome = () => {
-  router.push("/fresh/main")
+  router.push('/fresh/main')
 }
 </script>
 
 <template>
   <div class="header">
     <el-menu
-        :default-active="activeIndex"
-        class="el-menu no-caret"
-        mode="horizontal"
-        :ellipsis="false"
-        @select="handleSelect"
-        :router="true"
+      :default-active="activeIndex"
+      class="el-menu no-caret"
+      mode="horizontal"
+      :ellipsis="false"
+      @select="handleSelect"
+      :router="true"
     >
       <div class="logo" @click="toHome">
-        <img src="@/assets/image/logo.png"/>
+        <img src="@/assets/image/logo.png" />
         <div class="name">校招通</div>
       </div>
       <el-menu-item index="/fresh/search">岗位筛选</el-menu-item>
       <el-menu-item index="/fresh/jobMessage">就业资讯</el-menu-item>
+      <el-menu-item index="/fresh/chat">在线沟通</el-menu-item>
       <div class="flex-grow"></div>
       <el-menu-item index="/login">企业登录</el-menu-item>
       <el-sub-menu>
-        <template #title><span class="span">{{ userInfo.user_name ?? '请完善用户名' }}</span></template>
+        <template #title
+          ><span class="span">{{ userInfo.user_name ?? '请完善用户名' }}</span></template
+        >
         <el-menu-item index="/fresh/freshInfoResult">个人中心</el-menu-item>
         <el-menu-item @click="forgetPassword">重置密码</el-menu-item>
         <el-menu-item @click="out">退出登录</el-menu-item>
       </el-sub-menu>
       <div class="imgContain">
-        <img class="avatar" :src="userInfo.a_avatar" alt=""/>
+        <img class="avatar" :src="userInfo.a_avatar" alt="" />
       </div>
     </el-menu>
   </div>
@@ -102,17 +104,24 @@ img {
   color: #fff;
 }
 
-.span, :deep(.el-menu--horizontal > .el-menu-item, .el-menu--horizontal > .el-sub-menu .el-sub-menu__title ) {
+.span,
+:deep(
+    .el-menu--horizontal > .el-menu-item,
+    .el-menu--horizontal > .el-sub-menu .el-sub-menu__title
+  ) {
   font-size: 18px;
 }
 
-:deep(.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover){
+:deep(
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):hover
+  ) {
   background-color: rgb(0, 133, 134);
   color: #fff;
 }
 
-:deep(.el-menu--horizontal>.el-menu-item.is-active){
-  color:#fff !important;
+:deep(.el-menu--horizontal > .el-menu-item.is-active) {
+  color: #fff !important;
 }
 
 .flex-grow {
@@ -133,7 +142,8 @@ img {
 }
 
 .avatar {
-  width: auto;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 </style>

@@ -21,7 +21,7 @@ import Bottom from '@/components/base/bottom/Bottom.vue'
   //min-height: 100%;
   height: 100%;
   .view {
-    flex:1
+    flex: 1;
   }
 }
 .bottom {

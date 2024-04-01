@@ -1,23 +1,32 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useMainStore} from "@/stores/fresh/main";
-import {defineEmits, defineProps, onMounted, ref} from "vue";
-import {useResumeStore} from "@/stores/fresh/resume";
-import ChooseResume from "@/components/fresh/choose-resume";
-import {showBox} from "@/utils/message";
-import {useJobStore} from "@/stores/fresh/job";
-import {useSendStore} from "@/stores/fresh/send";
+import {storeToRefs} from 'pinia'
+import {useMainStore} from '@/stores/fresh/main'
+import {defineEmits, defineProps, onMounted, ref} from 'vue'
+import {useResumeStore} from '@/stores/fresh/resume'
+import ChooseResume from '@/components/fresh/choose-resume'
+import {showBox} from '@/utils/message'
+import {useJobStore} from '@/stores/fresh/job'
+import {useSendStore} from '@/stores/fresh/send'
+import ChatWindow from "@/components/SecondPackage/chat-window";
+import {useChatStore} from "@/stores/chat/chatStore";
+import localCache from "@/utils/localCache";
 
 const resumeStore = useResumeStore()
 const {uploadResume, changeVisible} = resumeStore
 const {visible} = storeToRefs(resumeStore)
 const resumeModal = ref<InstanceType<typeof ChooseResume>>()
+const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
 
 const jobStore = useJobStore()
-const {companyInfo,jobInfoResult} = storeToRefs(jobStore)
+const {companyInfo, jobInfoResult} = storeToRefs(jobStore)
 
 const sendStore = useSendStore()
 const {sendResume} = sendStore
+
+const chatStore = useChatStore()
+const {getChatList} = chatStore
+const {chatList, comInfo} = storeToRefs(chatStore)
+
 defineProps({
   // 是否为岗位详情
   isJob: {
@@ -38,21 +47,21 @@ defineProps({
   },
   comNum: {
     type: String,
-    default: "暂未提供公规模"
+    default: '暂未提供公规模'
   },
   comType: {
     type: String,
-    default: "暂未提供公司类型"
+    default: '暂未提供公司类型'
   },
   jobType: {
     type: String,
-    default: "暂无岗位类别"
+    default: '暂无岗位类别'
   }
 })
 
-const emit = defineEmits(["getJobInfo"])
+const emit = defineEmits(['getJobInfo'])
 const clickFn = (data: any) => {
-  emit("getJobInfo", data)
+  emit('getJobInfo', data)
 }
 // 上传简历
 const uploadResumeInfo = async (file) => {
@@ -64,10 +73,10 @@ const showResumeModal = () => {
   changeVisible(true)
 }
 // 确认投递
-const confirmSend = async (data:any) => {
+const confirmSend = async (data: any) => {
   const resume_id = data.value
-  if (resume_id === 1){
-    showBox("投递失败","请选择一个简历")
+  if (resume_id === 1) {
+    showBox('投递失败', '请选择一个简历')
     return
   }
   await sendResume({
@@ -77,6 +86,14 @@ const confirmSend = async (data:any) => {
   })
 }
 
+// 沟通弹窗
+const showChatWindow = async () => {
+  await chatWindowModal.value!.getVisible()
+  await getChatList({
+    com_id: companyInfo.value.com_id,
+    user_id: localCache.getCache("userId")
+  })
+}
 </script>
 
 <template>
@@ -90,7 +107,7 @@ const confirmSend = async (data:any) => {
         <Location/>
       </el-icon>
       <span v-if="isJob">{{ address }}</span>
-      <el-icon v-if="isJob" style="margin-left: 20px;margin-right:5px">
+      <el-icon v-if="isJob" style="margin-left: 20px; margin-right: 5px">
         <Tickets/>
       </el-icon>
       <span v-if="isJob">{{ jobType }}</span>
@@ -98,8 +115,10 @@ const confirmSend = async (data:any) => {
     </div>
     <div class="bottom">
       <span class="left">
-        <el-button>立即沟通</el-button>
-        <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal">立即投递</el-button>
+        <el-button @click="showChatWindow">立即沟通</el-button>
+        <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal"
+        >立即投递</el-button
+        >
       </span>
       <ChooseResume @confirm="confirmSend"></ChooseResume>
       <span class="right">
@@ -109,11 +128,12 @@ const confirmSend = async (data:any) => {
             :auto-upload="false"
             :on-change="uploadResumeInfo"
         >
-       <el-icon><DocumentAdd /></el-icon>
-        <span style="margin-left: 6px">新增简历附件</span>
+          <el-icon><DocumentAdd/></el-icon>
+          <span style="margin-left: 6px">新增简历附件</span>
         </el-upload>
       </span>
     </div>
+    <ChatWindow ref="chatWindowModal" :chatList="chatList" :userInfo="comInfo"></ChatWindow>
   </div>
 </template>
 
@@ -128,7 +148,9 @@ const confirmSend = async (data:any) => {
   align-items: center;
 }
 
-.top, .center, .bottom {
+.top,
+.center,
+.bottom {
   width: 75%;
 }
 
@@ -200,5 +222,4 @@ const confirmSend = async (data:any) => {
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
-
 </style>

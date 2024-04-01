@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import Search from "@/components/fresh/search/src/Search.vue";
-import JobCard from "@/components/fresh/job-card/src/JobCard.vue";
-import {useCommonStore} from "@/stores/common/common";
-import {storeToRefs} from "pinia";
-import {ref} from 'vue'
-import {useJobStore} from "@/stores/fresh/job";
-import {useMainStore} from "@/stores/fresh/main";
-import {onMounted} from "vue";
+import Search from '@/components/fresh/search/src/Search.vue'
+import JobCard from '@/components/fresh/job-card/src/JobCard.vue'
+import { useCommonStore } from '@/stores/common/common'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { useJobStore } from '@/stores/fresh/job'
+import { useMainStore } from '@/stores/fresh/main'
+import { onMounted } from 'vue'
 
 const jobStore = useJobStore()
-const {saveSearchContent,searchJob} = jobStore
-const {searchContent} = storeToRefs(jobStore)
+const { saveSearchContent, searchJob } = jobStore
 
 const mainStore = useMainStore()
-const {getRecommendList} = mainStore
-const {recommendResult} = storeToRefs(mainStore)
+const { getRecommendList } = mainStore
+const { recommendResult } = storeToRefs(mainStore)
 
 const commonStore = useCommonStore()
-const {getdict} = commonStore
+const { getdict } = commonStore
 
 onMounted(async () => {
   await getRecommendList()
 })
-
 
 const fn = async (content, jobType) => {
   await saveSearchContent({
@@ -48,32 +46,25 @@ const clickJobType = (data: any) => {
     job_type: data
   })
 }
-
-// 跳转岗位详情
-const getJobInfo = (data)=>{
-
-}
-// 跳转企业详情
-const getComInfo = (data)=>{
-
-}
 </script>
 
 <template>
   <div class="freshMain">
-    <Search @search="fn"/>
+    <Search @search="fn" />
     <!--  轮播图-->
     <div class="center">
       <div class="left">
         <ul class="leftUl">
-          <li class="leftUi" v-for="item in dictsType" :key="item" @click="clickJobType(item)">{{ item }}</li>
+          <li class="leftUi" v-for="item in dictsType" :key="item" @click="clickJobType(item)">
+            {{ item }}
+          </li>
         </ul>
       </div>
       <div class="right">
-        <el-carousel :interval="5000" arrow="always" style="height: 100%;width: 100%" autoplay>
+        <el-carousel :interval="5000" arrow="always" style="height: 100%; width: 100%" autoplay>
           <el-carousel-item v-for="item in dictsPhoto" :key="item">
             <div class="img">
-              <img :src="item" alt="" class="carouselImg">
+              <img :src="item" alt="" class="carouselImg" />
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -84,7 +75,12 @@ const getComInfo = (data)=>{
       <div class="recommend">推荐岗位</div>
       <div class="line"></div>
     </div>
-    <JobCard class="jobCard" @getJobInfo="getJobInfo" @getComInfo="getComInfo" :jobList="recommendResult"/>
+    <JobCard
+      class="jobCard"
+      @getJobInfo="getJobInfo"
+      @getComInfo="getComInfo"
+      :jobList="recommendResult"
+    />
   </div>
 </template>
 
@@ -124,7 +120,8 @@ const getComInfo = (data)=>{
 
 .img .carouselImg {
   width: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -144,7 +141,7 @@ const getComInfo = (data)=>{
   height: 100%;
   width: 29%;
   background-color: #fff;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 // 列表
@@ -168,10 +165,10 @@ const getComInfo = (data)=>{
 }
 
 // 岗位卡片
-.jobCard{
+.jobCard {
   margin-top: 20px;
 }
-.content{
+.content {
   margin-top: 25px;
   width: 80%;
   display: flex;
@@ -179,12 +176,12 @@ const getComInfo = (data)=>{
   justify-content: center;
   align-content: center;
 }
-.recommend{
+.recommend {
   color: #00a6a7;
   font-size: 28px;
   font-weight: bold;
 }
-.line{
+.line {
   width: 100%;
   height: 4px;
   background-color: #00a6a7;

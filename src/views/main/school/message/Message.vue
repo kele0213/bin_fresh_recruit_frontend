@@ -10,7 +10,7 @@ import updateConfig from '@/views/main/school/message/config/updateConfig'
 import type { AddMessageRequest } from '@/service/school/type'
 import searchConfig from './config/searchConfig'
 import SearchForm from '@/components/SecondPackage/search-form'
-import {showBox, showMsg} from "@/utils/message";
+import { showBox, showMsg } from '@/utils/message'
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
 const updateRef = ref<InstanceType<typeof ModalForm>>()
@@ -50,12 +50,12 @@ const addMessage = async (data: any) => {
   // 处理数据
   const title = data.title
   const message = data.message
-  if (title.length >= 16){
-    showBox("修改失败","资讯标题长度最大为16")
+  if (title.length >= 16) {
+    showBox('修改失败', '资讯标题长度最大为16')
     return
   }
-  if (message.length >= 2000){
-    showBox("修改失败","资讯内容长度最大为2000")
+  if (message.length >= 2000) {
+    showBox('修改失败', '资讯内容长度最大为2000')
     return
   }
   const addData = ref<AddMessageRequest>({
@@ -69,12 +69,12 @@ const updateMessage = async (data: any) => {
   const id = data.id
   const title = data['title']
   const intro_content = data['intro_content']
-  if (title.length >= 16){
-    showBox("修改失败","资讯标题长度最大为16")
+  if (title.length >= 16) {
+    showBox('修改失败', '资讯标题长度最大为16')
     return
   }
-  if (intro_content.length >= 2000){
-    showBox("修改失败","资讯内容长度最大为2000")
+  if (intro_content.length >= 2000) {
+    showBox('修改失败', '资讯内容长度最大为2000')
     return
   }
   const updateReq = ref({

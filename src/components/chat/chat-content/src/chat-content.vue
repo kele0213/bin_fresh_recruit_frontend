@@ -29,19 +29,24 @@ const send = async (data: string) => {
 
 onMounted(async () => {
   const interval = setInterval(async () => {
+    let count = 0;
     if (propds.userType === 1) {
-      console.log(1)
+      count++;
       await getChatList({
         user_id: localCache.getCache("userId"),
         com_id: propds.userInfo.com_id,
       })
     }
     if (propds.userType === 2) {
-      console.log(2)
+      count++;
       await getChatList({
         user_id: propds.userInfo.user_id,
         com_id: localCache.getCache("userId"),
       })
+    }
+    console.log(count)
+    if (count > 1000) {
+      clearInterval(interval)
     }
   }, 5000);
   onBeforeUnmount(() => {

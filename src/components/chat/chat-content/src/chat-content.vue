@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref} from 'vue'
+import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount} from 'vue'
 import {useChatStore} from "@/stores/chat/chatStore";
 import {storeToRefs} from "pinia";
 import {formatUTC} from '@/utils/formatTime'
 import type {ChatVo} from "@/service/chat/type";
+import localCache from "@/utils/localCache";
 
 const inputContent = ref()
 const chatStore = useChatStore()
-const {comSend} = chatStore
+const {getChatList} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
-defineProps({
+const propds = defineProps({
   userType: {
     type: Number,
     default: 1
   },
-  chatList :{
-
-  },
-  userInfo:{
-
-  }
+  chatList: {},
+  userInfo: {}
 
 })
 
@@ -29,6 +26,29 @@ const send = async (data: string) => {
   emit('startChat', data, inputContent.value)
   inputContent.value = ''
 }
+
+/*let intervaild
+onMounted(async () => {
+  intervaild = setInterval(async () => {
+    if (propds.userType === 1) {
+      console.log(1)
+      await getChatList({
+        user_id: localCache.getCache("userId"),
+        com_id: propds.userInfo.com_id,
+      })
+    }
+    if (propds.userType === 2) {
+      console.log(2)
+      await getChatList({
+        user_id: propds.userInfo.user_id,
+        com_id: localCache.getCache("userId"),
+      })
+    }
+  }, 10000);
+})
+onBeforeUnmount(() => {
+  clearInterval(intervaild)
+})*/
 
 </script>
 
@@ -42,7 +62,10 @@ const send = async (data: string) => {
         </div>
         <div class="info">
           <div class="info-top" v-if="userType===1">{{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}</div>
-          <div class="info-top" v-if="userType===2">{{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}</div>
+          <div class="info-top" v-if="userType===2">{{
+              userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name
+            }}
+          </div>
           <div class="info-bottom" v-if="userType===2">
             <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
             <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>

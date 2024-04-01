@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount} from 'vue'
+import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose} from 'vue'
 import {useChatStore} from "@/stores/chat/chatStore";
 import {storeToRefs} from "pinia";
 import {formatUTC} from '@/utils/formatTime'
@@ -21,15 +21,29 @@ const propds = defineProps({
 
 })
 
+const contentCenter = ref(null)
+
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
-  emit('startChat', data, inputContent.value)
+  contentCenter.value.scrollTop = contentCenter.value.scrollHeight;
+  if (inputContent.value !== undefined) {
+    emit('startChat', data, inputContent.value)
+  }
   inputContent.value = ''
 }
 
+let interval
+defineExpose({
+  closeChat() {
+    clearInterval(interval)
+  }
+})
+
+
+let count = 0;
 onMounted(async () => {
-  const interval = setInterval(async () => {
-    let count = 0;
+  interval = setInterval(async () => {
+    contentCenter.value.scrollTop = contentCenter.value.scrollHeight;
     if (propds.userType === 1) {
       count++;
       await getChatList({
@@ -80,7 +94,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center1" v-if="userType === 2">
+      <div class="content-center" id="content-center1" v-if="userType === 2" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 2">
             <div class="right-content">
@@ -102,7 +116,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center2" v-if="userType === 1">
+      <div class="content-center" id="content-center2" v-if="userType === 1" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 1">
             <div class="right-content">

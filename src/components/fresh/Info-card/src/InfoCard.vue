@@ -24,7 +24,7 @@ const sendStore = useSendStore()
 const {sendResume} = sendStore
 
 const chatStore = useChatStore()
-const {getChatList} = chatStore
+const {getChatList,changeComId} = chatStore
 const {chatList, comInfo} = storeToRefs(chatStore)
 
 defineProps({
@@ -89,6 +89,7 @@ const confirmSend = async (data: any) => {
 // 沟通弹窗
 const showChatWindow = async () => {
   await chatWindowModal.value!.getVisible()
+  await changeComId(companyInfo.value.com_id)
   await getChatList({
     com_id: companyInfo.value.com_id,
     user_id: localCache.getCache("userId")

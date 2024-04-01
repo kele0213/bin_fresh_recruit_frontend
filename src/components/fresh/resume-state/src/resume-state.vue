@@ -2,11 +2,14 @@
 import { storeToRefs } from 'pinia'
 import { useResumeStore } from '@/stores/fresh/resume'
 import { useSendStore } from '@/stores/fresh/send'
-import { onMounted } from 'vue'
+import {onMounted, ref} from 'vue'
 import { formatUTC } from '@/utils/formatTime'
 import router from '@/router'
 import { useJobStore } from '@/stores/fresh/job'
 import { showMsg } from '@/utils/message'
+import localCache from "@/utils/localCache";
+import ChatWindow from "@/components/SecondPackage/chat-window";
+import {useChatStore} from "@/stores/chat/chatStore";
 
 const sendStore = useSendStore()
 const { getStateList, changeCurrent } = sendStore
@@ -14,6 +17,11 @@ const { stateListPage, total, pageSize, current } = storeToRefs(sendStore)
 const jobStore = useJobStore()
 const { changeJobId, changeComId } = jobStore
 const { jobInfoResult } = storeToRefs(jobStore)
+
+const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
+const chatStore = useChatStore()
+const {getChatList,changeComId:changeComIdByChat} = chatStore
+const {chatList, comInfo} = storeToRefs(chatStore)
 onMounted(async () => {
   await getStateList()
 })
@@ -33,6 +41,16 @@ const gotoJobInfo = (data: any) => {
   router.push('/fresh/jobInfo')
   changeJobId(data.job_id)
   changeComId(data.com_id)
+}
+
+// 沟通弹窗
+const showChatWindow = async (data: any) => {
+  await chatWindowModal.value!.getVisible()
+  await changeComIdByChat(data.com_id)
+  await getChatList({
+    com_id: data.com_id,
+    user_id: localCache.getCache("userId")
+  })
 }
 </script>
 <template>
@@ -77,7 +95,7 @@ const gotoJobInfo = (data: any) => {
             {{ dictMap.get(item.send_state) }}
           </div>
           <div class="info-right">
-            <el-button>立即沟通</el-button>
+            <el-button @click="showChatWindow(item)">立即沟通</el-button>
           </div>
         </div>
         <div class="line"></div>
@@ -93,6 +111,7 @@ const gotoJobInfo = (data: any) => {
         :current-page="current"
       ></el-pagination>
     </div>
+    <ChatWindow ref="chatWindowModal" :chatList="chatList" :userInfo="comInfo"></ChatWindow>
   </div>
 </template>
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose} from 'vue'
-import {useChatStore} from "@/stores/chat/chatStore";
-import {storeToRefs} from "pinia";
-import {formatUTC} from '@/utils/formatTime'
-import type {ChatVo} from "@/service/chat/type";
-import localCache from "@/utils/localCache";
+import { defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose } from 'vue'
+import { useChatStore } from '@/stores/chat/chatStore'
+import { storeToRefs } from 'pinia'
+import { formatUTC } from '@/utils/formatTime'
+import type { ChatVo } from '@/service/chat/type'
+import localCache from '@/utils/localCache'
 
 const inputContent = ref()
 const chatStore = useChatStore()
-const {getChatList} = chatStore
+const { getChatList } = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 const propds = defineProps({
@@ -18,14 +18,13 @@ const propds = defineProps({
   },
   chatList: {},
   userInfo: {}
-
 })
 
 const contentCenter = ref(null)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
-  contentCenter.value.scrollTop = contentCenter.value.scrollHeight;
+  contentCenter.value.scrollTop = contentCenter.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
   }
@@ -39,53 +38,51 @@ defineExpose({
   }
 })
 
-
-let count = 0;
+let count = 0
 onMounted(async () => {
   interval = setInterval(async () => {
-    contentCenter.value.scrollTop = contentCenter.value.scrollHeight;
+    contentCenter.value.scrollTop = contentCenter.value.scrollHeight
     if (propds.userType === 1) {
-      count++;
+      count++
       await getChatList({
-        user_id: localCache.getCache("userId"),
-        com_id: propds.userInfo.com_id,
+        user_id: localCache.getCache('userId'),
+        com_id: propds.userInfo.com_id
       })
     }
     if (propds.userType === 2) {
-      count++;
+      count++
       await getChatList({
         user_id: propds.userInfo.user_id,
-        com_id: localCache.getCache("userId"),
+        com_id: localCache.getCache('userId')
       })
     }
     console.log(count)
     if (count > 1000) {
       clearInterval(interval)
     }
-  }, 5000);
+  }, 5000)
   onBeforeUnmount(() => {
     clearInterval(interval)
   })
 })
-
-
 </script>
 
 <template>
   <div class="chat-content">
-    <el-skeleton :rows="16" v-if="!userInfo"/>
+    <el-skeleton :rows="16" v-if="!userInfo" />
     <div class="have-content" v-if="userInfo">
       <div class="content-top">
         <div class="imgContain">
-          <img class="img" :src="userInfo?.a_avatar" alt="">
+          <img class="img" :src="userInfo?.a_avatar" alt="" />
         </div>
         <div class="info">
-          <div class="info-top" v-if="userType===1">{{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}</div>
-          <div class="info-top" v-if="userType===2">{{
-              userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name
-            }}
+          <div class="info-top" v-if="userType === 1">
+            {{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}
           </div>
-          <div class="info-bottom" v-if="userType===2">
+          <div class="info-top" v-if="userType === 2">
+            {{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}
+          </div>
+          <div class="info-bottom" v-if="userType === 2">
             <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
             <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>
             <el-tag class="tag">{{ userInfo?.user_school }}</el-tag>
@@ -102,7 +99,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
+              <img class="avatar-img" :src="item?.a_avatar" alt="" />
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 1">
@@ -111,7 +108,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
+              <img class="avatar-img" :src="item?.a_avatar" alt="" />
             </div>
           </div>
         </div>
@@ -124,7 +121,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
+              <img class="avatar-img" :src="item?.a_avatar" alt="" />
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 2">
@@ -133,16 +130,31 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
+              <img class="avatar-img" :src="item?.a_avatar" alt="" />
             </div>
           </div>
         </div>
       </div>
       <div class="content-bottom">
-        <el-input v-model="inputContent" style="width: 85%;margin-right: 10px;height: 60%" placeholder="回复内容"
-                  class="input" clearable></el-input>
-        <el-button style="width: 10%;height: 60%" @click="send(userInfo?.com_id)" v-if="userType === 1">发送</el-button>
-        <el-button style="width: 10%;height: 60%" @click="send(userInfo?.user_id)" v-if="userType === 2">发送</el-button>
+        <el-input
+          v-model="inputContent"
+          style="width: 85%; margin-right: 10px; height: 60%"
+          placeholder="回复内容"
+          class="input"
+          clearable
+        ></el-input>
+        <el-button
+          style="width: 10%; height: 60%"
+          @click="send(userInfo?.com_id)"
+          v-if="userType === 1"
+          >发送</el-button
+        >
+        <el-button
+          style="width: 10%; height: 60%"
+          @click="send(userInfo?.user_id)"
+          v-if="userType === 2"
+          >发送</el-button
+        >
       </div>
     </div>
   </div>
@@ -262,7 +274,8 @@ onMounted(async () => {
   object-fit: cover;
 }
 
-.chat-list-right, .chat-list-left {
+.chat-list-right,
+.chat-list-left {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -291,7 +304,8 @@ onMounted(async () => {
   font-size: 16px;
 }
 
-.right-content, .left-content {
+.right-content,
+.left-content {
   display: flex;
   flex-direction: column;
 }

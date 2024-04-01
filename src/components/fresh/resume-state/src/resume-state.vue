@@ -2,14 +2,14 @@
 import { storeToRefs } from 'pinia'
 import { useResumeStore } from '@/stores/fresh/resume'
 import { useSendStore } from '@/stores/fresh/send'
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import { formatUTC } from '@/utils/formatTime'
 import router from '@/router'
 import { useJobStore } from '@/stores/fresh/job'
 import { showMsg } from '@/utils/message'
-import localCache from "@/utils/localCache";
-import ChatWindow from "@/components/SecondPackage/chat-window";
-import {useChatStore} from "@/stores/chat/chatStore";
+import localCache from '@/utils/localCache'
+import ChatWindow from '@/components/SecondPackage/chat-window'
+import { useChatStore } from '@/stores/chat/chatStore'
 
 const sendStore = useSendStore()
 const { getStateList, changeCurrent } = sendStore
@@ -20,8 +20,8 @@ const { jobInfoResult } = storeToRefs(jobStore)
 
 const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
 const chatStore = useChatStore()
-const {getChatList,changeComId:changeComIdByChat} = chatStore
-const {chatList, comInfo} = storeToRefs(chatStore)
+const { getChatList, changeComId: changeComIdByChat } = chatStore
+const { chatList, comInfo } = storeToRefs(chatStore)
 onMounted(async () => {
   await getStateList()
 })
@@ -49,7 +49,7 @@ const showChatWindow = async (data: any) => {
   await changeComIdByChat(data.com_id)
   await getChatList({
     com_id: data.com_id,
-    user_id: localCache.getCache("userId")
+    user_id: localCache.getCache('userId')
   })
 }
 </script>

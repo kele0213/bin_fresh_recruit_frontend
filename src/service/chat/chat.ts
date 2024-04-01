@@ -25,11 +25,12 @@ export function freshStartChatHttp(data: FreshStartChatRequest) {
     })
 }
 
-// 企业获取聊天记录
+// 获取聊天记录
 export function GetChatListHttp(data: GetChatRequest) {
     return httpService.get<Idata<ChatVo[]>>({
         url: '/chat/get/list',
-        params: data
+        params: data,
+        showLoading: false
     })
 }
 

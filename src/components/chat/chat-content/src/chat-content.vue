@@ -27,9 +27,8 @@ const send = async (data: string) => {
   inputContent.value = ''
 }
 
-/*let intervaild
 onMounted(async () => {
-  intervaild = setInterval(async () => {
+  const interval = setInterval(async () => {
     if (propds.userType === 1) {
       console.log(1)
       await getChatList({
@@ -44,11 +43,12 @@ onMounted(async () => {
         com_id: localCache.getCache("userId"),
       })
     }
-  }, 10000);
+  }, 5000);
+  onBeforeUnmount(() => {
+    clearInterval(interval)
+  })
 })
-onBeforeUnmount(() => {
-  clearInterval(intervaild)
-})*/
+
 
 </script>
 

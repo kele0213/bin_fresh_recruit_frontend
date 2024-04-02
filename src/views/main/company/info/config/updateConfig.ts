@@ -7,8 +7,13 @@ const commonStore = useCommonStore()
 const { getdict } = commonStore
 const { dictData } = storeToRefs(commonStore)
 
-await getdict(6)
+const getDictFn = async (num: number, array) => {
+  const res = await getdict(num)
+  array.value = res
+}
+
 const dictsNum = []
+getDictFn(6,dictsNum).then()
 for (const item of dictData.value) {
   dictsNum.push({
     label: item,
@@ -16,8 +21,8 @@ for (const item of dictData.value) {
   })
 }
 
-await getdict(3)
 const dictsType = []
+getDictFn(3,dictsType).then()
 for (const item of dictData.value) {
   dictsType.push({
     label: item,

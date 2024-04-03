@@ -7,6 +7,11 @@ const commonStore = useCommonStore()
 const { getdict } = commonStore
 const { dictData } = storeToRefs(commonStore)
 
+const getDictFn = async (num: number, array) => {
+  const res = await getdict(num)
+  array.value = res
+}
+
 await getdict(4)
 const dictsDeucation = []
 for (const item of dictData.value) {

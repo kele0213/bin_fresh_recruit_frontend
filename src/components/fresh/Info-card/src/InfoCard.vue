@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia'
-import {useMainStore} from '@/stores/fresh/main'
-import {defineEmits, defineProps, onMounted, ref} from 'vue'
-import {useResumeStore} from '@/stores/fresh/resume'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/stores/fresh/main'
+import { defineEmits, defineProps, onMounted, ref } from 'vue'
+import { useResumeStore } from '@/stores/fresh/resume'
 import ChooseResume from '@/components/fresh/choose-resume'
-import {showBox} from '@/utils/message'
-import {useJobStore} from '@/stores/fresh/job'
-import {useSendStore} from '@/stores/fresh/send'
-import ChatWindow from "@/components/SecondPackage/chat-window";
-import {useChatStore} from "@/stores/chat/chatStore";
-import localCache from "@/utils/localCache";
+import { showBox } from '@/utils/message'
+import { useJobStore } from '@/stores/fresh/job'
+import { useSendStore } from '@/stores/fresh/send'
+import ChatWindow from '@/components/SecondPackage/chat-window'
+import { useChatStore } from '@/stores/chat/chatStore'
+import localCache from '@/utils/localCache'
 
 const resumeStore = useResumeStore()
-const {uploadResume, changeVisible} = resumeStore
-const {visible} = storeToRefs(resumeStore)
+const { uploadResume, changeVisible } = resumeStore
+const { visible } = storeToRefs(resumeStore)
 const resumeModal = ref<InstanceType<typeof ChooseResume>>()
 const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
 
 const jobStore = useJobStore()
-const {companyInfo, jobInfoResult} = storeToRefs(jobStore)
+const { companyInfo, jobInfoResult } = storeToRefs(jobStore)
 
 const sendStore = useSendStore()
-const {sendResume} = sendStore
+const { sendResume } = sendStore
 
 const chatStore = useChatStore()
-const {getChatList} = chatStore
-const {chatList, comInfo} = storeToRefs(chatStore)
+const { getChatList, changeComId } = chatStore
+const { chatList, comInfo } = storeToRefs(chatStore)
 
 defineProps({
   // 是否为岗位详情
@@ -89,9 +89,10 @@ const confirmSend = async (data: any) => {
 // 沟通弹窗
 const showChatWindow = async () => {
   await chatWindowModal.value!.getVisible()
+  await changeComId(companyInfo.value.com_id)
   await getChatList({
     com_id: companyInfo.value.com_id,
-    user_id: localCache.getCache("userId")
+    user_id: localCache.getCache('userId')
   })
 }
 </script>
@@ -104,11 +105,11 @@ const showChatWindow = async () => {
     </div>
     <div class="center">
       <el-icon v-if="isJob" style="margin-right: 5px">
-        <Location/>
+        <Location />
       </el-icon>
       <span v-if="isJob">{{ address }}</span>
       <el-icon v-if="isJob" style="margin-left: 20px; margin-right: 5px">
-        <Tickets/>
+        <Tickets />
       </el-icon>
       <span v-if="isJob">{{ jobType }}</span>
       <span v-if="!isJob">{{ comNum + ' · ' + comType }}</span>
@@ -117,18 +118,18 @@ const showChatWindow = async () => {
       <span class="left">
         <el-button @click="showChatWindow">立即沟通</el-button>
         <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal"
-        >立即投递</el-button
+          >立即投递</el-button
         >
       </span>
       <ChooseResume @confirm="confirmSend"></ChooseResume>
       <span class="right">
         <el-upload
-            action
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="uploadResumeInfo"
+          action
+          :show-file-list="false"
+          :auto-upload="false"
+          :on-change="uploadResumeInfo"
         >
-          <el-icon><DocumentAdd/></el-icon>
+          <el-icon><DocumentAdd /></el-icon>
           <span style="margin-left: 6px">新增简历附件</span>
         </el-upload>
       </span>

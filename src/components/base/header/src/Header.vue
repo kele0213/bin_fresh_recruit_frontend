@@ -48,14 +48,14 @@ const toHome = () => {
       <el-menu-item index="/login">企业登录</el-menu-item>
       <el-sub-menu>
         <template #title
-          ><span class="span">{{ userInfo.user_name ?? '请完善用户名' }}</span></template
+          ><span class="span">{{ userInfo?.user_name ?? '请完善用户名' }}</span></template
         >
         <el-menu-item index="/fresh/freshInfoResult">个人中心</el-menu-item>
         <el-menu-item @click="forgetPassword">重置密码</el-menu-item>
         <el-menu-item @click="out">退出登录</el-menu-item>
       </el-sub-menu>
       <div class="imgContain">
-        <img class="avatar" :src="userInfo.a_avatar" alt="" />
+        <img class="avatar" :src="userInfo?.a_avatar" alt="" />
       </div>
     </el-menu>
   </div>

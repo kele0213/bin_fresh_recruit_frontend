@@ -6,10 +6,12 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import topLevelAwait from 'vite-plugin-top-level-await'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    topLevelAwait(),
     vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()]
@@ -18,7 +20,10 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     })
   ],
-  base: './',
+  build: {
+    target: 'esnext'
+  },
+  base: '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -27,7 +32,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://8.218.85.227:8081/bin_fresh_recruit/', //目标地址
+        target: 'http://8.218.85.227:8081/bin_fresh_recruit/', //目标地址（本地调试使用）
+        // target: 'http://127.0.0.1:8081/bin_fresh_recruit/', //目标地址（部署到服务器使用）
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

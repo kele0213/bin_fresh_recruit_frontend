@@ -12,8 +12,8 @@ const getDictFn = async (num: number, array) => {
   array.value = res
 }
 
+await getdict(1)
 const dictsJobType = []
-getDictFn(1,dictsJobType).then()
 for (const item of dictData.value) {
   dictsJobType.push({
     label: item,

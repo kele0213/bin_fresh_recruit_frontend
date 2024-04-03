@@ -12,8 +12,8 @@ const getDictFn = async (num: number, array) => {
   array.value = res
 }
 
+await getdict(6)
 const dictsNum = []
-getDictFn(6,dictsNum).then()
 for (const item of dictData.value) {
   dictsNum.push({
     label: item,
@@ -21,8 +21,8 @@ for (const item of dictData.value) {
   })
 }
 
+await getdict(3)
 const dictsType = []
-getDictFn(3,dictsType).then()
 for (const item of dictData.value) {
   dictsType.push({
     label: item,

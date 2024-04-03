@@ -12,8 +12,8 @@ const getDictFn = async (num: number, array) => {
   array.value = res
 }
 
+await getdict(4)
 const dictsDeucation = []
-getDictFn(4,dictsDeucation).then()
 for (const item of dictData.value) {
   dictsDeucation.push({
     label: item,

@@ -13,8 +13,8 @@ const getDictFn = async (num: number, array) => {
   array.value = res
 }
 
+await getdict(5)
 const dicts = []
-getDictFn(5,dicts).then()
 dictData.value.forEach((item, index) => {
   dicts.push({
     label: item,

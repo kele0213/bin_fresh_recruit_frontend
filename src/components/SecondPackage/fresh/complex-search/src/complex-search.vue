@@ -5,7 +5,7 @@ import { useCommonStore } from '@/stores/common/common'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useJobStore } from '@/stores/fresh/job'
-import { defineEmits } from 'vue/dist/vue'
+import { defineEmits } from 'vue'
 
 const jobStore = useJobStore()
 const { saveSearchContent, saveSearch } = jobStore

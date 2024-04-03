@@ -1,31 +1,35 @@
 <script setup lang="ts">
-import {useChatStore} from "@/stores/chat/chatStore";
-import {storeToRefs} from "pinia";
-import {defineEmits, defineProps, onMounted} from "vue";
-import {formatUTC} from '@/utils/formatTime'
-
+import { useChatStore } from '@/stores/chat/chatStore'
+import { storeToRefs } from 'pinia'
+import { defineEmits, defineProps, onMounted } from 'vue'
+import { formatUTC } from '@/utils/formatTime'
 
 defineProps({
   userType: {
     type: Number,
     default: 1
   },
-  latelyInfo: {},
-
+  latelyInfo: {}
 })
 const emit = defineEmits(['changeStyle'])
 const changeStyle = (data: any) => {
-  emit("changeStyle", data)
+  emit('changeStyle', data)
 }
 </script>
 
 <template>
   <div class="list">
     <div class="list-inner" v-if="userType === 2">
-      <div class="list-info" v-for="item in latelyInfo" :key="item" @click="changeStyle(item)" :id="item.user_id">
+      <div
+        class="list-info"
+        v-for="item in latelyInfo"
+        :key="item"
+        @click="changeStyle(item)"
+        :id="item.user_id"
+      >
         <div class="info">
           <div class="imgContain">
-            <img class="img" :src="item.a_avatar" alt="">
+            <img class="img" :src="item.a_avatar" alt="" />
           </div>
           <div class="user-info">{{ item.user_name === '' ? '暂无昵称' : item.user_name }}</div>
         </div>
@@ -33,10 +37,16 @@ const changeStyle = (data: any) => {
       </div>
     </div>
     <div class="list-inner" v-if="userType === 1">
-      <div class="list-info" v-for="item in latelyInfo" :key="item" @click="changeStyle(item)" :id="item.com_id">
+      <div
+        class="list-info"
+        v-for="item in latelyInfo"
+        :key="item"
+        @click="changeStyle(item)"
+        :id="item.com_id"
+      >
         <div class="info">
           <div class="imgContain">
-            <img class="img" :src="item.a_avatar" alt="">
+            <img class="img" :src="item.a_avatar" alt="" />
           </div>
           <div class="user-info">{{ item.com_name === '' ? '暂无昵称' : item.com_name }}</div>
         </div>

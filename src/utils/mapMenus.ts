@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-let firstRoute: any = null
+let firstRoute: any = '/login'
 
 export { firstRoute }
 
@@ -8,19 +8,19 @@ export type roleType = 'school' | 'company' | 'fresh'
 
 export async function getRoleRoutes(role: roleType) {
   const routes: RouteRecordRaw[] = []
-  let modules = null
+  let modules = {}
   if (role === 'school') {
-    modules = import.meta.glob('../router/main/school/**/*.ts')
+    modules = import.meta.glob('@/router/main/school/**/*.ts', { eager: true })
   } else if (role === 'company') {
-    modules = import.meta.glob('../router/main/company/**/*.ts')
+    modules = import.meta.glob('@/router/main/company/**/*.ts', { eager: true })
   } else if (role === 'fresh') {
-    modules = import.meta.glob('../router/fresh/**/*.ts')
+    modules = import.meta.glob('@/router/fresh/**/*.ts', { eager: true })
   }
-  // console.log(modules)
-  for (const path in modules) {
-    const route = await (modules[path] as () => Promise<{ default: RouteRecordRaw }>)()
-    routes.push(route.default)
-  }
+  const importModule = Object.values(modules)
+  importModule.forEach((fileImport: any) => {
+    routes.push(fileImport.default)
+  })
+
   return routes
 }
 

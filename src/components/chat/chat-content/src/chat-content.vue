@@ -24,7 +24,7 @@ const contentCenter = ref(null)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
-  contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
   }

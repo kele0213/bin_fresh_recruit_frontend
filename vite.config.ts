@@ -32,8 +32,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // target: 'http://8.218.85.227:8081/bin_fresh_recruit/', //目标地址（本地调试使用）
-        target: 'http://127.0.0.1:8081/bin_fresh_recruit/', //目标地址（部署到服务器使用）
+        target: 'http://8.218.85.227:8081/bin_fresh_recruit/', //目标地址（本地调试使用）
+        // target: 'http://127.0.0.1:8081/bin_fresh_recruit/', //目标地址（部署到服务器使用）
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

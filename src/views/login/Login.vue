@@ -19,16 +19,22 @@ const noFind = () => {
       <div class="left">
         <div class="items">
           <div class="item">
-            <div class="item-left"></div>
+            <div class="item-left"><el-icon color="rgba(0, 166, 167)"><Notebook /></el-icon></div>
             <div class="item-right">应届生找工作上校招通</div>
           </div>
           <div class="item">
-            <div class="item-left"></div>
-            <div class="item-right">应届生找工作上校招通</div>
+            <div class="item-left"><el-icon><ChatLineRound /></el-icon></div>
+            <div class="item-right">
+              <span>沟通</span>
+              <span>与企业直接聊</span>
+            </div>
           </div>
           <div class="item">
-            <div class="item-left"></div>
-            <div class="item-right">应届生找工作上校招通</div>
+            <div class="item-left"><el-icon><SuitcaseLine /></el-icon></div>
+            <div class="item-right">
+              <span>任你选</span>
+              <span>海量岗位随你选</span>
+            </div>
           </div>
         </div>
       </div>
@@ -93,10 +99,15 @@ const noFind = () => {
         .item {
           margin-bottom: 60px;
           display: flex;
+          align-items: center;
+          justify-content: center;
           .item-left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
             width: 40px;
             height: 40px;
-            background-color: rgb(108, 108, 108);
             border-radius: 50%;
           }
           .item-right {
@@ -104,13 +115,13 @@ const noFind = () => {
             margin-left: 10px;
             display: flex;
             justify-content: center;
-            align-items: center;
             font-size: 16px;
+            flex-direction: column;
           }
         }
         .item:first-child {
           .item-left {
-            background-color: rgb(0, 166, 167);
+            //background-color: rgb(0, 166, 167);
           }
           .item-right {
             color: rgb(0, 166, 167);

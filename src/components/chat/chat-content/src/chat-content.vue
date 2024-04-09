@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose } from 'vue'
-import { useChatStore } from '@/stores/chat/chatStore'
-import { storeToRefs } from 'pinia'
-import { formatUTC } from '@/utils/formatTime'
-import type { ChatVo } from '@/service/chat/type'
+import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose} from 'vue'
+import {useChatStore} from '@/stores/chat/chatStore'
+import {storeToRefs} from 'pinia'
+import {formatUTC} from '@/utils/formatTime'
+import type {ChatVo} from '@/service/chat/type'
 import localCache from '@/utils/localCache'
+import {create} from "axios";
 
 const inputContent = ref()
 const chatStore = useChatStore()
-const { getChatList } = chatStore
+const {getChatList} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 const propds = defineProps({
@@ -24,6 +25,7 @@ const contentCenter = ref(null)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
+  console.log('enter')
   contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
@@ -69,11 +71,11 @@ onMounted(async () => {
 
 <template>
   <div class="chat-content">
-    <el-skeleton :rows="16" v-if="!userInfo" />
+    <el-skeleton :rows="16" v-if="!userInfo"/>
     <div class="have-content" v-if="userInfo">
       <div class="content-top">
         <div class="imgContain">
-          <img class="img" :src="userInfo?.a_avatar" alt="" />
+          <img class="img" :src="userInfo?.a_avatar" alt=""/>
         </div>
         <div class="info">
           <div class="info-top" v-if="userType === 1">
@@ -99,7 +101,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 1">
@@ -108,7 +110,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
         </div>
@@ -121,7 +123,7 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 2">
@@ -130,30 +132,38 @@ onMounted(async () => {
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
         </div>
       </div>
       <div class="content-bottom">
         <el-input
-          v-model="inputContent"
-          style="width: 85%; margin-right: 10px; height: 60%"
-          placeholder="回复内容"
-          class="input"
-          clearable
+            type="textarea"
+            resize="none"
+            maxlength="120"
+            show-word-limit
+            rows="2"
+            :autosize="{ minRows: 1, maxRows: 2 }"
+            v-model="inputContent"
+            style="width: 85%; margin-right: 10px"
+            placeholder="回复内容"
+            class="input"
+            clearable
         ></el-input>
         <el-button
-          style="width: 10%; height: 60%"
-          @click="send(userInfo?.com_id)"
-          v-if="userType === 1"
-          >发送</el-button
+            style="width: 10%; height: 50%"
+            @click="send(userInfo?.com_id)"
+            v-if="userType === 1"
+        >发送
+        </el-button
         >
         <el-button
-          style="width: 10%; height: 60%"
-          @click="send(userInfo?.user_id)"
-          v-if="userType === 2"
-          >发送</el-button
+            style="width: 10%; height: 50%"
+            @click="send(userInfo?.user_id)"
+            v-if="userType === 2"
+        >发送
+        </el-button
         >
       </div>
     </div>
@@ -192,7 +202,7 @@ onMounted(async () => {
 }
 
 .content-bottom {
-  height: 60px;
+  height: 65px;
   width: 100%;
   border-radius: 0 0 8px 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);

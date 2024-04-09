@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose} from 'vue'
+import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose, onUnmounted} from 'vue'
 import {useChatStore} from '@/stores/chat/chatStore'
 import {storeToRefs} from 'pinia'
 import {formatUTC} from '@/utils/formatTime'
@@ -25,7 +25,6 @@ const contentCenter = ref(null)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
-  console.log('enter')
   contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
@@ -66,6 +65,24 @@ onMounted(async () => {
   onBeforeUnmount(() => {
     clearInterval(interval)
   })
+})
+
+const keyDown = (e) =>{
+  if (e.keyCode == 13 || e.keyCode == 100){
+    if (propds.userType === 1){
+      send(propds.userInfo.com_id)
+    }
+    if (propds.userType === 2){
+      send(propds.userInfo.user_id)
+    }
+  }
+}
+
+onMounted(()=>{
+  window.addEventListener('keydown',keyDown)
+})
+onUnmounted(()=>{
+  window.removeEventListener('keydown',keyDown,false)
 })
 </script>
 
@@ -139,28 +156,26 @@ onMounted(async () => {
       </div>
       <div class="content-bottom">
         <el-input
-            type="textarea"
-            resize="none"
             maxlength="120"
             show-word-limit
-            rows="2"
-            :autosize="{ minRows: 1, maxRows: 2 }"
             v-model="inputContent"
-            style="width: 85%; margin-right: 10px"
+            style="width: 85%; margin-right: 10px;height: 60%"
             placeholder="回复内容"
             class="input"
             clearable
         ></el-input>
         <el-button
-            style="width: 10%; height: 50%"
+            style="width: 10%; height: 60%"
             @click="send(userInfo?.com_id)"
+            @keydown.enter="keyDown($event)"
             v-if="userType === 1"
         >发送
         </el-button
         >
         <el-button
-            style="width: 10%; height: 50%"
+            style="width: 10%; height: 60%"
             @click="send(userInfo?.user_id)"
+            @keydown.enter="keyDown($event)"
             v-if="userType === 2"
         >发送
         </el-button
@@ -202,7 +217,7 @@ onMounted(async () => {
 }
 
 .content-bottom {
-  height: 65px;
+  height: 60px;
   width: 100%;
   border-radius: 0 0 8px 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);

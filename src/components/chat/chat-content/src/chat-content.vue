@@ -6,10 +6,11 @@ import {formatUTC} from '@/utils/formatTime'
 import type {ChatVo} from '@/service/chat/type'
 import localCache from '@/utils/localCache'
 import {create} from "axios";
+import {showBox} from "@/utils/message";
 
 const inputContent = ref()
 const chatStore = useChatStore()
-const {getChatList} = chatStore
+const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 const propds = defineProps({
@@ -30,6 +31,35 @@ const send = async (data: string) => {
     emit('startChat', data, inputContent.value)
   }
   inputContent.value = ''
+}
+
+const sendPicture = async (file) => {
+  const formData = new FormData()
+  // 判断类型
+  const typeArry = ['.png', '.jpg']
+  // 上传前检查
+  const fileSize = file.size
+  const fileName = file.name
+  const type = fileName.substring(fileName.lastIndexOf('.'))
+  const isFile = typeArry.indexOf(type) > -1
+  // 最大1MB
+  if (fileSize / 1024 / 1204 > 1) {
+    showBox('上传失败', '图片最大仅支持1MB，请重新上传')
+    return
+  } else if (!isFile) {
+    showBox('上传失败', '图片仅支持JPG或PNG格式')
+    return
+  }
+  formData.append('file', file.raw)
+  // 上传
+  if (propds.userType === 1) {
+    formData.append("com_id", propds.userInfo.com_id)
+    await freshSendByPicture(formData)
+  }
+  if (propds.userType === 2) {
+    formData.append("user_id", propds.userInfo.user_id)
+    await comSendByPicture(formData)
+  }
 }
 
 let interval
@@ -67,22 +97,22 @@ onMounted(async () => {
   })
 })
 
-const keyDown = (e) =>{
-  if (e.keyCode == 13 || e.keyCode == 100){
-    if (propds.userType === 1){
+const keyDown = (e) => {
+  if (e.keyCode == 13 || e.keyCode == 100) {
+    if (propds.userType === 1) {
       send(propds.userInfo.com_id)
     }
-    if (propds.userType === 2){
+    if (propds.userType === 2) {
       send(propds.userInfo.user_id)
     }
   }
 }
 
-onMounted(()=>{
-  window.addEventListener('keydown',keyDown)
+onMounted(() => {
+  window.addEventListener('keydown', keyDown)
 })
-onUnmounted(()=>{
-  window.removeEventListener('keydown',keyDown,false)
+onUnmounted(() => {
+  window.removeEventListener('keydown', keyDown, false)
 })
 </script>
 
@@ -123,7 +153,12 @@ onUnmounted(()=>{
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 1">
             <div class="left-content">
-              <div class="content" style="background-color: #e8f3f3">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -136,7 +171,12 @@ onUnmounted(()=>{
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 1">
             <div class="right-content">
-              <div class="content" style="background-color: #00a6a7">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -159,27 +199,37 @@ onUnmounted(()=>{
             maxlength="120"
             show-word-limit
             v-model="inputContent"
-            style="width: 85%; margin-right: 10px;height: 60%"
+            style="width: 75%; margin-right: 10px;height: 60%"
             placeholder="回复内容"
             class="input"
             clearable
         ></el-input>
         <el-button
             style="width: 10%; height: 60%"
+            v-if="userType === 1"
+        >
+          <el-upload action :show-file-list="false" :auto-upload="false" :on-change="sendPicture">选择图片</el-upload>
+        </el-button>
+        <el-button
+            style="width: 10%; height: 60%"
+            v-if="userType === 2"
+        >
+          <el-upload action :show-file-list="false" :auto-upload="false" :on-change="sendPicture">选择图片</el-upload>
+        </el-button>
+        <el-button
+            style="width: 10%; height: 60%"
             @click="send(userInfo?.com_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 1"
         >发送
-        </el-button
-        >
+        </el-button>
         <el-button
             style="width: 10%; height: 60%"
             @click="send(userInfo?.user_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 2"
         >发送
-        </el-button
-        >
+        </el-button>
       </div>
     </div>
   </div>
@@ -316,7 +366,7 @@ onUnmounted(()=>{
 }
 
 .content {
-  max-width: 200px;
+  max-width: 350px;
   height: auto;
   white-space: normal;
   word-wrap: break-word;

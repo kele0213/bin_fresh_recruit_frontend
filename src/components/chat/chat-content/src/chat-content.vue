@@ -7,7 +7,6 @@ import type {ChatVo} from '@/service/chat/type'
 import localCache from '@/utils/localCache'
 import {create} from "axios";
 import {showBox} from "@/utils/message";
-import directiveImagePreviewer from 'vue3-directive-image-previewer'
 
 const inputContent = ref()
 const chatStore = useChatStore()
@@ -63,6 +62,28 @@ const sendPicture = async (file) => {
   }
 }
 
+async function startInterval() {
+  contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+  if (propds.userType === 1) {
+    count++
+    await getChatList({
+      user_id: localCache.getCache('userId'),
+      com_id: propds.userInfo.com_id
+    })
+  }
+  if (propds.userType === 2) {
+    count++
+    await getChatList({
+      user_id: propds.userInfo.user_id,
+      com_id: localCache.getCache('userId')
+    })
+  }
+  console.log(count)
+  if (count > 1000) {
+    clearInterval(interval)
+  }
+}
+
 let interval
 defineExpose({
   closeChat() {
@@ -72,27 +93,7 @@ defineExpose({
 
 let count = 0
 onMounted(async () => {
-  interval = setInterval(async () => {
-    contentCenter.value.scrollTop = contentCenter.value.scrollHeight
-    if (propds.userType === 1) {
-      count++
-      await getChatList({
-        user_id: localCache.getCache('userId'),
-        com_id: propds.userInfo.com_id
-      })
-    }
-    if (propds.userType === 2) {
-      count++
-      await getChatList({
-        user_id: propds.userInfo.user_id,
-        com_id: localCache.getCache('userId')
-      })
-    }
-    console.log(count)
-    if (count > 1000) {
-      clearInterval(interval)
-    }
-  }, 5000)
+  interval = setInterval(startInterval, 5000)
   onBeforeUnmount(() => {
     clearInterval(interval)
   })
@@ -115,6 +116,13 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', keyDown, false)
 })
+
+const showImg = () => {
+  clearInterval(interval)
+}
+const closeImg = () => {
+  interval = setInterval(startInterval, 5000)
+}
 </script>
 
 <template>
@@ -149,8 +157,13 @@ onUnmounted(() => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                />
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -163,8 +176,13 @@ onUnmounted(() => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                />
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -181,8 +199,13 @@ onUnmounted(() => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                />
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -191,9 +214,17 @@ onUnmounted(() => {
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 2">
             <div class="left-content">
-              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{ item?.chat_content }}</div>
-              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                />
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">

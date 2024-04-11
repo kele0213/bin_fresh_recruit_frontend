@@ -144,7 +144,12 @@ onUnmounted(() => {
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 2">
             <div class="right-content">
-              <div class="content" style="background-color: #00a6a7">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -185,7 +190,9 @@ onUnmounted(() => {
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 2">
             <div class="left-content">
-              <div class="content" style="background-color: #e8f3f3">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">

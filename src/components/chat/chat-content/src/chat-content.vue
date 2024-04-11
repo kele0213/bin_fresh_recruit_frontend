@@ -7,6 +7,7 @@ import type {ChatVo} from '@/service/chat/type'
 import localCache from '@/utils/localCache'
 import {create} from "axios";
 import {showBox} from "@/utils/message";
+import directiveImagePreviewer from 'vue3-directive-image-previewer'
 
 const inputContent = ref()
 const chatStore = useChatStore()
@@ -149,7 +150,7 @@ onUnmounted(() => {
                 }}
               </div>
               <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -163,7 +164,7 @@ onUnmounted(() => {
                 }}
               </div>
               <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -181,7 +182,7 @@ onUnmounted(() => {
                 }}
               </div>
               <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
@@ -192,7 +193,7 @@ onUnmounted(() => {
             <div class="left-content">
               <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{ item?.chat_content }}</div>
               <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1"><img
-                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;"></div>
+                  :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" v-directive-image-previewer></div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">

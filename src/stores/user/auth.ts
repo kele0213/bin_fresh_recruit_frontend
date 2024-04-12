@@ -26,7 +26,6 @@ export const useAuthStore = defineStore(
     const registerRouter = async (role: roleType, routeName: 'main' | 'fresh') => {
       const routes = await getRoleRoutes(role)
       for (const route of routes) {
-        console.log(route, '111')
         router.addRoute(routeName, route)
       }
       // 2. 获取菜单信息

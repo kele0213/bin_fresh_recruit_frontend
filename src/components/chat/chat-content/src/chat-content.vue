@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose, onUnmounted} from 'vue'
+import {
+  defineEmits,
+  defineProps,
+  onMounted,
+  ref,
+  onBeforeUnmount,
+  defineExpose,
+  onUnmounted,
+  nextTick,
+  onUpdated, reactive, watch
+} from 'vue'
 import {useChatStore} from '@/stores/chat/chatStore'
 import {formatUTC} from '@/utils/formatTime'
 import localCache from '@/utils/localCache'
@@ -12,6 +22,7 @@ const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 
 
 let intervalTime = 5000
+let intervalScrollTime = 1000
 let interval
 let count = 0
 const propds = defineProps({
@@ -20,18 +31,33 @@ const propds = defineProps({
     default: 1
   },
   chatList: {},
-  userInfo: {}
+  userInfo: {
+    type: Object
+  }
 })
 
 const contentCenter = ref(null)
+// let contentCenter = reactive(null);
+
+
+onUpdated(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+    }, 100)
+  })
+})
+
 
 
 onMounted(() => {
+  interval = setInterval(startInterval, intervalTime)
   window.addEventListener('keydown', keyDown)
 })
 
 onUnmounted(() => {
   clearInterval(interval)
+  clearInterval(intervalScroll)
   location.reload()
   window.removeEventListener('keydown', keyDown, false)
 })
@@ -39,6 +65,7 @@ onUnmounted(() => {
 defineExpose({
   closeChat() {
     clearInterval(interval)
+    clearInterval(intervalScroll)
   }
 })
 
@@ -46,6 +73,7 @@ onBeforeUnmount(() => {
   console.log("chat close")
   location.reload()
   clearInterval(interval)
+  clearInterval(intervalScroll)
 })
 
 const emit = defineEmits(['startChat'])
@@ -87,22 +115,23 @@ const sendPicture = async (file) => {
 }
 
 async function startInterval() {
-  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
-  if (propds.userType === 1) {
-    count++
-    await getChatList({
-      user_id: localCache.getCache('userId'),
-      com_id: propds.userInfo.com_id
-    })
+  if(propds.userInfo !== undefined){
+    console.log("刷新数据中",count)
+    if (propds.userType === 1) {
+      count++
+      await getChatList({
+        user_id: localCache.getCache('userId'),
+        com_id: propds.userInfo.com_id
+      })
+    }
+    if (propds.userType === 2) {
+      count++
+      await getChatList({
+        user_id: propds.userInfo.user_id,
+        com_id: localCache.getCache('userId')
+      })
+    }
   }
-  if (propds.userType === 2) {
-    count++
-    await getChatList({
-      user_id: propds.userInfo.user_id,
-      com_id: localCache.getCache('userId')
-    })
-  }
-  console.log(count)
   if (count > 1000) {
     clearInterval(interval)
   }
@@ -125,24 +154,28 @@ const showImg = () => {
 const closeImg = () => {
   interval = setInterval(startInterval, intervalTime)
 }
-
+let intervalScroll
+const intervalScrollFun = () => {
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
+  console.log("滑动到底部")
+}
 const scrollFun = (e) => {
   const height = e.target.scrollHeight
   const top = e.target.scrollTop
   const clientHeight = e.target.clientHeight
   if (top + clientHeight + 1 >= height) {
     console.log("到底了")
-    interval = setInterval(startInterval, intervalTime)
+    intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
   } else {
-    clearInterval(interval)
+    clearInterval(intervalScroll)
   }
 }
 </script>
 
 <template>
   <div class="chat-content">
-    <el-skeleton :rows="16" v-if="!userInfo"/>
-    <div class="have-content" v-if="userInfo">
+    <el-skeleton :rows="16" v-show="!userInfo"/>
+    <div class="have-content" v-show="userInfo">
       <div class="content-top">
         <div class="imgContain">
           <img class="img" :src="userInfo?.a_avatar" alt=""/>
@@ -316,7 +349,7 @@ const scrollFun = (e) => {
 
 .have-content {
   width: 100%;
-  height: 100%;
+  height: 100%; // 告诉我这个不是高度是什么
 }
 
 .content-top {

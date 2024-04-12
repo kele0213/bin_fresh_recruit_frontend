@@ -12,6 +12,8 @@ const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 
 
 let intervalTime = 5000
+let interval
+let count = 0
 const propds = defineProps({
   userType: {
     type: Number,
@@ -22,7 +24,29 @@ const propds = defineProps({
 })
 
 const contentCenter = ref(null)
-// contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
+
+
+onMounted(() => {
+  window.addEventListener('keydown', keyDown)
+})
+
+onUnmounted(() => {
+  clearInterval(interval)
+  location.reload()
+  window.removeEventListener('keydown', keyDown, false)
+})
+
+defineExpose({
+  closeChat() {
+    clearInterval(interval)
+  }
+})
+
+onBeforeUnmount(() => {
+  console.log("chat close")
+  location.reload()
+  clearInterval(interval)
+})
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
@@ -84,23 +108,6 @@ async function startInterval() {
   }
 }
 
-let interval
-defineExpose({
-  closeChat() {
-    clearInterval(interval)
-  }
-})
-
-let count = 0
-onMounted(() => {
-  interval = setInterval(startInterval, intervalTime)
-})
-onBeforeUnmount(() => {
-  console.log("chat close")
-  location.reload()
-  clearInterval(interval)
-})
-
 const keyDown = (e) => {
   if (e.keyCode == 13 || e.keyCode == 100) {
     if (propds.userType === 1) {
@@ -111,15 +118,6 @@ const keyDown = (e) => {
     }
   }
 }
-
-onMounted(() => {
-  window.addEventListener('keydown', keyDown)
-})
-onUnmounted(() => {
-  clearInterval(interval)
-  location.reload()
-  window.removeEventListener('keydown', keyDown, false)
-})
 
 const showImg = () => {
   clearInterval(interval)

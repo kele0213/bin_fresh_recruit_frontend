@@ -5,6 +5,7 @@ import ChatContent from '@/components/chat/chat-content'
 import { useChatStore } from '@/stores/chat/chatStore'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/user/auth'
+import {ref} from "vue";
 
 const chatStore = useChatStore()
 const { freshSend, getLatelyComList, changeComId, getChatList } = chatStore

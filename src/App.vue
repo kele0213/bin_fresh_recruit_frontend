@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import {RouterView} from 'vue-router'
 import Bottom from '@/components/base/bottom/Bottom.vue'
 </script>
 
 <template>
   <div class="app">
     <div class="view">
-      <RouterView />
+      <RouterView/>
     </div>
     <div class="bottom">
       <Bottom></Bottom>
@@ -18,15 +18,18 @@ import Bottom from '@/components/base/bottom/Bottom.vue'
 .el-popper {
   max-width: 200px !important;
 }
+
 .app {
   display: flex;
   flex-direction: column;
   //min-height: 100%;
   height: 100%;
+
   .view {
     flex: 1;
   }
 }
+
 .bottom {
   //height: 3%;
   width: 100%;

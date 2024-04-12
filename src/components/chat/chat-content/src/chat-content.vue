@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import {defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose, onUnmounted} from 'vue'
 import {useChatStore} from '@/stores/chat/chatStore'
-import {storeToRefs} from 'pinia'
 import {formatUTC} from '@/utils/formatTime'
-import type {ChatVo} from '@/service/chat/type'
 import localCache from '@/utils/localCache'
-import {create} from "axios";
 import {showBox} from "@/utils/message";
 
 const inputContent = ref()
@@ -13,6 +10,8 @@ const chatStore = useChatStore()
 const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
+
+let intervalTime = 5000
 const propds = defineProps({
   userType: {
     type: Number,
@@ -23,6 +22,7 @@ const propds = defineProps({
 })
 
 const contentCenter = ref(null)
+// contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
@@ -63,7 +63,7 @@ const sendPicture = async (file) => {
 }
 
 async function startInterval() {
-  contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (propds.userType === 1) {
     count++
     await getChatList({
@@ -92,11 +92,13 @@ defineExpose({
 })
 
 let count = 0
-onMounted(async () => {
-  interval = setInterval(startInterval, 5000)
-  onBeforeUnmount(() => {
-    clearInterval(interval)
-  })
+onMounted(() => {
+  interval = setInterval(startInterval, intervalTime)
+})
+onBeforeUnmount(() => {
+  console.log("chat close")
+  location.reload()
+  clearInterval(interval)
 })
 
 const keyDown = (e) => {
@@ -114,6 +116,8 @@ onMounted(() => {
   window.addEventListener('keydown', keyDown)
 })
 onUnmounted(() => {
+  clearInterval(interval)
+  location.reload()
   window.removeEventListener('keydown', keyDown, false)
 })
 
@@ -121,7 +125,19 @@ const showImg = () => {
   clearInterval(interval)
 }
 const closeImg = () => {
-  interval = setInterval(startInterval, 5000)
+  interval = setInterval(startInterval, intervalTime)
+}
+
+const scrollFun = (e) => {
+  const height = e.target.scrollHeight
+  const top = e.target.scrollTop
+  const clientHeight = e.target.clientHeight
+  if (top + clientHeight + 1 >= height) {
+    console.log("到底了")
+    interval = setInterval(startInterval, intervalTime)
+  } else {
+    clearInterval(interval)
+  }
 }
 </script>
 
@@ -149,7 +165,7 @@ const closeImg = () => {
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center1" v-if="userType === 2" ref="contentCenter">
+      <div class="content-center" @scroll="scrollFun" id="content-center1" v-if="userType === 2" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 2">
             <div class="right-content">
@@ -199,7 +215,7 @@ const closeImg = () => {
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center2" v-if="userType === 1" ref="contentCenter">
+      <div class="content-center" @scroll="scrollFun" id="content-center2" v-if="userType === 1" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 1">
             <div class="right-content">

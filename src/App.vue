@@ -15,6 +15,9 @@ import Bottom from '@/components/base/bottom/Bottom.vue'
 </template>
 
 <style scoped lang="scss">
+.el-popper {
+  max-width: 200px !important;
+}
 .app {
   display: flex;
   flex-direction: column;

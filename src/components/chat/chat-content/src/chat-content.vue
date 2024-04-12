@@ -157,12 +157,16 @@ const closeImg = () => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1">
+              <div class="content-img" v-if="item?.chat_type === 1">
                 <el-image
                     :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
                     :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
                     @show="showImg" @close="closeImg" :hide-on-click-modal="true"
-                />
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
               </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
@@ -176,12 +180,16 @@ const closeImg = () => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1">
+              <div class="content-img" v-if="item?.chat_type === 1">
                 <el-image
                     :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
                     :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
                     @show="showImg" @close="closeImg" :hide-on-click-modal="true"
-                />
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
               </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
@@ -199,12 +207,16 @@ const closeImg = () => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 1">
+              <div class="content-img" v-if="item?.chat_type === 1">
                 <el-image
                     :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
                     :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
                     @show="showImg" @close="closeImg" :hide-on-click-modal="true"
-                />
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
               </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
@@ -218,12 +230,16 @@ const closeImg = () => {
                   item?.chat_content
                 }}
               </div>
-              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 1">
+              <div class="content-img" v-if="item?.chat_type === 1">
                 <el-image
                     :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
                     :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
                     @show="showImg" @close="closeImg" :hide-on-click-modal="true"
-                />
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
               </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
@@ -412,10 +428,16 @@ const closeImg = () => {
   display: inline-block;
   overflow-wrap: break-word;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 10px;
   letter-spacing: 2px;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.content-img {
+  max-width: 350px;
+  height: auto;
+  border-radius: 4px;
 }
 
 .right-content,

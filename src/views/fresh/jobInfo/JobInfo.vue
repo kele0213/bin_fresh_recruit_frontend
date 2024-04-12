@@ -37,10 +37,10 @@ onMounted(async () => {
     ></InfoCard>
     <div class="content">
       <div class="box">
-        <span class="title">职位描述</span>
-        <p style="margin-top: 20px">{{ jobInfoResult?.job_intro }}</p>
-        <span class="c">岗位职责</span>
-        <p>{{ jobInfoResult?.job_require }}</p>
+        <span class="title">岗位职责</span>
+        <p style="margin-top: 8px">{{ jobInfoResult?.job_intro }}</p>
+        <span class="title">岗位要求</span>
+        <p style="margin-top: 8px">{{ jobInfoResult?.job_require }}</p>
       </div>
       <ComInfo
         class="comInfo"

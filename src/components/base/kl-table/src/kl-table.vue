@@ -54,7 +54,13 @@ const pageChange = (value: number) => {
     </div>
     <div class="container">
       <!-- 表格本体 -->
-      <el-table :data="tableData" stripe style="width: 100%" highlight-current-row>
+      <el-table :data="tableData"
+                stripe
+                style="width: 100%"
+                highlight-current-row
+                empty-text="暂无数据"
+                show-overflow-tooltip
+                :tooltip-options="{ effect:'light',placement:'bottom', showArrow: true, width: '80px'  }" >
         <el-table-column align="center" type="selection" width="55" v-if="isShowSelect" />
         <el-table-column align="center" type="index" width="55" v-if="isShowIndex" />
         <template v-for="prop in propList" :key="prop.field">

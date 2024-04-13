@@ -39,19 +39,18 @@ const propds = defineProps({
 const contentCenter = ref(null)
 // let contentCenter = reactive(null);
 
-
-onUpdated(() => {
+watch(() =>propds.userInfo,()=>{
   nextTick(() => {
     setTimeout(() => {
+      console.log("scroll bottom")
+      interval = setInterval(startInterval, intervalTime)
       contentCenter.value.scrollTop = contentCenter.value.scrollHeight
-    }, 100)
+    }, 500)
   })
 })
 
 
-
 onMounted(() => {
-  interval = setInterval(startInterval, intervalTime)
   window.addEventListener('keydown', keyDown)
 })
 
@@ -160,14 +159,13 @@ const intervalScrollFun = () => {
   console.log("滑动到底部")
 }
 const scrollFun = (e) => {
+  clearInterval(intervalScroll)
   const height = e.target.scrollHeight
   const top = e.target.scrollTop
   const clientHeight = e.target.clientHeight
   if (top + clientHeight + 1 >= height) {
     console.log("到底了")
     intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
-  } else {
-    clearInterval(intervalScroll)
   }
 }
 </script>

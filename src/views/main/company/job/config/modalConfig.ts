@@ -47,7 +47,7 @@ const modalConfig: IFormConfig = {
     {
       field: 'job_intro',
       type: 'textarea',
-      label: '岗位介绍',
+      label: '岗位职责',
       placeholder: '请输入岗位介绍',
       others: {
         rows: 6
@@ -56,7 +56,7 @@ const modalConfig: IFormConfig = {
     {
       field: 'job_require',
       type: 'textarea',
-      label: '岗位职责',
+      label: '岗位要求',
       placeholder: '请输入岗位职责',
       others: {
         rows: 6

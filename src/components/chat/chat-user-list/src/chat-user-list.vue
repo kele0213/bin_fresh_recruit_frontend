@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useChatStore } from '@/stores/chat/chatStore'
-import { storeToRefs } from 'pinia'
 import { defineEmits, defineProps, onMounted } from 'vue'
 import { formatUTC } from '@/utils/formatTime'
 

@@ -37,14 +37,10 @@ export const useFilrateStore = defineStore('filrate', () => {
   // 改变搜索条件
   const changeSearchData = async (data: any) => {
     reqData.value.job_name = data['job_name']
-    console.log(data['send_status'])
-    console.log(data['send_status'] != '')
     if (data['send_status'] !== '') {
-      console.log(1)
       reqData.value.send_status = data['send_status']
       reqDataAll.value.send_status = data['send_status']
     } else {
-      console.log(2)
       reqData.value.send_status = -1
       reqDataAll.value.send_status = -1
     }

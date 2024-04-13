@@ -1,26 +1,79 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, ref, onBeforeUnmount, defineExpose } from 'vue'
-import { useChatStore } from '@/stores/chat/chatStore'
-import { storeToRefs } from 'pinia'
-import { formatUTC } from '@/utils/formatTime'
-import type { ChatVo } from '@/service/chat/type'
+import {
+  defineEmits,
+  defineProps,
+  onMounted,
+  ref,
+  onBeforeUnmount,
+  defineExpose,
+  onUnmounted,
+  nextTick,
+  onUpdated, reactive, watch
+} from 'vue'
+import {useChatStore} from '@/stores/chat/chatStore'
+import {formatUTC} from '@/utils/formatTime'
 import localCache from '@/utils/localCache'
+import {showBox} from "@/utils/message";
 
 const inputContent = ref()
 const chatStore = useChatStore()
-const { getChatList } = chatStore
+const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
+
+let intervalTime = 5000
+let intervalScrollTime = 1000
+let interval
+let count = 0
 const propds = defineProps({
   userType: {
     type: Number,
     default: 1
   },
   chatList: {},
-  userInfo: {}
+  userInfo: {
+    type: Object
+  }
 })
 
 const contentCenter = ref(null)
+// let contentCenter = reactive(null);
+
+watch(() =>propds.userInfo,()=>{
+  nextTick(() => {
+    setTimeout(() => {
+      console.log("scroll bottom")
+      interval = setInterval(startInterval, intervalTime)
+      contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+    }, 500)
+  })
+})
+
+
+onMounted(() => {
+  window.addEventListener('keydown', keyDown)
+})
+
+onUnmounted(() => {
+  clearInterval(interval)
+  clearInterval(intervalScroll)
+  location.reload()
+  window.removeEventListener('keydown', keyDown, false)
+})
+
+defineExpose({
+  closeChat() {
+    clearInterval(interval)
+    clearInterval(intervalScroll)
+  }
+})
+
+onBeforeUnmount(() => {
+  console.log("chat close")
+  location.reload()
+  clearInterval(interval)
+  clearInterval(intervalScroll)
+})
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
@@ -31,17 +84,38 @@ const send = async (data: string) => {
   inputContent.value = ''
 }
 
-let interval
-defineExpose({
-  closeChat() {
-    clearInterval(interval)
+const sendPicture = async (file) => {
+  const formData = new FormData()
+  // 判断类型
+  const typeArry = ['.png', '.jpg']
+  // 上传前检查
+  const fileSize = file.size
+  const fileName = file.name
+  const type = fileName.substring(fileName.lastIndexOf('.'))
+  const isFile = typeArry.indexOf(type) > -1
+  // 最大1MB
+  if (fileSize / 1024 / 1204 > 1) {
+    showBox('上传失败', '图片最大仅支持1MB，请重新上传')
+    return
+  } else if (!isFile) {
+    showBox('上传失败', '图片仅支持JPG或PNG格式')
+    return
   }
-})
+  formData.append('file', file.raw)
+  // 上传
+  if (propds.userType === 1) {
+    formData.append("com_id", propds.userInfo.com_id)
+    await freshSendByPicture(formData)
+  }
+  if (propds.userType === 2) {
+    formData.append("user_id", propds.userInfo.user_id)
+    await comSendByPicture(formData)
+  }
+}
 
-let count = 0
-onMounted(async () => {
-  interval = setInterval(async () => {
-    contentCenter.value.scrollTop = contentCenter.value.scrollHeight
+async function startInterval() {
+  if(propds.userInfo !== undefined){
+    console.log("刷新数据中",count)
     if (propds.userType === 1) {
       count++
       await getChatList({
@@ -56,24 +130,53 @@ onMounted(async () => {
         com_id: localCache.getCache('userId')
       })
     }
-    console.log(count)
-    if (count > 1000) {
-      clearInterval(interval)
-    }
-  }, 5000)
-  onBeforeUnmount(() => {
+  }
+  if (count > 1000) {
     clearInterval(interval)
-  })
-})
+  }
+}
+
+const keyDown = (e) => {
+  if (e.keyCode == 13 || e.keyCode == 100) {
+    if (propds.userType === 1) {
+      send(propds.userInfo.com_id)
+    }
+    if (propds.userType === 2) {
+      send(propds.userInfo.user_id)
+    }
+  }
+}
+
+const showImg = () => {
+  clearInterval(interval)
+}
+const closeImg = () => {
+  interval = setInterval(startInterval, intervalTime)
+}
+let intervalScroll
+const intervalScrollFun = () => {
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
+  console.log("滑动到底部")
+}
+const scrollFun = (e) => {
+  clearInterval(intervalScroll)
+  const height = e.target.scrollHeight
+  const top = e.target.scrollTop
+  const clientHeight = e.target.clientHeight
+  if (top + clientHeight + 1 >= height) {
+    console.log("到底了")
+    intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
+  }
+}
 </script>
 
 <template>
   <div class="chat-content">
-    <el-skeleton :rows="16" v-if="!userInfo" />
-    <div class="have-content" v-if="userInfo">
+    <el-skeleton :rows="16" v-show="!userInfo"/>
+    <div class="have-content" v-show="userInfo">
       <div class="content-top">
         <div class="imgContain">
-          <img class="img" :src="userInfo?.a_avatar" alt="" />
+          <img class="img" :src="userInfo?.a_avatar" alt=""/>
         </div>
         <div class="info">
           <div class="info-top" v-if="userType === 1">
@@ -91,70 +194,142 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center1" v-if="userType === 2" ref="contentCenter">
+      <div class="content-center" @scroll="scrollFun" id="content-center1" v-if="userType === 2" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 2">
             <div class="right-content">
-              <div class="content" style="background-color: #00a6a7">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content-img" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 1">
             <div class="left-content">
-              <div class="content" style="background-color: #e8f3f3">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content-img" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
         </div>
       </div>
-      <div class="content-center" id="content-center2" v-if="userType === 1" ref="contentCenter">
+      <div class="content-center" @scroll="scrollFun" id="content-center2" v-if="userType === 1" ref="contentCenter">
         <div class="list" v-for="item in chatList" :key="item">
           <div class="chat-list-right" v-if="item?.user_type === 1">
             <div class="right-content">
-              <div class="content" style="background-color: #00a6a7">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #00a6a7" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content-img" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
           <div class="chat-list-left" v-if="item?.user_type === 2">
             <div class="left-content">
-              <div class="content" style="background-color: #e8f3f3">{{ item?.chat_content }}</div>
+              <div class="content" style="background-color: #e8f3f3" v-if="item?.chat_type === 0">{{
+                  item?.chat_content
+                }}
+              </div>
+              <div class="content-img" v-if="item?.chat_type === 1">
+                <el-image
+                    :src="item?.chat_content" alt="" style="width: 100%;  border-radius: 4px;" :zoom-rate="1.2"
+                    :preview-src-list="[item?.chat_content]" :max-scale="7" :min-scale="0.2"
+                    @show="showImg" @close="closeImg" :hide-on-click-modal="true"
+                >
+                  <template v-slot:placeholder>
+                    <img :src="item?.chat_content" alt="" class="el-image__placeholder">
+                  </template>
+                </el-image>
+              </div>
               <span class="content-time">{{ formatUTC(item.create_time) }}</span>
             </div>
             <div class="avatar">
-              <img class="avatar-img" :src="item?.a_avatar" alt="" />
+              <img class="avatar-img" :src="item?.a_avatar" alt=""/>
             </div>
           </div>
         </div>
       </div>
       <div class="content-bottom">
         <el-input
-          v-model="inputContent"
-          style="width: 85%; margin-right: 10px; height: 60%"
-          placeholder="回复内容"
-          class="input"
-          clearable
+            maxlength="120"
+            show-word-limit
+            v-model="inputContent"
+            style="width: 75%; margin-right: 10px;height: 60%"
+            placeholder="回复内容"
+            class="input"
+            clearable
         ></el-input>
         <el-button
-          style="width: 10%; height: 60%"
-          @click="send(userInfo?.com_id)"
-          v-if="userType === 1"
-          >发送</el-button
+            style="width: 10%; height: 60%"
+            v-if="userType === 1"
         >
+          <el-upload action :show-file-list="false" :auto-upload="false" :on-change="sendPicture">选择图片</el-upload>
+        </el-button>
         <el-button
-          style="width: 10%; height: 60%"
-          @click="send(userInfo?.user_id)"
-          v-if="userType === 2"
-          >发送</el-button
+            style="width: 10%; height: 60%"
+            v-if="userType === 2"
         >
+          <el-upload action :show-file-list="false" :auto-upload="false" :on-change="sendPicture">选择图片</el-upload>
+        </el-button>
+        <el-button
+            style="width: 10%; height: 60%"
+            @click="send(userInfo?.com_id)"
+            @keydown.enter="keyDown($event)"
+            v-if="userType === 1"
+        >发送
+        </el-button>
+        <el-button
+            style="width: 10%; height: 60%"
+            @click="send(userInfo?.user_id)"
+            @keydown.enter="keyDown($event)"
+            v-if="userType === 2"
+        >发送
+        </el-button>
       </div>
     </div>
   </div>
@@ -172,7 +347,7 @@ onMounted(async () => {
 
 .have-content {
   width: 100%;
-  height: 100%;
+  height: 100%; // 告诉我这个不是高度是什么
 }
 
 .content-top {
@@ -291,17 +466,23 @@ onMounted(async () => {
 }
 
 .content {
-  max-width: 200px;
+  max-width: 350px;
   height: auto;
   white-space: normal;
   word-wrap: break-word;
   display: inline-block;
   overflow-wrap: break-word;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 10px;
   letter-spacing: 2px;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.content-img {
+  max-width: 350px;
+  height: auto;
+  border-radius: 4px;
 }
 
 .right-content,

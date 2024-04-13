@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/stores/fresh/main'
-import { defineEmits, defineProps, onMounted } from 'vue'
+import {storeToRefs} from 'pinia'
+import {useMainStore} from '@/stores/fresh/main'
+import {defineEmits, defineProps, onMounted} from 'vue'
 import router from '@/router'
-import { useJobStore } from '@/stores/fresh/job'
-import { useInfoStore } from '@/stores/main/company/info'
+import {useJobStore} from '@/stores/fresh/job'
+import {useInfoStore} from '@/stores/main/company/info'
 
 const jobStore = useJobStore()
 const {
@@ -16,7 +16,7 @@ const {
   jobInfo,
   changeComId
 } = jobStore
-const { count, pageSize, jobInfoResult } = storeToRefs(jobStore)
+const {count, pageSize, jobInfoResult} = storeToRefs(jobStore)
 
 defineProps({
   jobList: {
@@ -57,12 +57,13 @@ const pageChange = (value: number) => {
 
 <template>
   <div class="jobContent">
+    <div class="card-empty" v-if="!jobList || jobList.length === 0"></div>
     <div class="card" v-for="item in jobList" :key="item">
       <div class="top" @click="clickFn(item)">
         <div class="left">
           <div class="name">{{ item.job_name }}</div>
           <el-icon class="chat">
-            <ChatDotSquare />
+            <ChatDotSquare/>
           </el-icon>
         </div>
         <div class="right">{{ item.job_pay }}</div>
@@ -73,7 +74,7 @@ const pageChange = (value: number) => {
       <div class="bottom" @click="getFn(item.com_id)">
         <div class="bottom-left">
           <div class="avatar">
-            <img :src="item.a_avatar" alt="暂无图片" />
+            <img :src="item.a_avatar" alt="暂无图片"/>
           </div>
           <div class="comName">{{ item.com_name }}</div>
         </div>
@@ -84,18 +85,21 @@ const pageChange = (value: number) => {
   <div class="footer">
     <!-- 后面用来放分页器 -->
     <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
-      :page-size="pageSize"
-      @current-change="pageChange"
-      :current-page="currentPage"
-      v-if="isPage"
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChange"
+        :current-page="currentPage"
+        v-if="isPage"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.card-empty{
+  width: 1536px;
+}
 .jobContent {
   display: flex;
   justify-content: flex-start;

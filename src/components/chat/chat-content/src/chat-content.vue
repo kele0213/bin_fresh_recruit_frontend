@@ -321,6 +321,7 @@ const scrollFun = (e) => {
             placeholder="回复内容"
             class="input"
             clearable
+            @focus="toBottom"
         ></el-input>
         <el-button
             style="width: 10%; height: 60%"

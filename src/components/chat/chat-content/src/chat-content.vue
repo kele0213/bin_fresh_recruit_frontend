@@ -21,7 +21,7 @@ const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 
-let intervalTime = 5000
+let intervalTime = 50000
 let intervalScrollTime = 1000
 let interval
 let count = 0
@@ -39,7 +39,7 @@ const propds = defineProps({
 const contentCenter = ref(null)
 // let contentCenter = reactive(null);
 
-watch(() =>propds.userInfo,()=>{
+watch(() => propds.userInfo, () => {
   nextTick(() => {
     setTimeout(() => {
       console.log("scroll bottom")
@@ -74,6 +74,12 @@ onBeforeUnmount(() => {
   clearInterval(interval)
   clearInterval(intervalScroll)
 })
+
+const toBottom = ()=>{
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
+}
+
+const isActive = ref(false)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
@@ -114,8 +120,8 @@ const sendPicture = async (file) => {
 }
 
 async function startInterval() {
-  if(propds.userInfo !== undefined){
-    console.log("刷新数据中",count)
+  if (propds.userInfo !== undefined) {
+    console.log("刷新数据中", count)
     if (propds.userType === 1) {
       count++
       await getChatList({
@@ -159,12 +165,14 @@ const intervalScrollFun = () => {
   console.log("滑动到底部")
 }
 const scrollFun = (e) => {
+  isActive.value = true
   clearInterval(intervalScroll)
   const height = e.target.scrollHeight
   const top = e.target.scrollTop
   const clientHeight = e.target.clientHeight
   if (top + clientHeight + 1 >= height) {
     console.log("到底了")
+    isActive.value = false
     intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
   }
 }
@@ -175,22 +183,32 @@ const scrollFun = (e) => {
     <el-skeleton :rows="16" v-show="!userInfo"/>
     <div class="have-content" v-show="userInfo">
       <div class="content-top">
-        <div class="imgContain">
-          <img class="img" :src="userInfo?.a_avatar" alt=""/>
+        <div class="info-left">
+          <div class="imgContain">
+            <img class="img" :src="userInfo?.a_avatar" alt=""/>
+          </div>
+          <div class="info">
+            <div class="info-top" v-if="userType === 1">
+              {{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}
+            </div>
+            <div class="info-top" v-if="userType === 2">
+              {{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}
+            </div>
+            <div class="info-bottom" v-if="userType === 2">
+              <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_school }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_education }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_year }}</el-tag>
+            </div>
+          </div>
         </div>
-        <div class="info">
-          <div class="info-top" v-if="userType === 1">
-            {{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}
-          </div>
-          <div class="info-top" v-if="userType === 2">
-            {{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}
-          </div>
-          <div class="info-bottom" v-if="userType === 2">
-            <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_school }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_education }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_year }}</el-tag>
+        <div class="info-right">
+          <div class="to-bottom" @click="toBottom" v-show="isActive">
+            <span>回到底部</span>
+            <el-icon>
+              <ArrowDown/>
+            </el-icon>
           </div>
         </div>
       </div>
@@ -358,12 +376,33 @@ const scrollFun = (e) => {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+}
+
+.info-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .content-center {
   height: 490px;
   width: 100%;
   overflow-y: auto;
+}
+
+.to-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin-right: 20px;
+  color: #fff;
+  font-weight: bolder;
+}
+.to-bottom:hover{
+  cursor: pointer;
 }
 
 .content-bottom {

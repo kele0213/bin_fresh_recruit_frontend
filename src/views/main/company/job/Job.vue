@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import ContentTable from '@/components/SecondPackage/content-table'
-import { tableConfig } from '@/views/main/company/job/config/tableConfig'
-import { useJobStore } from '@/stores/main/company/job'
-import { storeToRefs } from 'pinia'
-import { useAuthStore } from '@/stores/user/auth'
+import {tableConfig} from '@/views/main/company/job/config/tableConfig'
+import {useJobStore} from '@/stores/main/company/job'
+import {storeToRefs} from 'pinia'
+import {useAuthStore} from '@/stores/user/auth'
 import ModalForm from '@/components/SecondPackage/modal-form'
 import modalConfig from '@/views/main/company/job/config/modalConfig'
 import updateConfig from '@/views/main/company/job/config/updateConfig'
 import searchConfig from '@/views/main/company/job/config/searchConfig'
-import type { AddJobRequest } from '@/service/company/type'
+import type {AddJobRequest} from '@/service/company/type'
 import SearchForm from '@/components/SecondPackage/search-form/src/search-form.vue'
 
 const modalRef = ref<InstanceType<typeof ModalForm>>()
@@ -17,9 +17,9 @@ const updateRef = ref<InstanceType<typeof ModalForm>>()
 
 const store = useJobStore()
 const authStore = useAuthStore()
-const { userInfo } = storeToRefs(authStore)
-const { changeCurrent, changeData, getJobList, addJob, deleteJob, updateJob } = store
-const { jobList, reqData, count, pageSize } = storeToRefs(store)
+const {userInfo} = storeToRefs(authStore)
+const {changeCurrent, changeData, getJobList, addJob, deleteJob, updateJob,batchAddJobInfo} = store
+const {jobList, reqData, count, pageSize} = storeToRefs(store)
 
 // 加载数据
 onMounted(async () => {
@@ -71,7 +71,7 @@ const deleteJobById = async (value: any) => {
 const updateData = ref()
 const showUpdateModal = (value: any) => {
   updateRef.value!.getVisible()
-  updateData.value = { ...value }
+  updateData.value = {...value}
 }
 // 编辑数据
 const updateJobById = async (data: any) => {
@@ -93,6 +93,12 @@ const searchJob = async (data: any) => {
   })
   await getJobList()
 }
+// 批量新增
+const batchAddFun = async (file: any) => {
+  const data = new FormData();
+  data.append("file",file.value.raw)
+  await batchAddJobInfo(data)
+}
 </script>
 
 <template>
@@ -100,24 +106,26 @@ const searchJob = async (data: any) => {
   <div class="job">
     <search-form :form-config="searchConfig" @search="searchJob"></search-form>
     <content-table
-      :table-config="tableConfig"
-      :table-data="jobList"
-      :total="count"
-      @page-change="getJobListByPage"
-      :page-size="pageSize"
-      @fresh="pageJobFresh"
-      @add="showModal"
-      @delete="deleteJobById"
-      @edit="showUpdateModal"
-      :current-page="reqData.current"
+        :table-config="tableConfig"
+        :table-data="jobList"
+        :total="count"
+        @page-change="getJobListByPage"
+        :page-size="pageSize"
+        @fresh="pageJobFresh"
+        @add="showModal"
+        @delete="deleteJobById"
+        @edit="showUpdateModal"
+        :current-page="reqData.current"
+        :isBatchAdd="true"
+        @batchAdd="batchAddFun"
     />
   </div>
   <modal-form :form-config="modalConfig" ref="modalRef" @confirm="addJobOne"></modal-form>
   <modal-form
-    :form-config="updateConfig"
-    ref="updateRef"
-    :data="updateData"
-    @confirm="updateJobById"
+      :form-config="updateConfig"
+      ref="updateRef"
+      :data="updateData"
+      @confirm="updateJobById"
   ></modal-form>
 </template>
 

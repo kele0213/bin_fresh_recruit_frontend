@@ -43,6 +43,7 @@ const getJobListByPage = async (page: Number) => {
 
 <style lang="scss" scoped>
 .companyJob {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

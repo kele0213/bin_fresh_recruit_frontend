@@ -14,15 +14,16 @@ import {useChatStore} from '@/stores/chat/chatStore'
 import {formatUTC} from '@/utils/formatTime'
 import localCache from '@/utils/localCache'
 import {showBox} from "@/utils/message";
+import emojis from "@/assets/image/emojis.json"
 
-const inputContent = ref()
+const inputContent = ref("")
 const chatStore = useChatStore()
 const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 
-let intervalTime = 50000
-let intervalScrollTime = 1000
+let intervalTime = 500000
+let intervalScrollTime = 10000
 let interval
 let count = 0
 const propds = defineProps({
@@ -37,7 +38,6 @@ const propds = defineProps({
 })
 
 const contentCenter = ref(null)
-// let contentCenter = reactive(null);
 
 watch(() => propds.userInfo, () => {
   nextTick(() => {
@@ -49,6 +49,10 @@ watch(() => propds.userInfo, () => {
   })
 })
 
+const faceList = []
+for (let emojisKey in emojis) {
+  faceList.push(emojis[emojisKey]['char'])
+}
 
 onMounted(() => {
   window.addEventListener('keydown', keyDown)
@@ -75,7 +79,7 @@ onBeforeUnmount(() => {
   clearInterval(intervalScroll)
 })
 
-const toBottom = ()=>{
+const toBottom = () => {
   contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
 }
 
@@ -83,6 +87,7 @@ const isActive = ref(false)
 
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
+  emojiShow.value = false
   contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
@@ -175,6 +180,20 @@ const scrollFun = (e) => {
     isActive.value = false
     intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
   }
+}
+
+
+// 表情包输入相关
+const emojiShow = ref(true)
+const getBrowString = ref("")
+const getBrow = (index: number) => {
+  for (let i in faceList) {
+    if (index == i) {
+      getBrowString.value = faceList[index];
+      inputContent.value += getBrowString.value
+    }
+  }
+  emojiShow.value = false
 }
 </script>
 
@@ -313,11 +332,33 @@ const scrollFun = (e) => {
         </div>
       </div>
       <div class="content-bottom">
+        <el-popover
+            placement="top"
+            width="500"
+            height="700"
+            trigger="click"
+            v-model="emojiShow"
+        >
+          <template #reference>
+            <el-button circle style="margin-right: 10px;">😀</el-button>
+          </template>
+          <div class="browBox">
+            <ul>
+              <li
+                  v-for="(item, index) in faceList"
+                  :key="index"
+                  @click="getBrow(index)"
+              >
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+        </el-popover>
         <el-input
             maxlength="120"
             show-word-limit
             v-model="inputContent"
-            style="width: 75%; margin-right: 10px;height: 60%"
+            style="width: 70%; margin-right: 10px;height: 60%"
             placeholder="回复内容"
             class="input"
             clearable
@@ -402,7 +443,8 @@ const scrollFun = (e) => {
   color: #fff;
   font-weight: bolder;
 }
-.to-bottom:hover{
+
+.to-bottom:hover {
   cursor: pointer;
 }
 
@@ -545,4 +587,27 @@ const scrollFun = (e) => {
   font-size: 14px;
   margin-top: 4px;
 }
+
+.browBox {
+  width: 100%;
+  height: 200px;
+  background: #fff;
+  z-index: 100;
+  bottom: 0;
+  overflow: scroll;
+  border-radius: 4px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      cursor: pointer;
+      width: 10%;
+      font-size: 26px;
+      list-style: none;
+      text-align: center;
+    }
+  }
+}
+
 </style>

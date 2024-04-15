@@ -17,7 +17,6 @@
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
     "element-plus": "^2.6.1",
-    "emoji-vue": "^0.2.4",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

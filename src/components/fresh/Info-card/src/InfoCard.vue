@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/stores/fresh/main'
-import { defineEmits, defineProps, onMounted, ref } from 'vue'
-import { useResumeStore } from '@/stores/fresh/resume'
+import {storeToRefs} from 'pinia'
+import {useMainStore} from '@/stores/fresh/main'
+import {defineEmits, defineProps, onMounted, ref} from 'vue'
+import {useResumeStore} from '@/stores/fresh/resume'
 import ChooseResume from '@/components/fresh/choose-resume'
-import { showBox } from '@/utils/message'
-import { useJobStore } from '@/stores/fresh/job'
-import { useSendStore } from '@/stores/fresh/send'
+import {showBox} from '@/utils/message'
+import {useJobStore} from '@/stores/fresh/job'
+import {useSendStore} from '@/stores/fresh/send'
 import ChatWindow from '@/components/SecondPackage/chat-window'
-import { useChatStore } from '@/stores/chat/chatStore'
+import {useChatStore} from '@/stores/chat/chatStore'
 import localCache from '@/utils/localCache'
 
 const resumeStore = useResumeStore()
-const { uploadResume, changeVisible } = resumeStore
-const { visible } = storeToRefs(resumeStore)
+const {uploadResume, changeVisible} = resumeStore
+const {visible} = storeToRefs(resumeStore)
 const resumeModal = ref<InstanceType<typeof ChooseResume>>()
 const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
 
 const jobStore = useJobStore()
-const { companyInfo, jobInfoResult } = storeToRefs(jobStore)
+const {companyInfo, jobInfoResult} = storeToRefs(jobStore)
 
 const sendStore = useSendStore()
-const { sendResume } = sendStore
+const {sendResume} = sendStore
 
 const chatStore = useChatStore()
-const { getChatList, changeComId } = chatStore
-const { chatList, comInfo } = storeToRefs(chatStore)
+const {getChatList, changeComId} = chatStore
+const {chatList, comInfo} = storeToRefs(chatStore)
 
 defineProps({
   // 是否为岗位详情
@@ -105,36 +105,37 @@ const showChatWindow = async () => {
     </div>
     <div class="center">
       <el-icon v-if="isJob" style="margin-right: 5px">
-        <Location />
+        <Location/>
       </el-icon>
       <span v-if="isJob">{{ address }}</span>
       <el-icon v-if="isJob" style="margin-left: 20px; margin-right: 5px">
-        <Tickets />
+        <Tickets/>
       </el-icon>
       <span v-if="isJob">{{ jobType }}</span>
       <span v-if="!isJob">{{ comNum + ' · ' + comType }}</span>
     </div>
     <div class="bottom">
       <span class="left">
-        <el-button @click="showChatWindow">立即沟通</el-button>
-        <el-button style="margin-left: 20px" v-if="isJob" @click="showResumeModal"
-          >立即投递</el-button
+        <el-button @click="showChatWindow"
+                   style="background-color: #00a6a7;border: none;border-radius: 10px;height: 35px;width: 110px;color: #fff;font-weight: bolder;letter-spacing: 2px;font-size: 16px">立即沟通</el-button>
+        <el-button style="margin-left: 20px;background-color: #00a6a7;border: none;border-radius: 10px;height: 35px;width: 110px;color: #fff;font-weight: bolder;letter-spacing: 2px;font-size: 16px" v-if="isJob" @click="showResumeModal"
+        >立即投递</el-button
         >
       </span>
+      <ChatWindow ref="chatWindowModal" :chatList="chatList" :userInfo="comInfo"></ChatWindow>
       <ChooseResume @confirm="confirmSend"></ChooseResume>
       <span class="right">
         <el-upload
-          action
-          :show-file-list="false"
-          :auto-upload="false"
-          :on-change="uploadResumeInfo"
+            action
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="uploadResumeInfo"
         >
-          <el-icon><DocumentAdd /></el-icon>
+          <el-icon><DocumentAdd/></el-icon>
           <span style="margin-left: 6px">新增简历附件</span>
         </el-upload>
       </span>
     </div>
-    <ChatWindow ref="chatWindowModal" :chatList="chatList" :userInfo="comInfo"></ChatWindow>
   </div>
 </template>
 
@@ -205,22 +206,5 @@ const showChatWindow = async () => {
   font-weight: bolder;
   font-size: 20px;
   cursor: pointer;
-}
-
-:deep(.el-button) {
-  background-color: #00a6a7;
-  border: none;
-  border-radius: 10px;
-  height: 35px;
-  width: 110px;
-  color: #fff;
-  font-weight: bolder;
-  letter-spacing: 2px;
-  font-size: 16px;
-}
-
-:deep(.el-button:hover) {
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
 }
 </style>

@@ -22,8 +22,8 @@ const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
 
 
-let intervalTime = 500000
-let intervalScrollTime = 10000
+let intervalTime = 5000
+let intervalScrollTime = 1000
 let interval
 let count = 0
 const propds = defineProps({
@@ -381,6 +381,7 @@ const getBrow = (index: number) => {
             @click="send(userInfo?.com_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 1"
+            type="primary"
         >发送
         </el-button>
         <el-button
@@ -388,6 +389,7 @@ const getBrow = (index: number) => {
             @click="send(userInfo?.user_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 2"
+            type="primary"
         >发送
         </el-button>
       </div>

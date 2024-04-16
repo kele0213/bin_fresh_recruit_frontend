@@ -14,8 +14,9 @@ import {useChatStore} from '@/stores/chat/chatStore'
 import {formatUTC} from '@/utils/formatTime'
 import localCache from '@/utils/localCache'
 import {showBox} from "@/utils/message";
+import emojis from "@/assets/image/emojis.json"
 
-const inputContent = ref()
+const inputContent = ref("")
 const chatStore = useChatStore()
 const {getChatList, freshSendByPicture, comSendByPicture} = chatStore
 // const {freshInfo, chatListCom} = storeToRefs(chatStore)
@@ -37,9 +38,8 @@ const propds = defineProps({
 })
 
 const contentCenter = ref(null)
-// let contentCenter = reactive(null);
 
-watch(() =>propds.userInfo,()=>{
+watch(() => propds.userInfo, () => {
   nextTick(() => {
     setTimeout(() => {
       console.log("scroll bottom")
@@ -49,6 +49,10 @@ watch(() =>propds.userInfo,()=>{
   })
 })
 
+const faceList = []
+for (let emojisKey in emojis) {
+  faceList.push(emojis[emojisKey]['char'])
+}
 
 onMounted(() => {
   window.addEventListener('keydown', keyDown)
@@ -75,8 +79,15 @@ onBeforeUnmount(() => {
   clearInterval(intervalScroll)
 })
 
+const toBottom = () => {
+  contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
+}
+
+const isActive = ref(false)
+
 const emit = defineEmits(['startChat'])
 const send = async (data: string) => {
+  emojiShow.value = false
   contentCenter!.value.scrollTop = contentCenter!.value.scrollHeight
   if (inputContent.value !== undefined) {
     emit('startChat', data, inputContent.value)
@@ -114,8 +125,8 @@ const sendPicture = async (file) => {
 }
 
 async function startInterval() {
-  if(propds.userInfo !== undefined){
-    console.log("刷新数据中",count)
+  if (propds.userInfo !== undefined) {
+    console.log("刷新数据中", count)
     if (propds.userType === 1) {
       count++
       await getChatList({
@@ -159,14 +170,30 @@ const intervalScrollFun = () => {
   console.log("滑动到底部")
 }
 const scrollFun = (e) => {
+  isActive.value = true
   clearInterval(intervalScroll)
   const height = e.target.scrollHeight
   const top = e.target.scrollTop
   const clientHeight = e.target.clientHeight
   if (top + clientHeight + 1 >= height) {
     console.log("到底了")
+    isActive.value = false
     intervalScroll = setInterval(intervalScrollFun, intervalScrollTime)
   }
+}
+
+
+// 表情包输入相关
+const emojiShow = ref(true)
+const getBrowString = ref("")
+const getBrow = (index: number) => {
+  for (let i in faceList) {
+    if (index == i) {
+      getBrowString.value = faceList[index];
+      inputContent.value += getBrowString.value
+    }
+  }
+  emojiShow.value = false
 }
 </script>
 
@@ -175,22 +202,32 @@ const scrollFun = (e) => {
     <el-skeleton :rows="16" v-show="!userInfo"/>
     <div class="have-content" v-show="userInfo">
       <div class="content-top">
-        <div class="imgContain">
-          <img class="img" :src="userInfo?.a_avatar" alt=""/>
+        <div class="info-left">
+          <div class="imgContain">
+            <img class="img" :src="userInfo?.a_avatar" alt=""/>
+          </div>
+          <div class="info">
+            <div class="info-top" v-if="userType === 1">
+              {{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}
+            </div>
+            <div class="info-top" v-if="userType === 2">
+              {{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}
+            </div>
+            <div class="info-bottom" v-if="userType === 2">
+              <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_school }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_education }}</el-tag>
+              <el-tag class="tag">{{ userInfo?.user_year }}</el-tag>
+            </div>
+          </div>
         </div>
-        <div class="info">
-          <div class="info-top" v-if="userType === 1">
-            {{ userInfo?.com_name === '' ? '暂无昵称' : userInfo?.com_name }}
-          </div>
-          <div class="info-top" v-if="userType === 2">
-            {{ userInfo?.user_name === '' ? '暂无昵称' : userInfo?.user_name }}
-          </div>
-          <div class="info-bottom" v-if="userType === 2">
-            <el-tag class="tag">{{ userInfo?.user_sex }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_major }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_school }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_education }}</el-tag>
-            <el-tag class="tag">{{ userInfo?.user_year }}</el-tag>
+        <div class="info-right">
+          <div class="to-bottom" @click="toBottom" v-show="isActive">
+            <span>回到底部</span>
+            <el-icon>
+              <ArrowDown/>
+            </el-icon>
           </div>
         </div>
       </div>
@@ -295,14 +332,37 @@ const scrollFun = (e) => {
         </div>
       </div>
       <div class="content-bottom">
+        <el-popover
+            placement="top"
+            width="500"
+            height="700"
+            trigger="click"
+            v-model="emojiShow"
+        >
+          <template #reference>
+            <el-button circle style="margin-right: 10px;">😀</el-button>
+          </template>
+          <div class="browBox">
+            <ul>
+              <li
+                  v-for="(item, index) in faceList"
+                  :key="index"
+                  @click="getBrow(index)"
+              >
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+        </el-popover>
         <el-input
             maxlength="120"
             show-word-limit
             v-model="inputContent"
-            style="width: 75%; margin-right: 10px;height: 60%"
+            style="width: 70%; margin-right: 10px;height: 60%"
             placeholder="回复内容"
             class="input"
             clearable
+            @focus="toBottom"
         ></el-input>
         <el-button
             style="width: 10%; height: 60%"
@@ -321,6 +381,7 @@ const scrollFun = (e) => {
             @click="send(userInfo?.com_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 1"
+            type="primary"
         >发送
         </el-button>
         <el-button
@@ -328,6 +389,7 @@ const scrollFun = (e) => {
             @click="send(userInfo?.user_id)"
             @keydown.enter="keyDown($event)"
             v-if="userType === 2"
+            type="primary"
         >发送
         </el-button>
       </div>
@@ -358,12 +420,34 @@ const scrollFun = (e) => {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+}
+
+.info-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .content-center {
   height: 490px;
   width: 100%;
   overflow-y: auto;
+}
+
+.to-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin-right: 20px;
+  color: #fff;
+  font-weight: bolder;
+}
+
+.to-bottom:hover {
+  cursor: pointer;
 }
 
 .content-bottom {
@@ -505,4 +589,27 @@ const scrollFun = (e) => {
   font-size: 14px;
   margin-top: 4px;
 }
+
+.browBox {
+  width: 100%;
+  height: 200px;
+  background: #fff;
+  z-index: 100;
+  bottom: 0;
+  overflow: scroll;
+  border-radius: 4px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      cursor: pointer;
+      width: 10%;
+      font-size: 26px;
+      list-style: none;
+      text-align: center;
+    }
+  }
+}
+
 </style>

@@ -86,3 +86,16 @@ export function freshSendAllList(data: FreshSendListAllRequest) {
     data
   })
 }
+
+/**
+ * @description: 批量上传文件
+ */
+export function batchAddJob(data:FormData){
+  return httpService.post<Idata<String>>({
+    url: '/com/job/batch/add',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data
+  })
+}

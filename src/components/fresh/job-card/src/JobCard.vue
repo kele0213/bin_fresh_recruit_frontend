@@ -5,8 +5,16 @@ import {defineEmits, defineProps, onMounted} from 'vue'
 import router from '@/router'
 import {useJobStore} from '@/stores/fresh/job'
 import {useInfoStore} from '@/stores/main/company/info'
+import ChatWindow from '@/components/SecondPackage/chat-window'
+import localCache from "@/utils/localCache";
+import {ref} from "vue";
+import {useChatStore} from "@/stores/chat/chatStore";
 
+const chatWindowModal = ref<InstanceType<typeof ChatWindow>>()
+const chatStore = useChatStore()
+const {getChatList, changeComId: changeComIdByChat} = chatStore
 const jobStore = useJobStore()
+const { chatList, comInfo } = storeToRefs(chatStore)
 const {
   saveSearchContent,
   saveSearch,
@@ -53,20 +61,29 @@ const getFn = (data: any) => {
 const pageChange = (value: number) => {
   emit('pageChange', value)
 }
+// 沟通弹窗
+const showChatWindow = async (data: any) => {
+  await chatWindowModal.value!.getVisible()
+  await changeComIdByChat(data.com_id)
+  await getChatList({
+    com_id: data.com_id,
+    user_id: localCache.getCache('userId')
+  })
+}
 </script>
 
 <template>
   <div class="jobContent">
     <div class="card-empty" v-if="!jobList || jobList.length === 0"></div>
     <div class="card" v-for="item in jobList" :key="item">
-      <div class="top" @click="clickFn(item)">
+      <div class="top">
         <div class="left">
-          <div class="name">{{ item.job_name }}</div>
-          <el-icon class="chat">
+          <div class="name"  @click="clickFn(item)">{{ item.job_name }}</div>
+          <el-icon class="chat"  @click="showChatWindow(item)">
             <ChatDotSquare/>
           </el-icon>
         </div>
-        <div class="right">{{ item.job_pay }}</div>
+        <div class="right"  @click="clickFn(item)">{{ item.job_pay }}</div>
       </div>
       <div class="center" @click="clickFn(item)">
         <p>{{ item.job_require }}</p>
@@ -82,6 +99,7 @@ const pageChange = (value: number) => {
       </div>
     </div>
   </div>
+  <ChatWindow ref="chatWindowModal" :chatList="chatList" :userInfo="comInfo"></ChatWindow>
   <div class="footer">
     <!-- 后面用来放分页器 -->
     <el-pagination
@@ -97,9 +115,10 @@ const pageChange = (value: number) => {
 </template>
 
 <style lang="scss" scoped>
-.card-empty{
+.card-empty {
   width: 1536px;
 }
+
 .jobContent {
   display: flex;
   justify-content: flex-start;

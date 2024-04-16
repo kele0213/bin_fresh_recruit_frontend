@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import klTable from '@/components/base/kl-table/src/kl-table.vue'
-import type { ItableConfig } from '@/components/base/kl-table'
+import type {PropType, defineProps, defineEmits} from 'vue'
+import type {ItableConfig} from '@/components/base/kl-table'
+import {showBox} from "@/utils/message";
+import FileUpload from "@/components/base/file-upload";
+import {ref} from "vue";
+import { InfoFilled } from '@element-plus/icons-vue'
+
+const fileUploadRef = ref<InstanceType<typeof FileUpload>>()
 
 const props = defineProps({
   tableConfig: {
@@ -35,6 +40,10 @@ const props = defineProps({
   currentPage: {
     type: Number,
     default: 1
+  },
+  isBatchAdd: {
+    type: Boolean,
+    default: false
   }
 })
 // slot处理
@@ -46,7 +55,7 @@ const allSlots = props.tableConfig.propList.filter((item) => {
   return true
 })
 // emits
-const emits = defineEmits(['edit', 'delete', 'add', 'pageChange', 'fresh'])
+const emits = defineEmits(['edit', 'delete', 'add', 'pageChange', 'fresh', 'batchAdd'])
 // 新增按钮
 const addFn = () => {
   emits('add')
@@ -54,6 +63,10 @@ const addFn = () => {
 // 编辑按钮
 const editFn = (value: any) => {
   emits('edit', value)
+}
+// 批量新增
+const batchAddFn = (file: any) => {
+  emits('batchAdd', file)
 }
 // 删除按钮
 const deleteFn = (value: any) => {
@@ -66,25 +79,35 @@ const pageChange = (value: any) => {
 const pageFresh = () => {
   emits('fresh')
 }
+
+// 批量可视化
+const showBatch = () => {
+  fileUploadRef.value!.getVisible()
+}
 </script>
 
 <template>
   <div class="table">
     <klTable
-      :table-data="tableData"
-      v-bind="tableConfig"
-      @pageChange="pageChange"
-      :total="total"
-      :page-size="pageSize"
-      :current-page="currentPage"
+        :table-data="tableData"
+        v-bind="tableConfig"
+        @pageChange="pageChange"
+        :total="total"
+        :page-size="pageSize"
+        :current-page="currentPage"
     >
       <!-- 顶部按钮处理 -->
       <template #titleHandler>
         <div class="titleHandler">
           <el-button type="primary" @click="addFn()" size="large" icon="Plus" v-if="isAdd"
-            >新增数据</el-button
+          >新增数据
+          </el-button
           >
-          <el-button icon="Refresh" circle style="margin-left: 30px" @click="pageFresh" />
+          <el-button type="success" size="large" icon="Plus" v-if="isBatchAdd" @click="showBatch"
+          >批量新增
+          </el-button>
+          <el-button icon="Refresh" circle style="margin-left: 20px" @click="pageFresh"/>
+          <FileUpload ref="fileUploadRef" @batchAdd="batchAddFn"></FileUpload>
         </div>
       </template>
       <!-- 时间处理 -->
@@ -97,11 +120,19 @@ const pageFresh = () => {
       <!-- 按钮处理 -->
       <template #handler="scoped">
         <el-button type="warning" @click="editFn(scoped.row)" icon="Edit" v-if="isEdit"
-          >编辑
+        >编辑
         </el-button>
-        <el-button type="danger" @click="deleteFn(scoped.row)" icon="Delete" v-if="isDelete"
-          >删除</el-button
-        >
+        <el-popconfirm title="是否确定删除" @confirm="deleteFn(scoped.row)" width="200px" confirm-button-text="确认"
+                       cancel-button-text="取消" :icon="InfoFilled"
+                       icon-color="#626AEF">
+          <template #reference>
+            <el-button type="danger" icon="Delete" v-if="isDelete"
+            >删除
+            </el-button
+            >
+          </template>
+        </el-popconfirm>
+
       </template>
       <template v-for="item in allSlots" :key="item.field" #[item.slotName!]="scoped">
         <slot :name="item.slotName" :row="scoped.row"></slot>
@@ -112,6 +143,10 @@ const pageFresh = () => {
 
 <style lang="scss" scoped>
 .titleHandler {
-  margin: 10px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 </style>
